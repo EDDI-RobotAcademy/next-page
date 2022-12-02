@@ -1,1 +1,5 @@
-export default {}
+export default {
+    // test용 states
+    comment: {},
+    comments: []
+}
