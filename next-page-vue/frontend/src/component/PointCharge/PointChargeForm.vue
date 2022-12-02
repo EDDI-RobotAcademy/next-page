@@ -71,23 +71,28 @@ export default {
         alert("결제금액을 선택해주세요!")
       } else {
         const IMP = window.IMP;
-        let order_id = Date.now(); // 주문정보생성용
+        let payment_id = Date.now(); // 주문정보생성용
 
-        IMP.init("imp46705714");
+        IMP.init("imp46705714"); // 가맹점 번호
         IMP.request_pay({
           pg: "kakaopay.TC0ONETIME",
           pay_method: 'card',
-          merchant_uid: "point-" + order_id, //상점에서 생성한 고유 주문번호
+          merchant_uid: payment_id, //고유 주문번호
           name: 'Next Page 포인트 충전',
-          amount: this.checkedPrice,
+          amount: this.checkedPrice, // 결제 금액
           buyer_email: 'test@gmail.com', // 구매자 메일 받기
           buyer_name: '구매자이름', // 구매자 이름 받기
-          m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}',
+      /*  m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}', */
         }, rsp => { // callback
           console.log(rsp);
-          if (rsp.success) {
+          if (rsp.success){
+            /* 주문번호 props로 받아서 주문 완료 페이지 작성하고 싶으나 현재는 이슈 발생중
+            let paymentData = { payment_id: rsp.merchant_uid, }
+            this.$router.push({ name: "PaymentSuccess", params: { paymentData}}) */
+
             this.$router.push("/payment-success")
             console.log("결제 성공");
+
           } else {
             console.log("결제 실패");
           }
@@ -106,10 +111,10 @@ export default {
         IMP.request_pay({
           pg: "html5_inicis.INIpayTest", //테스트 시 html5_inicis.INIpayTest 기재
           pay_method: 'card',
-          merchant_uid: "point-" + order_id, //상점에서 생성한 고유 주문번호
+          merchant_uid: "point-" + order_id, //고유 주문번호
           name: 'Next Page 포인트 충전',
           amount: this.checkedPrice,
-          buyer_email: 'iamport@siot.do',
+          buyer_email: 'test@gmail.com',
           buyer_name: '구매자이름',
           buyer_tel: '010-1234-5678',   //필수 파라미터
           m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}',
@@ -118,10 +123,6 @@ export default {
             acceptmethod: 'cardpoint', // 카드포인트 사용시 설정(PC)
             P_RESERVED: 'cp_yn=Y',     // 카드포인트 사용시 설정(모바일)
           },
-          period: {
-            from: "20200101", //YYYYMMDD
-            to: "20201231"   //YYYYMMDD
-          }
         }, rsp => { // callback
           console.log(rsp);
           if (rsp.success) {
