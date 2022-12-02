@@ -2,7 +2,7 @@
   <div align="center">
     <v-container style="width: 1700px">
       <div>
-        <form @submit="onSubmitRegister()">
+        <form @submit="onSubmit()">
           <div style="display: flex">
                   <v-textarea
                     v-model="comment"
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     // 등록 메서드
-    onSubmitRegister() {
+    onSubmit() {
       if (this.comment != '') {
         const { comment, commentWriter } = this
         this.$emit('submit', { comment, commentWriter })

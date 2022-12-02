@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import CommentWriteForm from '../component/CommentWriteForm.vue'
 
 Vue.use(VueRouter)
 
