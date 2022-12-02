@@ -24,7 +24,13 @@ const routes = [
   {
     path: '/payment-success',
     name: 'PaymentSuccess',
-    component: PaymentSuccessView
+    component: PaymentSuccessView,
+    /*components: {
+      default: PaymentSuccessView
+    },
+    props: {
+      paymentData: true
+    }*/
   }
 
 
