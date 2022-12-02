@@ -19,7 +19,9 @@ class TmpNovelModel {
   static List<TmpNovelModel> episodeList = <TmpNovelModel>[
     TmpNovelModel(
         episode: 1,
-        content: """   으ㅡ아ㅣㄹㅁㄴ어;ㅣ런ㅁㅇ
+        content: """   본문 시작
+      
+      으ㅡ아ㅣㄹㅁㄴ어;ㅣ런ㅁㅇ
       ㅇㄹ
       ㄴㅁㅇ
       ㄹㅁㅇㄴ
@@ -108,6 +110,11 @@ f
 sf
 sf
 ds
+
+
+
+
+본문 끝
                        """,
         rating: 9.8,
         writer: '무명작가',

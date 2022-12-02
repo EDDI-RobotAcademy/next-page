@@ -1,5 +1,6 @@
-import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'home-screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,21 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/sign-in",
-      routes: {
-        "/sign-in": (context) => SignInScreen(),
-      },
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget{
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text("초기화")
+      theme: ThemeData(
+          appBarTheme: const AppBarTheme(
+              systemOverlayStyle: SystemUiOverlayStyle.dark
+          )
+      ),
+      home: HomeScreen(),
     );
   }
 }
