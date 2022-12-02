@@ -101,7 +101,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     );
   }
 
-  /*Widget _buildViewerBody(){
+  Widget _buildViewerBody(){
     return GestureDetector(
       onTapDown: (TapDownDetails td) {
         setState(() {
@@ -139,7 +139,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
         ),
       ),
     );
-  }*/
+  }
 
   BottomAppBar _buildViewerBottomAppbar(){
     return BottomAppBar(
