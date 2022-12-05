@@ -29,8 +29,14 @@ public class CommentController {
         return null;
     }
 
+    @DeleteMapping("/{commentNo}")
+    public void commentDelete (@PathVariable("commentNo") Long commentNo, CommentEntity commentEntity) {
+        log.info("commentDelete()");
+
+        commentService.commentDelete(commentNo);
+    }
+
     //@PutMapping 수정 컨트롤러
 
-    //@DeleteMapping 삭제 컨트롤러
 
 }

@@ -1,5 +1,6 @@
 package kr.eddi.demo.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class CommentEntity {
 
     @Column(nullable = false)
     private String commentWriter;
+
     @Column(nullable = false)
     private String comment;
 
@@ -36,6 +38,12 @@ public class CommentEntity {
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "board_no")
-//
+//    private WebNovelEntity webNovelEntity;
+
+    public CommentEntity(String comment, String commentWriter) {
+        this.comment = comment;
+        this.commentWriter = commentWriter;
+    }
+
 
 }
