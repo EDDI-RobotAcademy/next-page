@@ -19,4 +19,10 @@ public class MemberRegisterForm {
         return new MemberRegisterRequest(email, password, nickname);
     }
 
+
+
+
+
+
+
 }

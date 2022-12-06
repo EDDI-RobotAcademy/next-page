@@ -23,6 +23,13 @@ public class MemberController {
         return service.emailValidation(email);
     }
 
+    @PostMapping("/sign-up")
+    public Boolean signUp(@RequestBody MemberRegisterForm form){ // 회원가입
+        log.info("signup: " + form);
+
+        return service.signUp(form.toMemberRegisterRequest());
+    }
+
 
 
 
