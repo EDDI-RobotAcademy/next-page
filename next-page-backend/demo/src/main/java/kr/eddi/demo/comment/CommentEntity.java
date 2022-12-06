@@ -1,6 +1,6 @@
 package kr.eddi.demo.comment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.eddi.demo.episode.NovelEpisodeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -36,14 +36,15 @@ public class CommentEntity {
     @UpdateTimestamp
     private Date updatedDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "board_no")
-//    private WebNovelEntity webNovelEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "novel_episode_id")
+    private NovelEpisodeEntity novelEpisodeEntity;
 
-    public CommentEntity(String comment, String commentWriter) {
+    public CommentEntity(String comment) {
         this.comment = comment;
-        this.commentWriter = commentWriter;
     }
 
-
+    public void modifyComment (String comment) {
+        this.comment = comment;
+    }
 }

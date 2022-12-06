@@ -1,5 +1,7 @@
 package kr.eddi.demo.comment;
 
+import kr.eddi.demo.comment.request.CommentModify;
+import kr.eddi.demo.comment.request.CommentWrite;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,27 +18,33 @@ public class CommentController {
     CommentService commentService;
 
 
-    @PostMapping("/write/{boardNo}")
-    public void commentWrite(@RequestBody CommentRequest commentRequest) {
+    @PostMapping("/write/{novelEpisodeNo}")
+    public void commentWrite(@PathVariable("novelEpisodeNo") Long novelEpisodeNo, @RequestBody CommentWrite commentWrite) {
         log.info("writeComment()");
 
+        commentService.commentWrite(commentWrite, novelEpisodeNo);
     }
 
-    @GetMapping("/list/{boardNo}")
-    public List<CommentEntity> commentList (@PathVariable("boardNo") Long boardNo){
+    @GetMapping("/list/{novelEpisodeNo}")
+    public List<CommentEntity> commentList (@PathVariable("novelEpisodeNo") Long novelEpisodeNo){
         log.info("commentList()");
 
-        return null;
+        return commentService.commentList(novelEpisodeNo);
     }
 
     @DeleteMapping("/{commentNo}")
-    public void commentDelete (@PathVariable("commentNo") Long commentNo, CommentEntity commentEntity) {
+    public void commentDelete (@PathVariable("commentNo") Long commentNo) {
         log.info("commentDelete()");
 
         commentService.commentDelete(commentNo);
     }
 
-    //@PutMapping 수정 컨트롤러
+    @PutMapping("/{commentNo}")
+    public void commentModify (@PathVariable("commentNo") Long commentNo, @RequestBody CommentModify commentModify) {
+        log.info("commentModify()");
+
+        commentService.commentModify(commentNo, commentModify);
+    }
 
 
 }

@@ -1,5 +1,9 @@
 package kr.eddi.demo.comment;
 
+import kr.eddi.demo.comment.request.CommentModify;
+import kr.eddi.demo.comment.request.CommentWrite;
+import kr.eddi.demo.episode.NovelEpisodeEntity;
+import kr.eddi.demo.episode.NovelEpisodeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,36 +18,42 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;
 
-//    웹소설 repository
-//    @Autowired
-//    WebNovelRepository webNovelRepository;
-
-//    자유게시판 repository
-//    @Autowired
-//    FreeBoardRepository freeBoardRepository;
+    @Autowired
+    NovelEpisodeRepository novelEpisodeRepository;
 
     @Override
-    public void commentWrite(CommentEntity commentEntity, Long boardNo) {
-//        Optional<WebNovelEntity> findWebNovel = webNovelRepository.findById(boardNo);
-//
-//        commentEntity.setWebNovelEntity(findWebNovel.get());
-//        commentRepository.save(commentEntity);
+    public void commentWrite(CommentWrite commentWrite, Long novelEpisodeNo) {
+        Optional<NovelEpisodeEntity> maybeNovelEpisode = novelEpisodeRepository.findById(novelEpisodeNo);
+        NovelEpisodeEntity novelEpisodeEntity = maybeNovelEpisode.get();
+
+        CommentEntity commentEntity = new CommentEntity();
+        commentEntity.setNovelEpisodeEntity(novelEpisodeEntity);
+        commentEntity.setComment(commentWrite.getComment());
+        commentEntity.setCommentWriter(commentWrite.getCommentWriter());
+
+        commentRepository.save(commentEntity);
 
     }
 
     @Override
-    public List<CommentEntity> commentList(Long boardNo) {
-//        CommentEntity commentEntity = webNovelRepository.findById(boardNo).get();
-//
-//        return commentRepository.findWebNovelCommentByWebNovel(webNovelEntity);
-        return null;
-
+    public List<CommentEntity> commentList(Long novelEpisodeNo) {
+       return commentRepository.findAllCommentsById(novelEpisodeNo);
     }
 
     @Override
     public void commentDelete(Long commentNo) {
-        commentRepository.deleteById(Long.valueOf(commentNo));
+        commentRepository.deleteById(commentNo);
 
+    }
+
+    @Override
+    public void commentModify(Long commentNo, CommentModify commentModify) {
+        Optional<CommentEntity> maybeComment = commentRepository.findById(commentNo);
+        CommentEntity commentEntity = maybeComment.get();
+
+        commentEntity.modifyComment(commentModify.getComment());
+
+        commentRepository.save(commentEntity);
     }
 
 }
