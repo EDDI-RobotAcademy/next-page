@@ -1,8 +1,7 @@
-import 'package:basic/model/tmp-novel-model.dart';
-import 'package:basic/novel/widgets/sliding-appbar.dart';
 import 'package:flutter/material.dart';
-
 import '../app_theme.dart';
+import '../model/tmp_novel_model.dart';
+import 'widgets/sliding_appbar.dart';
 
 class ScrollNovelViewerScreen extends StatefulWidget {
   const ScrollNovelViewerScreen({Key? key}) : super(key: key);
@@ -33,7 +32,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     super.initState();
     //애니메이션 사용을 위해서는 initState에서 초기설정 필요
     _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
     _scrollController.addListener(() {
       scrollListener();
       print('offset = ${_scrollController.offset}');
@@ -68,7 +67,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
         body: _buildViewerBody(),
         //반응형 바텀앱바
         bottomNavigationBar: AnimatedContainer(
-            duration: Duration(milliseconds: 400),
+            duration: const Duration(milliseconds: 400),
             height: visible ? size.height * 0.1 : 0.0,
             child: _buildViewerBottomAppbar()));
   }
@@ -78,11 +77,11 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
       backgroundColor: (visible) ? AppTheme.viewerAppbar : Colors.transparent,
       elevation: 0.0,
       title: Text(
-        "${TmpNovelModel.episodeList[0].episode}화",
-        style: TextStyle(color: Colors.black),
+        "${TmpNovelModel.novelList[0].episode}화",
+        style: const TextStyle(color: Colors.black),
       ),
       leading: IconButton(
-        icon: Icon(
+        icon: const Icon(
           Icons.arrow_back_ios,
           color: Colors.black,
         ),
@@ -93,7 +92,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
       actions: [
         IconButton(
             onPressed: () {},
-            icon: Icon(
+            icon: const Icon(
               Icons.settings_outlined,
               color: Colors.black,
             ))
@@ -120,10 +119,10 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
             Column(
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: Text(
-                    TmpNovelModel.episodeList[0].content,
-                    style: TextStyle(
+                    TmpNovelModel.novelList[0].content,
+                    style: const TextStyle(
                       fontSize: 18,
                     ),
                   ),
@@ -157,11 +156,11 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                   _scrollController.jumpTo(
                       _scrollController.position.minScrollExtent);
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.keyboard_arrow_up,
                   size: 20,
                 ),
-                label: Text("처음으로")),
+                label: const Text("처음으로")),
             TextButton.icon(
                 style: ButtonStyle(
                     foregroundColor:
@@ -170,31 +169,31 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                   _scrollController.jumpTo(
                       _scrollController.position.maxScrollExtent);
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.keyboard_arrow_down,
                   size: 20,
                 ),
-                label: Text("맨끝으로")),
+                label: const Text("맨끝으로")),
             TextButton.icon(
                 style: ButtonStyle(
                     foregroundColor:
                     MaterialStateProperty.all(Colors.black)),
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.sms_outlined,
                   size: 20,
                 ),
-                label: Text("23")),
+                label: const Text("23")),
             TextButton.icon(
                 style: ButtonStyle(
                     foregroundColor:
                     MaterialStateProperty.all(Colors.black)),
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                   size: 20,
                 ),
-                label: Text("이전")),
+                label: const Text("이전")),
             Directionality(
               textDirection: TextDirection.rtl,
               child: TextButton.icon(
@@ -202,11 +201,11 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                       foregroundColor: MaterialStateProperty.all(
                           Colors.black)),
                   onPressed: () {},
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_back,
                     size: 20,
                   ),
-                  label: Text("다음")),
+                  label: const Text("다음")),
             ),
           ],
         )
