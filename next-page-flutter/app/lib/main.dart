@@ -1,3 +1,4 @@
+import 'package:app/home-screen.dart';
 import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
               systemOverlayStyle: SystemUiOverlayStyle.dark
           )
       ),
-      home: SignInScreen(),
+      home: HomeScreen(),
       routes: {
         "sign-in": (context) => SignInScreen(),
       }
