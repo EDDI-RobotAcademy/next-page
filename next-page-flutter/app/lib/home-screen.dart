@@ -1,6 +1,8 @@
-import 'package:basic/novel/novel-detail-screen.dart';
-import 'package:basic/novel/scroll-novel-viewer-screen.dart';
+
+import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'member/screens/sign_up_screen.dart';
+import 'novel/scroll-novel-viewer-screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -28,10 +30,19 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text("리스트뷰 방식 읽기")),
           TextButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NovelDetailScreen()));
+               // Navigator.push(context, MaterialPageRoute(builder: (context) => NovelDetailScreen()));
               },
               child: Text("소설 상세보기 페이지")),
-
+          TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
+              },
+              child: Text("로그인 페이지")),
+          TextButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+              },
+              child: Text("회원가입 페이지")),
         ],
       ),
     );
