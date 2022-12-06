@@ -33,4 +33,9 @@ public class MemberProfile {
     }
 
 
+    public void setMember(NextPageMember member) {
+        this.member = member;
+    }
+
+
 }
