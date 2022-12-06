@@ -1,6 +1,7 @@
 package kr.eddi.demo.point;
 
 
+import kr.eddi.demo.member.entity.member.NextPageMember;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.Comment;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.time.LocalDate;
 
 @Entity
@@ -29,16 +31,24 @@ public class PointPayment {
     @CreatedDate
     private LocalDate payDate;
 
-    // 회원 entity와 매핑 예정
-    // OneToMany(mappedBy = "order_id", fetch = FetchTye.Lazy)
-    // private Member member_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private NextPageMember member;
+
+
+    public PointPayment(NextPageMember member, Long payment_id, Long payAmount, Long chargedPoint){
+        this.member = member;
+        this.payment_id = payment_id;
+        this.payAmount = payAmount;
+        this.chargedPoint = chargedPoint;
+    }
+
 
     /**
      * 매핑된 회원 entity의 list에 해당 주문 내역 entity를 추가합니다.
      */
     public void updateToMember() {
-        // 아래에 해당하는 메소드를 회원 entity에도 추가해야함
-        // this.member_id.updatePointPaymentList(this);
+        this.member.updatePointPaymentList(this);
     }
 
 
