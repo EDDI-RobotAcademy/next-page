@@ -10,4 +10,5 @@ public interface MemberService {
     Boolean signUp(MemberRegisterRequest request);
 
 
+
 }
