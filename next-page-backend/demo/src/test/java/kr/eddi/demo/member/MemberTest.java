@@ -21,12 +21,18 @@ public class MemberTest {
 
 
     @Test
+    void nicknameValidationTest() { // 닉네임 Test
+        boolean Success = service.nickNameValidation("test");
+        System.out.println("Success: " + Success);
+    }
+
+
+    @Test
     void signUpTest() { // 회원가입 Test
         MemberRegisterRequest request = new MemberRegisterRequest("test@test.com", "00000", "test");
         boolean Success = service.signUp(request);
         System.out.println("Success: " + Success);
     }
-
 
 
 

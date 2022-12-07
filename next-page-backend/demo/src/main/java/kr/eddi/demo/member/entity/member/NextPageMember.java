@@ -27,6 +27,10 @@ public class NextPageMember {
     @Column(nullable = false)
     private String email;
 
+    @Getter
+    @Column(nullable = false)
+    private String nickname;
+
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private MemberProfile profile;
 
