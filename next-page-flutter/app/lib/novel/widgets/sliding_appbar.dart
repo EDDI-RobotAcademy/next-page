@@ -18,7 +18,7 @@ class SlidingAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     visible ? controller.reverse() : controller.forward();
     return SlideTransition(
-      position: Tween<Offset>(begin: Offset.zero, end: Offset(0, -1)).animate(
+      position: Tween<Offset>(begin: Offset.zero, end: const Offset(0, -1)).animate(
         CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn),
       ),
       child: child,
