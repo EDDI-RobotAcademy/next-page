@@ -42,6 +42,7 @@ public class NextPageMember {
     public NextPageMember(String email, MemberProfile profile) {
         this.email = email;
         this.profile = profile;
+        this.point = Long.valueOf(0);
         profile.setMember(this);
     }
 
