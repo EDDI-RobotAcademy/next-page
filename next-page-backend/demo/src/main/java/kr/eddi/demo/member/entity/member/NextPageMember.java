@@ -27,6 +27,10 @@ public class NextPageMember {
     private String email;
 
     @Getter
+    @Column(nullable = false)
+    private String nickname;
+
+    @Getter
     @Column
     private Long point;
 
@@ -81,5 +85,6 @@ public class NextPageMember {
     public void addChargedPoint(Long chargedPoint) {
         this.point += chargedPoint;
     }
+
 
 }
