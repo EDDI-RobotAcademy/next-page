@@ -1,7 +1,7 @@
 package kr.eddi.demo.member;
 
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
-import kr.eddi.demo.member.entity.service.member.request.MemberRegisterRequest;
+import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,24 +15,19 @@ public class MemberTest {
 
     @Test
     void checkEmail() { // 이메일 Test
-        boolean Success = service.emailValidation("test@test.com");
+        boolean Success = service.emailValidation("test1@test.com");
         System.out.println("Success: " + Success);
     }
 
-
     @Test
-    void nicknameValidationTest() { // 닉네임 Test
-        boolean Success = service.nickNameValidation("test");
-        System.out.println("Success: " + Success);
-    }
-
-
-    @Test
-    void signUpTest() { // 회원가입 Test
-        MemberRegisterRequest request = new MemberRegisterRequest("test@test.com", "00000", "test");
+    public void SignUpTest() { // 회원가입 Test
+        MemberSignUpRequest request = new MemberSignUpRequest("test@test.com","00000","test");
         boolean Success = service.signUp(request);
-        System.out.println("Success: " + Success);
+
+        System.out.println(Success);
     }
+
+
 
 
 
