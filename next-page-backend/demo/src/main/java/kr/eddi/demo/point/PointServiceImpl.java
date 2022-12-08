@@ -6,6 +6,7 @@ import kr.eddi.demo.point.request.PointPaymentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 
@@ -25,6 +26,7 @@ public class PointServiceImpl implements PointService{
      * @return 성공 여부
      */
     @Override
+    @Transactional
     public Boolean paymentAndCharge(PointPaymentRequest request) {
 
         Optional<NextPageMember> maybeMember = memberRepository.findById(request.getMember_id());
