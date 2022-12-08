@@ -31,4 +31,5 @@ public class MemberProfile {
         this.memberInfo = memberInfo;
     }
 
+
 }
