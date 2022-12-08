@@ -27,7 +27,6 @@ public class MemberProfile {
         this.nickName = nickName;
 
     }
-
     public void modifyNickname(String nickName) {
         this.nickName = nickName;
     }
