@@ -45,7 +45,6 @@ public class NextPageMember {
         profile.setMemberInfo(this);
     }
 
-
     public boolean isRightPassword(String plainToCheck) {
         final Optional<Authentication> maybeBasicAuth = findBasicAuthentication();
 
@@ -56,7 +55,6 @@ public class NextPageMember {
 
         return false;
     }
-
 
     private Optional<Authentication> findBasicAuthentication() {
         return authentications

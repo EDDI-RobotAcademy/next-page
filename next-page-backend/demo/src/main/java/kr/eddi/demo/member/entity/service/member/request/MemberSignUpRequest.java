@@ -26,4 +26,9 @@ public class MemberSignUpRequest {
         return new NextPageMember(email, MemberProfile.of(nickName));
     }
 
+
+
+
+
+
 }

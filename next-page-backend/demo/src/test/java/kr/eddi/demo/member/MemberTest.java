@@ -19,6 +19,14 @@ public class MemberTest {
         System.out.println("Success: " + Success);
     }
 
+
+    @Test
+    public void nicknameCheck(){
+        boolean Success = service.nickNameValidation("test");
+        System.out.println("Success: " + Success);
+    }
+
+
     @Test
     public void SignUpTest() { // 회원가입 Test
         MemberSignUpRequest request = new MemberSignUpRequest("test@test.com","00000","test");
@@ -26,7 +34,6 @@ public class MemberTest {
 
         System.out.println(Success);
     }
-
 
 
 

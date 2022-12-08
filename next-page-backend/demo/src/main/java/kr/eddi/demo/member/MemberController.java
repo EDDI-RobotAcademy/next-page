@@ -26,6 +26,15 @@ public class MemberController {
     }
 
 
+    @PostMapping ("/ckeck-nickname/{nickName}")
+    public Boolean nickNameValidation(@PathVariable("nickName") String nickName) {
+        log.info("nickName: " + nickName);
+
+        return service.nickNameValidation(nickName);
+    }
+
+
+
 
     @PostMapping("/sign-up") // 회원가입
     public Boolean signUp(@RequestBody MemberSignUpForm form){
