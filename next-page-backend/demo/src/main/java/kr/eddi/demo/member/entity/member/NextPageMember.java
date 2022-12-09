@@ -16,7 +16,6 @@ import java.util.*;
 
 public class NextPageMember {
 
-
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,16 +25,12 @@ public class NextPageMember {
     @Column(nullable = false)
     private String email;
 
-    @Getter
-    @Column(nullable = false)
-    private String nickname;
+    @OneToOne(mappedBy = "memberInfo", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private MemberProfile profile;
 
     @Getter
     @Column
     private Long point;
-
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private MemberProfile profile;
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private Set<Authentication> authentications = new HashSet<>();
@@ -47,9 +42,8 @@ public class NextPageMember {
         this.email = email;
         this.profile = profile;
         this.point = Long.valueOf(0);
-        profile.setMember(this);
+        profile.setMemberInfo(this);
     }
-
 
     public boolean isRightPassword(String plainToCheck) {
         final Optional<Authentication> maybeBasicAuth = findBasicAuthentication();
@@ -62,7 +56,6 @@ public class NextPageMember {
         return false;
     }
 
-
     private Optional<Authentication> findBasicAuthentication() {
         return authentications
                 .stream()
@@ -70,8 +63,10 @@ public class NextPageMember {
                 .findFirst();
     }
 
+
     /**
      * 회원 정보에 결제 내역을 업데이트 합니다.
+     *
      * @param pointPayment 결제 내역 정보
      */
     public void updatePointPaymentList(PointPayment pointPayment) {
@@ -80,11 +75,10 @@ public class NextPageMember {
 
     /**
      * 기존 포인트에 새로 충전한 포인트를 추가합니다.
+     *
      * @param chargedPoint 충전될 포인트
      */
     public void addChargedPoint(Long chargedPoint) {
         this.point += chargedPoint;
     }
-
-
 }

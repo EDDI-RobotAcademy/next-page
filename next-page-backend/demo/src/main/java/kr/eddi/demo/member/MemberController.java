@@ -3,7 +3,7 @@ package kr.eddi.demo.member;
 
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
 import kr.eddi.demo.member.form.MemberLoginForm;
-import kr.eddi.demo.member.form.MemberRegisterForm;
+import kr.eddi.demo.member.form.MemberSignUpForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/member")
+@CrossOrigin(origins = "http://localhost:8080", allowedHeaders = "*")
 
 public class MemberController {
 
@@ -25,26 +26,21 @@ public class MemberController {
     }
 
 
-    @PostMapping("/check-nickname/{nickname}") // 닉네임 체크
-    public Boolean nicknameValidation(@PathVariable("nickname") String nickname) {
-        log.info("nicknameCheck(): " + nickname);
+    @PostMapping ("/ckeck-nickname/{nickName}")
+    public Boolean nickNameValidation(@PathVariable("nickName") String nickName) {
+        log.info("nickName: " + nickName);
 
-        return service.nickNameValidation(nickname);
+        return service.nickNameValidation(nickName);
     }
+
+
 
 
     @PostMapping("/sign-up") // 회원가입
-    public Boolean signUp(@RequestBody MemberRegisterForm form){
+    public Boolean signUp(@RequestBody MemberSignUpForm form){
         log.info("signup: " + form);
 
-        return service.signUp(form.toMemberRegisterRequest());
-    }
-
-    @PostMapping("/log-in") // 로그인
-    public String signIn(@RequestBody MemberLoginForm form) {
-        log.info("signin:" + form);
-
-        return service.signIn(form.toMemberLoginRequest());
+        return service.signUp(form.toMemberSignUpRequest());
     }
 
 
