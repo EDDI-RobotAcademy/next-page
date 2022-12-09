@@ -1,7 +1,7 @@
 import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'member/screens/sign_up_screen.dart';
-import 'novel/novel_detail_screen.dart';
+import 'novel/screens/novel_detail_screen.dart';
 
 
 class HomeScreen extends StatefulWidget {
