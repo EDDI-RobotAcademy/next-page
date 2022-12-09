@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
-import '../app_theme.dart';
-import '../model/tmp_novel_model.dart';
-import 'widgets/sliding_appbar.dart';
+import '../../app_theme.dart';
+import '../../comment/comment_list_screen.dart';
+import '../../model/tmp_novel_model.dart';
+import 'novel_detail_screen.dart';
+import '../widgets/sliding_appbar.dart';
 
 class ScrollNovelViewerScreen extends StatefulWidget {
-  const ScrollNovelViewerScreen({Key? key}) : super(key: key);
+  final String appBarTitle;
+  final int episode;
+
+  const ScrollNovelViewerScreen(
+      {Key? key, required this.appBarTitle, required this.episode})
+      : super(key: key);
 
   @override
   State<ScrollNovelViewerScreen> createState() =>
@@ -31,15 +38,15 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     }));
     super.initState();
     //애니메이션 사용을 위해서는 initState에서 초기설정 필요
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 400));
     _scrollController.addListener(() {
-      scrollListener();
+      _scrollListener();
       print('offset = ${_scrollController.offset}');
     });
   }
 
-  scrollListener() async {
+  _scrollListener() async {
     if (_scrollController.offset ==
         _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
@@ -77,7 +84,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
       backgroundColor: (visible) ? AppTheme.viewerAppbar : Colors.transparent,
       elevation: 0.0,
       title: Text(
-        "${TmpNovelModel.novelList[0].episode}화",
+        '${widget.appBarTitle} ${widget.episode}화',
         style: const TextStyle(color: Colors.black),
       ),
       leading: IconButton(
@@ -86,7 +93,11 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
           color: Colors.black,
         ),
         onPressed: () {
-          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const NovelDetailScreen()),
+                  (route) => false);
         },
       ),
       actions: [
@@ -100,7 +111,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     );
   }
 
-  Widget _buildViewerBody(){
+  Widget _buildViewerBody() {
     return GestureDetector(
       onTapDown: (TapDownDetails td) {
         setState(() {
@@ -140,9 +151,8 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     );
   }
 
-  BottomAppBar _buildViewerBottomAppbar(){
+  BottomAppBar _buildViewerBottomAppbar() {
     return BottomAppBar(
-
         color: AppTheme.viewerAppbar,
         child: visible
             ? Row(
@@ -153,8 +163,8 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                     foregroundColor:
                     MaterialStateProperty.all(Colors.black)),
                 onPressed: () {
-                  _scrollController.jumpTo(
-                      _scrollController.position.minScrollExtent);
+                  _scrollController
+                      .jumpTo(_scrollController.position.minScrollExtent);
                 },
                 icon: const Icon(
                   Icons.keyboard_arrow_up,
@@ -166,8 +176,8 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                     foregroundColor:
                     MaterialStateProperty.all(Colors.black)),
                 onPressed: () {
-                  _scrollController.jumpTo(
-                      _scrollController.position.maxScrollExtent);
+                  _scrollController
+                      .jumpTo(_scrollController.position.maxScrollExtent);
                 },
                 icon: const Icon(
                   Icons.keyboard_arrow_down,
@@ -178,7 +188,17 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                 style: ButtonStyle(
                     foregroundColor:
                     MaterialStateProperty.all(Colors.black)),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CommentListScreen(
+                          appBarTitle:
+                          TmpNovelModel.novelList[0].title,
+                          fromWhere: widget.episode,
+                        )),
+                  );
+                },
                 icon: const Icon(
                   Icons.sms_outlined,
                   size: 20,
@@ -198,8 +218,8 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
               textDirection: TextDirection.rtl,
               child: TextButton.icon(
                   style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all(
-                          Colors.black)),
+                      foregroundColor:
+                      MaterialStateProperty.all(Colors.black)),
                   onPressed: () {},
                   icon: const Icon(
                     Icons.arrow_back,
@@ -209,7 +229,6 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
             ),
           ],
         )
-            : Container()
-    );
+            : Container());
   }
 }
