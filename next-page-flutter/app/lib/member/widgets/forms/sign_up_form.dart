@@ -82,10 +82,10 @@ class SignUpFormState extends State <SignUpForm>{
                             ElevatedButton(
                               onPressed: () async {
                                 if(emailController.text.isEmpty) {
-                                  showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '내용을 입력해주세요!'));
+                                  _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '내용을 입력해주세요!'));
                                 } else {
                                 // 이메일 중복 확인 api
-                                showDupCheckResult(context, emailPass, '이메일'); }
+                                _showDupCheckResult(context, emailPass, '이메일'); }
                                 },
                               child: Text("중복 확인"),)
                           ],
@@ -98,10 +98,10 @@ class SignUpFormState extends State <SignUpForm>{
                           ElevatedButton(
                             onPressed: () {
                               if(nicknameController.text.isEmpty) {
-                                showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '내용을 입력해주세요!'));
+                                _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '내용을 입력해주세요!'));
                               } else {
                               /* 닉네임 중복확인 api */
-                              showDupCheckResult(context, nicknamePass, '닉네임');}},
+                              _showDupCheckResult(context, nicknamePass, '닉네임');}},
                             child: Text("중복 확인"),)
                         ],
                       ),
@@ -119,11 +119,11 @@ class SignUpFormState extends State <SignUpForm>{
                             if(_formKey.currentState!.validate()) {
                               if(emailPass == true && nicknamePass == true) {
                                 // signUpSuccess = 회원가입 요청 api
-                                showSignUpResult(context);
+                                _showSignUpResult(context);
                               } else {
-                                  showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '이메일 혹은 닉네임 중복 여부를 체크해주세요!'));}
+                                  _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '이메일 혹은 닉네임 중복 여부를 체크해주세요!'));}
                             } else {
-                              showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '모두 유효한 값이 입력 되었는지 확인해주세요!'));
+                              _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '모두 유효한 값이 입력 되었는지 확인해주세요!'));
                             }
                           },
                           child: Text("회원 가입", style: smallTextStyleWhite)),
@@ -135,22 +135,22 @@ class SignUpFormState extends State <SignUpForm>{
     );
   }
   // 회원가입 결과 알림창 보여주기 메서드
-  void showSignUpResult(BuildContext context) {
+  void _showSignUpResult(BuildContext context) {
     if(signUpSuccess == true) {
-      showAlertDialog(context, CustomResultAndPushAlert(title: '알림', alertMsg: '회원 가입을 축하합니다! \n 로그인 페이지로 이동합니다.', route: 'sign-in'));
+      _showAlertDialog(context, CustomResultAndPushAlert(title: '알림', alertMsg: '회원 가입을 축하합니다! \n 로그인 페이지로 이동합니다.', route: 'sign-in'));
     } else {
-      showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '통신이 원활하지 않습니다. \n 다시 시도해주세요.'));
+      _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '통신이 원활하지 않습니다. \n 다시 시도해주세요.'));
     }
   }
   // 중복검사 결과 알림창 보여주기 메서드
-  void showDupCheckResult(BuildContext context, bool result, String type) {
+  void _showDupCheckResult(BuildContext context, bool result, String type) {
     if(result == true) {
-      showAlertDialog(context, CustomResultAlert(title: '중복 확인', alertMsg: '사용 가능한 $type 입니다.'));
+      _showAlertDialog(context, CustomResultAlert(title: '중복 확인', alertMsg: '사용 가능한 $type 입니다.'));
     } else {
-      showAlertDialog(context, CustomResultAlert(title: '중복 확인', alertMsg: '중복되는 $type 입니다.'));}
+      _showAlertDialog(context, CustomResultAlert(title: '중복 확인', alertMsg: '중복되는 $type 입니다.'));}
   }
   // 알림창 보여주기 메서드
-  void showAlertDialog(BuildContext context, Widget alert) {
+  void _showAlertDialog(BuildContext context, Widget alert) {
     showDialog(
         context: context,
         builder: (BuildContext context) => alert);
