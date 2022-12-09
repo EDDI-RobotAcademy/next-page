@@ -26,13 +26,12 @@ public class MemberController {
     }
 
 
-    @PostMapping ("/ckeck-nickname/{nickName}")
+    @PostMapping ("/ckeck-nickname/{nickName}") //닉네임 체크
     public Boolean nickNameValidation(@PathVariable("nickName") String nickName) {
-        log.info("nickName: " + nickName);
+        log.info("nickName :" + nickName);
 
         return service.nickNameValidation(nickName);
     }
-
 
 
 
