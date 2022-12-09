@@ -45,8 +45,8 @@ public class MemberServiceImpl implements MemberService {
 
 
     @Override
-    public Boolean nickNameValidation(String nickName) {
-        Optional<NextPageMember> MemberNickname = memberRepository.findByNickname(nickName);
+    public Boolean nickNameValidation (String nickName) {
+        Optional<NextPageMember> MemberNickname = memberRepository.findByNickName(nickName);
 
         if (MemberNickname.isPresent()) {
             return false;

@@ -9,7 +9,7 @@ public interface MemberService {
     Boolean emailValidation(String email);
 
 
-    Boolean nickNameValidation(String nickName);
+    Boolean nickNameValidation (String nickName);
 
     Boolean signUp(MemberSignUpRequest signUpRequest);
 
