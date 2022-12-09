@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../utility/check_validate.dart';
+import '../forms/sign_up_form.dart';
 
 class EmailTextField extends StatefulWidget {
   const EmailTextField({Key? key, required this.controller}) : super(key: key);
@@ -16,6 +17,8 @@ class _EmailTextFieldState extends State<EmailTextField> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+    SignUpFormState? form = context.findAncestorStateOfType<SignUpFormState>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,10 +28,10 @@ class _EmailTextFieldState extends State<EmailTextField> {
           controller: widget.controller,
           validator: (value) => CheckValidate().validateEmail(value!),
           autovalidateMode: AutovalidateMode.onUserInteraction,
+          onChanged: (text) { form?.emailPass = false; },
           decoration: InputDecoration(
           prefixIcon: Icon(Icons.email),
           hintText: "Enter Email",
-            // border를 추가할지 말지 고민중.
           )
         )
       ],
