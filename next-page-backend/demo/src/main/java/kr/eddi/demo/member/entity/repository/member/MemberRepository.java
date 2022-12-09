@@ -12,7 +12,7 @@ public interface MemberRepository extends JpaRepository<NextPageMember, Long> {
     Optional<NextPageMember> findByEmail(String email);
 
     @Query("select m from NextPageMember m join fetch m.authentications where m.email = :email")
-    Optional<NextPageMember> findByNickname(String email);
+    Optional<NextPageMember> findByNickName (String email);
 
 
 
