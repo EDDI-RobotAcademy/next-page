@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../model/tmp_novel_episode.dart';
 import '../../model/tmp_novel_model.dart';
-import '../scroll_novel_viewer_screen.dart';
+import '../screens/scroll_novel_viewer_screen.dart';
 
 class EpisodeList extends StatefulWidget {
   final String thumbnail;
@@ -42,7 +42,10 @@ class _EpisodeListState extends State<EpisodeList> {
           onTap: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ScrollNovelViewerScreen()),
+              MaterialPageRoute(builder: (context) => ScrollNovelViewerScreen(
+                  appBarTitle: TmpNovelModel.novelList[0].title,
+                  episode: episode.episode
+              )),
             );
           },
           child: Row(
