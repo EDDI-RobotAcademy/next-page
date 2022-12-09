@@ -9,5 +9,6 @@ class AppTheme{
   static const Color lightBlue = Color(0xFF00B6F0);
   static const Color natureWhite = Color(0xFFFFFFFF);
   static const Color viewerAppbar = Color(0xFFE4E4E4);
+  static const Color  pointColor = Color(0xFF6699FF);
 
 }
