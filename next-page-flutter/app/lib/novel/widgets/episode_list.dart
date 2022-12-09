@@ -42,7 +42,10 @@ class _EpisodeListState extends State<EpisodeList> {
           onTap: (){
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ScrollNovelViewerScreen()),
+              MaterialPageRoute(builder: (context) => ScrollNovelViewerScreen(
+                  appBarTitle: TmpNovelModel.novelList[0].title,
+                  episode: episode.episode
+              )),
             );
           },
           child: Row(
