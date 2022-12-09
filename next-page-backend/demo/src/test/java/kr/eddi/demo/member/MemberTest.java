@@ -21,7 +21,7 @@ public class MemberTest {
 
 
     @Test
-    public void nicknameCheck(){
+    public void nickNameCheck(){ //닉네임 Test
         boolean Success = service.nickNameValidation("test");
         System.out.println("Success: " + Success);
     }
