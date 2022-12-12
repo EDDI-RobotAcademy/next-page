@@ -1,7 +1,7 @@
-import 'package:app/home_screen.dart';
 import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'custom_bottom_appbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
               systemOverlayStyle: SystemUiOverlayStyle.dark
           )
       ),
-      home: HomeScreen(),
+      home: CustomBottomAppbar(),
       routes: {
         "sign-in": (context) => SignInScreen(),
       }
