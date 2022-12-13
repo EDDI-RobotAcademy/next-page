@@ -69,7 +69,7 @@ class SignUpFormState extends State <SignUpForm>{
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Sign Up", style: largeTextStyleMain),
+                  const Text("회원 가입", style: largeTextStyleMain),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
