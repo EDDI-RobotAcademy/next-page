@@ -2,7 +2,7 @@ package kr.eddi.demo.member;
 
 
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
-import kr.eddi.demo.member.form.MemberLoginForm;
+import kr.eddi.demo.member.form.MemberSignInForm;
 import kr.eddi.demo.member.form.MemberSignUpForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class MemberController {
     @Autowired
     MemberServiceImpl service;
 
-    @GetMapping("/check-email/{email}") //이메일 체크
+    @PostMapping("/check-email/{email}") //이메일 체크
     public Boolean emailValidation(@PathVariable("email") String email) {
         log.info("EmailCheck()" + email);
 
@@ -26,7 +26,7 @@ public class MemberController {
     }
 
 
-    @PostMapping ("/ckeck-nickname/{nickName}") //닉네임 체크
+    @PostMapping ("/check-nickname/{nickName}") //닉네임 체크
     public Boolean nickNameValidation(@PathVariable("nickName") String nickName) {
         log.info("nickName :" + nickName);
 
@@ -42,6 +42,12 @@ public class MemberController {
         return service.signUp(form.toMemberSignUpRequest());
     }
 
+    @PostMapping("/sign-in") // 로그인
+    public String SignIn(@RequestBody MemberSignInForm Form) {
+        log.info("SignIn: " + Form);
+
+        return service.signIn(Form.toMemberSignInRequest());
+    }
 
 
 
