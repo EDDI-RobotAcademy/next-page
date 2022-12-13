@@ -1,6 +1,7 @@
 package kr.eddi.demo.member;
 
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
+import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,20 @@ public class MemberTest {
 
     @Test
     public void SignUpTest() { // 회원가입 Test
-        MemberSignUpRequest request = new MemberSignUpRequest("test@test.com","00000","test");
+        MemberSignUpRequest request = new MemberSignUpRequest("test1@test.com","00000","test");
         boolean Success = service.signUp(request);
 
         System.out.println(Success);
     }
 
 
+    @Test
+    public void SignInTest() { // 로그인 Test
+        MemberSignInRequest request = new MemberSignInRequest("test1@test.com", "00000");
+        String token = service.signIn(request);
+
+        System.out.println(token);
+    }
 
 
 
