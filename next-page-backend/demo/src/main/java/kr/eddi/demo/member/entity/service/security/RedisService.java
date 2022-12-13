@@ -8,5 +8,4 @@ public interface RedisService {
     public Long getValueByKey(String token);
     public void deleteByKey(String token);
 
-
 }
