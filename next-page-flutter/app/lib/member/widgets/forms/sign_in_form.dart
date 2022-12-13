@@ -60,7 +60,7 @@ class _SignInFormState extends State <SignInForm>{
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Login", style: largeTextStyleMain),
+                  const Text("로그인", style: largeTextStyleMain),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
