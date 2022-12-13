@@ -43,7 +43,7 @@ class SignUpFormState extends State <SignUpForm>{
       password = passwordController.text;
     });
     nicknameController.addListener(() {
-      nickname = passwordController.text;
+      nickname = nicknameController.text;
     });
 
     super.initState();
