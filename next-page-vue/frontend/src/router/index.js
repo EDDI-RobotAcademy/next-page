@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import PointChargeView from "@/views/Payment/PointChargeView";
+import PaymentSuccessView from "@/views/Payment/PaymentSuccessView";
 
 Vue.use(VueRouter)
 
@@ -10,14 +12,28 @@ const routes = [
     name: 'home',
     component: HomeView
   },
+
+
+
+    // 결제
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/point',
+    name: 'PointCharge',
+    component: PointChargeView
+  },
+  {
+    path: '/payment-success',
+    name: 'PaymentSuccess',
+    component: PaymentSuccessView,
+    /*components: {
+      default: PaymentSuccessView
+    },
+    props: {
+      paymentData: true
+    }*/
   }
+
+
 ]
 
 const router = new VueRouter({
