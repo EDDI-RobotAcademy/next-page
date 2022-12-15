@@ -2,6 +2,7 @@ package kr.eddi.demo.novel;
 
 
 import kr.eddi.demo.novel.entity.NovelInformation;
+import kr.eddi.demo.novel.form.NovelEpisodeRegisterForm;
 import kr.eddi.demo.novel.form.NovelInformationForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,10 @@ public class NovelController {
         return novelService.informationRegister(imgList, form.toRequest());
     }
 
-    @GetMapping("/information-list")
-    public List<NovelInformation> informationList() {
-        return null;
+
+    @PostMapping("/episode-register")
+    public Boolean episodeRegister(@RequestBody NovelEpisodeRegisterForm form) {
+        return novelService.episodeRegister(form.toRequest());
     }
 
 }

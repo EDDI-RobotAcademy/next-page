@@ -5,10 +5,13 @@ import kr.eddi.demo.member.entity.member.NextPageMember;
 import kr.eddi.demo.member.entity.repository.member.MemberRepository;
 import kr.eddi.demo.novel.entity.NovelCategory;
 import kr.eddi.demo.novel.entity.NovelCoverImage;
+import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.repository.CoverImageRepository;
 import kr.eddi.demo.novel.repository.NovelCategoryRepository;
+import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import kr.eddi.demo.novel.repository.NovelInformationRepository;
+import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,9 @@ public class NovelServiceImpl implements NovelService {
 
     @Autowired
     NovelCategoryRepository categoryRepository;
+
+    @Autowired
+    NovelEpisodeRepository episodeRepository;
 
     @Override
     @Transactional
@@ -126,9 +132,19 @@ public class NovelServiceImpl implements NovelService {
         categoryRepository.save(category);
     }
 
-    @Override
-    public List<NovelInformation> getManagingNovelInfoList(Long memberId) {
 
-        return null;
+    @Override
+    @Transactional
+    public Boolean episodeRegister(NovelEpisodeRegisterRequest request) {
+        Optional<NovelInformation> maybeInformation = informationRepository.findById(1L);
+        if(maybeInformation.isEmpty()) {
+            return false;
+        }
+        NovelInformation information = maybeInformation.get();
+        NovelEpisode episode = request.toEntity(information);
+        episode.updateToInformation();
+        episodeRepository.save(episode);
+        return true;
     }
+
 }

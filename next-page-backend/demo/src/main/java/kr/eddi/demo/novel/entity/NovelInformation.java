@@ -80,4 +80,7 @@ public class NovelInformation {
         this.coverImage = coverImage;
     }
 
+    public void updateEpisode(NovelEpisode episode) {
+        this.episodeList.add(episode);
+    }
 }

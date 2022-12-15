@@ -1,6 +1,7 @@
 package kr.eddi.demo.novel;
 
 import kr.eddi.demo.novel.entity.NovelInformation;
+import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,5 @@ public interface NovelService {
 
     void createCategory(Long id, String name);
 
-    List<NovelInformation> getManagingNovelInfoList(Long memberId);
-
-   /*  Boolean episodeRegister(); */
+    Boolean episodeRegister(NovelEpisodeRegisterRequest request);
 }
