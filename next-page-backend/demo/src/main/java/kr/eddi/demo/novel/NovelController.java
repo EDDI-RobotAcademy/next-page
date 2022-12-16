@@ -1,9 +1,8 @@
 package kr.eddi.demo.novel;
 
 
-import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.form.NovelEpisodeRegisterForm;
-import kr.eddi.demo.novel.form.NovelInformationForm;
+import kr.eddi.demo.novel.form.NovelInformationRegisterForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,7 +23,7 @@ public class NovelController {
 
     @PostMapping(value = "/information-register",  consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public Boolean informationRegister(@RequestPart(value = "fileList") List<MultipartFile> imgList,
-                                       @RequestPart(value = "info") NovelInformationForm form) {
+                                       @RequestPart(value = "info") NovelInformationRegisterForm form) {
 
         log.info("information form: " + form);
         return novelService.informationRegister(imgList, form.toRequest());

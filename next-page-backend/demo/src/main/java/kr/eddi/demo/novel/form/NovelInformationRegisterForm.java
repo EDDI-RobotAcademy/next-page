@@ -1,11 +1,11 @@
 package kr.eddi.demo.novel.form;
 
 
-import kr.eddi.demo.novel.request.NovelInformationRequest;
+import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
 import lombok.Data;
 
 @Data
-public class NovelInformationForm {
+public class NovelInformationRegisterForm {
 
     private Long member_id;
     private String category;
@@ -16,8 +16,8 @@ public class NovelInformationForm {
     private Boolean openToPublic;
     private Long purchasePoint;
 
-    public NovelInformationRequest toRequest() {
-        return new NovelInformationRequest(member_id, category, title, introduction, publisher, author, openToPublic, purchasePoint);
+    public NovelInformationRegisterRequest toRequest() {
+        return new NovelInformationRegisterRequest(member_id, category, title, introduction, publisher, author, openToPublic, purchasePoint);
     }
 
 }
