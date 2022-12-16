@@ -50,6 +50,9 @@ public class NovelEpisode {
         this.information = information;
     }
 
+    /**
+     * 맵핑된 소설 정보 엔티티에 해당 에피소드를 업데이트 합니다.
+     */
     public void updateToInformation() {
         this.information.updateEpisode(this);
     }
