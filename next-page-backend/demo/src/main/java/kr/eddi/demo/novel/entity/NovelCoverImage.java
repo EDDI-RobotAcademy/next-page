@@ -32,6 +32,9 @@ public class NovelCoverImage {
         this.information = information;
     }
 
+    /**
+     * 맵핑된 소설 정보 엔티티에 표지 정보를 업데이트 합니다.
+     */
     public void updateToInformation() {
         this.information.updateCoverImage(this);
     }

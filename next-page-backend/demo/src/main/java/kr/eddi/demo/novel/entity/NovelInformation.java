@@ -66,20 +66,37 @@ public class NovelInformation {
         this.purchasePoint = purchasePoint;
     }
 
+    /**
+     * 해당 소설 정보를 등록한 회원 정보에 해당 엔티티를 업데이트 합니다.
+     * @param member
+     */
     public void updateToMember(NextPageMember member) {
         this.member = member;
         this.member.updateNovelInformationList(this);
     }
+
+    /**
+     * 맵핑된 카테고리에 엔티티를 업데이트 합니다.
+     * @param category
+     */
 
     public void updateToCategory(NovelCategory category) {
         this.category = category;
         this.category.updateNovelInformation(this);
     }
 
+    /**
+     * 표지 이미지 이름 정보 엔티티를 매핑합니다.
+     * @param coverImage
+     */
     public void updateCoverImage(NovelCoverImage coverImage) {
         this.coverImage = coverImage;
     }
 
+    /**
+     * 에피소드 리스트에 에피소드 엔티티를 추가합니다.
+     * @param episode
+     */
     public void updateEpisode(NovelEpisode episode) {
         this.episodeList.add(episode);
     }

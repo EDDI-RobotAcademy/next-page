@@ -27,6 +27,10 @@ public class NovelCategory {
         this.categoryName = categoryName;
     }
 
+    /**
+     * 카테고리에 해당하는 소설 정보를 소설 정보 리스트에 추가합니다.
+     * @param novelInformation
+     */
     public void updateNovelInformation(NovelInformation novelInformation) {
         this.informationList.add(novelInformation);
     }
