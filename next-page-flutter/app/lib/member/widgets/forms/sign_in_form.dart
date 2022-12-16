@@ -1,14 +1,18 @@
 
 import 'package:app/member/api/SpringMemberApi.dart';
-import 'package:app/member/utility/custom_text_style.dart';
-import 'package:app/member/widgets/custom_result_alert.dart';
-import 'package:app/member/widgets/text_fields/email_text_field.dart';
-import 'package:app/member/widgets/text_fields/password_text_field.dart';
+import 'package:app/member/api/requests.dart';
+import 'package:app/member/utility/user_data_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
+import '../../api/responses.dart';
+import '../../utility/custom_text_style.dart';
 import '../buttons/navigation_btn.dart';
+import '../alerts/custom_result_alert.dart';
+import '../text_fields/email_text_field.dart';
+import '../text_fields/password_text_field.dart';
 
 
 class SignInForm extends StatefulWidget {
@@ -23,7 +27,8 @@ class _SignInFormState extends State <SignInForm>{
 
   late String email;
   late String password;
-  bool testResult = false; //로그인 버튼 테스트용 변수
+
+  late UserDataProvider _userDataProvider;
 
   late TextEditingController emailController = TextEditingController();
   late TextEditingController passwordController = TextEditingController();
@@ -37,6 +42,7 @@ class _SignInFormState extends State <SignInForm>{
     passwordController.addListener(() {
       password = passwordController.text;
     });
+    _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
 
     super.initState();
   }
@@ -51,6 +57,7 @@ class _SignInFormState extends State <SignInForm>{
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    debugPrint("loginState: " + _userDataProvider.loginState.toString());
     return Form(
       key: _formKey,
       child: Container(
@@ -76,15 +83,17 @@ class _SignInFormState extends State <SignInForm>{
                                 minimumSize: Size(size.width * 0.4, size.height * 0.05)),
                             onPressed: () async {
                               if(_formKey.currentState!.validate()) {
-                                // 로그인 요청 api 대신 임의값 넣음
-                                signInResponse = await tmpLoginTest(testResult);
+                                signInResponse = await SpringMemberApi().signIn(SignInRequest(email, password));
                                 if(signInResponse.result == true) {
+                                  // spring서버가 응답한 token값을 provider class의 userToken에 저장
+                                  _userDataProvider.setUserToken(signInResponse.userToken.toString());
+                                  debugPrint("provider userToken: " + _userDataProvider.userToken.toString());
+                                  _userDataProvider.isLogin();
+                                  debugPrint("loginState: " + _userDataProvider.loginState.toString());
                                   // 이전 페이지로 이동하는 기능 추가 예정
                                   showResultDialog(context, "알림", "로그인 성공!");
-                                  testResult = false;
                                 } else {
-                                  showResultDialog(context, "알림", "존재하지 않는 계정 혹은 비밀번호가 틀렸습니다.");
-                                  testResult = true;
+                                  showResultDialog(context, "알림", signInResponse.userToken.toString());
                                 }
                               } else {
                                 showResultDialog(context, "알림", "유효한 값을 모두 입력해주세요!");
@@ -111,10 +120,5 @@ class _SignInFormState extends State <SignInForm>{
         context: context,
         builder: (BuildContext context) =>
             CustomResultAlert(title: title, alertMsg: alertMsg));
-  }
-  // 임의의 response값 넣는 메소드
-  Future<SignInResponse> tmpLoginTest(bool success) async {
-    Future.delayed(Duration(milliseconds: 500));
-    return SignInResponse(success);
   }
 }
