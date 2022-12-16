@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PointChargeView from "@/views/Payment/PointChargeView";
 import PaymentSuccessView from "@/views/Payment/PaymentSuccessView";
+import NovelInformationRegisterView from "@/views/Upload/NovelInformationRegisterView";
 
 Vue.use(VueRouter)
 
@@ -31,7 +32,13 @@ const routes = [
     props: {
       paymentData: true
     }*/
-  }
+  },
+
+  {
+    path: '/information-register',
+    name: 'NovelInformationRegister',
+    component: NovelInformationRegisterView
+  },
 
 
 ]
