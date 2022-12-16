@@ -29,11 +29,7 @@ class PointChargeScreen extends StatelessWidget {
     // _userDataProvider.requestPointData();
     // requestPointData()는 스프링 서버에 유저의 포인트 정보를 요청하는 api를 넣을 예정
 
-    return GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Scaffold(
+    return Scaffold(
           // 뒤로 가기 버튼이 있는 앱바
             appBar: AppBar(
                 elevation: 0,
@@ -84,7 +80,6 @@ class PointChargeScreen extends StatelessWidget {
                   ],
                 )
             )
-        )
-    );
+        );
   }
 }
