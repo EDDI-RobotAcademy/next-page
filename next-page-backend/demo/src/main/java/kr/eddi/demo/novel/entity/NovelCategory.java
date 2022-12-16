@@ -1,6 +1,7 @@
 package kr.eddi.demo.novel.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ public class NovelCategory {
     private String categoryName;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<NovelInformation> informationList = new ArrayList<>();
 
     public NovelCategory(Long id, String categoryName) {

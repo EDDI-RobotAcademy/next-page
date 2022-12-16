@@ -1,10 +1,14 @@
 package kr.eddi.demo.novel;
 
 
+import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.form.NovelEpisodeRegisterForm;
 import kr.eddi.demo.novel.form.NovelInformationRegisterForm;
+import kr.eddi.demo.novel.form.PageForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,4 +39,9 @@ public class NovelController {
         return novelService.episodeRegister(form.toRequest());
     }
 
+    @PostMapping("/{member_id}/information-list")
+    public Page<NovelInformation> getUploaderNovelInfoList(@PathVariable("member_id") Long member_id, @RequestBody PageForm form){
+        PageRequest request = PageRequest.of(form.getPage(), form.getSize());
+        return novelService.getUploaderNovelInfoList(member_id, request);
+    }
 }

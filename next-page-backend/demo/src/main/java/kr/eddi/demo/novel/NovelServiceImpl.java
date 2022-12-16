@@ -15,6 +15,8 @@ import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -146,5 +148,11 @@ public class NovelServiceImpl implements NovelService {
         episodeRepository.save(episode);
         return true;
     }
+
+    @Override
+    public Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request) {
+        return informationRepository.findByMember_Id(member_id, request);
+    }
+
 
 }
