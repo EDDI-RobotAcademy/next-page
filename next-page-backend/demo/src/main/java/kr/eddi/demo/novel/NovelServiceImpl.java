@@ -12,7 +12,7 @@ import kr.eddi.demo.novel.repository.NovelCategoryRepository;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import kr.eddi.demo.novel.repository.NovelInformationRepository;
 import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
-import kr.eddi.demo.novel.request.NovelInformationRequest;
+import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     @Transactional
-    public Boolean informationRegister(List<MultipartFile> imgList, NovelInformationRequest request) {
+    public Boolean informationRegister(List<MultipartFile> imgList, NovelInformationRegisterRequest request) {
 
         // request에서 받은 멤버 아이디로 회원 찾고 권한 체크 (이후 권한 부여 시스템 작성 후에 로직 추가 할예정)
         Optional<NextPageMember> maybeMember = memberRepository.findById(request.getMember_id());
