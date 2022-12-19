@@ -31,7 +31,7 @@ class CheckValidate {
     }else {
       RegExp regExp = RegExp(r'^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{1,10}$');
       if(!regExp.hasMatch(value)){
-        return '한글, 영문, 숫자로 구성된 1 ~ 10자리 닉네임을 입력하세요.';
+        return '한글, 영문, 숫자로 구성된 1~10자 닉네임을 입력하세요.';
       }else{
         return null;
       }

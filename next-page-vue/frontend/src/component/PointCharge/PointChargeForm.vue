@@ -1,4 +1,4 @@
-<template>
+n<template>
   <div class="d-flex justify-center">
     <v-card elevation="0">
       <v-card-text class="text-lg-center">
@@ -12,13 +12,14 @@
             </v-card-text>
           </v-card>
           <v-card width="500px" class="px-10 py-2">
-            <v-checkbox
-                v-model="checkedPrice"
-                v-for="option in priceOption" :key="option.point"
-                color="#6699FF"
-                :label="option.point"
-                :value="option.price"
-            />
+            <v-radio-group
+                v-model="checkedPrice">
+              <v-radio color="#6699FF"
+                       v-for="option in priceOption"
+                       :key="option.point"
+                       :label="option.point"
+                       :value="option.price"/>
+            </v-radio-group>
           </v-card>
           <v-card>
             <v-card-text class="text-lg-center">

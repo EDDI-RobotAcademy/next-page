@@ -4,3 +4,11 @@ class SignInRequest {
 
   SignInRequest(this.email, this.password);
 }
+
+class SignUpRequest {
+  String email;
+  String password;
+  String nickName;
+
+  SignUpRequest(this.email, this.password, this.nickName);
+}
