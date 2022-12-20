@@ -1,7 +1,9 @@
 import {
+    CHECK_DUPLICATE_EMAIL_TO_SPRING, CHECK_DUPLICATE_NICKNAME_TO_SPRING,
 
 } from './mutation-types'
 import axios from "axios";
+
 
 export default{
 
@@ -30,4 +32,5 @@ export default{
         console.log("requestUploaderNovelInfoListToSpring()")
         return axios.get
     }*/
+
 }
