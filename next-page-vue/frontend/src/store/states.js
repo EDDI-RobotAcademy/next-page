@@ -1,5 +1,11 @@
 export default {
-    // test용 states
-    isAuthenticated: true,
-    // test용 states
+
+    emailPassValue: false,
+    isAuthenticated: false,
+    currentUserNickname: {},
+    nicknamePassValue: false,
+
+    memberInfo: {},
+
+
 }
