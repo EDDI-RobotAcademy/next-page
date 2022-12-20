@@ -47,6 +47,8 @@ n<template>
 
 <script>
 
+import {mapActions} from "vuex";
+
 export default {
   name: "PointChargeForm",
   data() {
@@ -66,6 +68,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['requestPayAndChargePointToSpring']),
 
     toKakaoPay() {
       if (this.checkedPrice <= 0) {
@@ -87,8 +90,17 @@ export default {
         }, rsp => { // callback
           console.log(rsp);
           if (rsp.success){
+            let payload = {
+              member_id: 1,
+              payment_id: rsp.merchant_uid,
+              amount: this.checkedPrice,
+              point: this.checkedPrice,
+            }
+
+            this.requestPayAndChargePointToSpring( payload)
+
+
             /* 주문번호 props로 받아서 주문 완료 페이지 작성하고 싶으나 현재는 이슈 발생중
-            let paymentData = { payment_id: rsp.merchant_uid, }
             this.$router.push({ name: "PaymentSuccess", params: { paymentData}}) */
 
             this.$router.push("/payment-success")
