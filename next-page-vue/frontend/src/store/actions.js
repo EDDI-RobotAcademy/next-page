@@ -1,6 +1,5 @@
 import {
     CHECK_DUPLICATE_EMAIL_TO_SPRING, CHECK_DUPLICATE_NICKNAME_TO_SPRING, REQUEST_UPLOADER_NOVEL_INFO_LIST,
-
 } from './mutation-types'
 import axios from "axios";
 
@@ -87,6 +86,5 @@ export default{
                 alert(res.response.data.message)
             })
     },
-
 
 }
