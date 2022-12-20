@@ -43,6 +43,7 @@ public class NextPageMember {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<NovelInformation> novelInformationList = new ArrayList<>();
 
+
     public NextPageMember(String email, String nickName) {
         this.email = email;
         this.nickName = nickName;
