@@ -1,7 +1,6 @@
 package kr.eddi.demo.member.entity.service.member.request;
 
 
-import kr.eddi.demo.member.entity.member.MemberProfile;
 import kr.eddi.demo.member.entity.member.NextPageMember;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ public class MemberSignUpRequest {
 
 
     public NextPageMember toMemberInfo(){
-        return new NextPageMember(email, MemberProfile.of(nickName));
+        return new NextPageMember(email,nickName);
     }
 
 
