@@ -1,5 +1,5 @@
 export default {
     // test용 states
-    comment: {},
-    comments: []
+    isAuthenticated: true,
+    // test용 states
 }

@@ -1,16 +1,45 @@
 <template>
-  <div>
+  <!-- <div> -->
     <!-- test용 링크 -->
-    <router-link to="/comment">댓글 TEST</router-link> |
+    <!-- <router-link to="/comment">댓글 TEST</router-link> |
+  </div> -->
+  <div>
+    <!-- 헤더메뉴 -->
+    <div id="hearder">
+      <HeadlineMenuForm/>
+      <MainMenuForm/>
+    </div>
+    
+    <!-- 메인페이지 컴포넌트 -->
+    <div id="main">
+      
+    </div>
+    
+    
+    <!-- 풋터는 맨 아래 고정 -->
+    <div id="footer">
+      
+    </div>
   </div>
 </template>
 
 <script>
 
+import HeadlineMenuForm from '@/component/header/HeadlineMenuForm.vue';
+import MainMenuForm from '@/component/header/MainMenuForm.vue';
+
+
+
 export default {
   name: "HomeView",
 
   components: {
+    HeadlineMenuForm,
+    MainMenuForm,
   },
 };
 </script>
+
+<style scoped>
+
+</style>
