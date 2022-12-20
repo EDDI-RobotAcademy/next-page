@@ -1,5 +1,6 @@
 package kr.eddi.demo.member.entity.member;
 
+import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.point.PointPayment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,8 +26,9 @@ public class NextPageMember {
     @Column(nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "memberInfo", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private MemberProfile profile;
+
+    @Column(nullable = false)
+    private String nickName;
 
     @Getter
     @Column
@@ -38,11 +40,13 @@ public class NextPageMember {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<PointPayment> pointPaymentList = new ArrayList<>();
 
-    public NextPageMember(String email, MemberProfile profile) {
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<NovelInformation> novelInformationList = new ArrayList<>();
+
+    public NextPageMember(String email, String nickName) {
         this.email = email;
-        this.profile = profile;
+        this.nickName = nickName;
         this.point = Long.valueOf(0);
-        profile.setMemberInfo(this);
     }
 
     public boolean isRightPassword(String plainToCheck) {
@@ -67,7 +71,7 @@ public class NextPageMember {
     /**
      * 회원 정보에 결제 내역을 업데이트 합니다.
      *
-     * @param pointPayment 결제 내역 정보
+     * @param pointPayment 결제 내역 정보 entity
      */
     public void updatePointPaymentList(PointPayment pointPayment) {
         this.pointPaymentList.add(pointPayment);
@@ -80,5 +84,15 @@ public class NextPageMember {
      */
     public void addChargedPoint(Long chargedPoint) {
         this.point += chargedPoint;
+    }
+
+
+    /**
+     * 회원 정보에 등록한 소설 리스트를 업데이트 합니다.
+     *
+     * @param information 소설 정보 entity
+     */
+    public void updateNovelInformationList(NovelInformation information) {
+        this.novelInformationList.add(information);
     }
 }
