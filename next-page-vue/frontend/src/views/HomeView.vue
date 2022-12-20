@@ -18,13 +18,14 @@
     
     <!-- 풋터는 맨 아래 고정 -->
     <div id="footer">
-      
+      <FooterMenuForm/>
     </div>
   </div>
 </template>
 
 <script>
 
+import FooterMenuForm from '@/component/footer/FooterMenuForm.vue';
 import HeadlineMenuForm from '@/component/header/HeadlineMenuForm.vue';
 import MainMenuForm from '@/component/header/MainMenuForm.vue';
 
@@ -36,6 +37,7 @@ export default {
   components: {
     HeadlineMenuForm,
     MainMenuForm,
+    FooterMenuForm,
   },
 };
 </script>
