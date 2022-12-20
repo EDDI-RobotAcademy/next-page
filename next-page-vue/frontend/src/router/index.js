@@ -5,6 +5,7 @@ import PointChargeView from "@/views/Payment/PointChargeView";
 import PaymentSuccessView from "@/views/Payment/PaymentSuccessView";
 import NovelInformationRegisterView from "@/views/Upload/NovelInformationRegisterView";
 
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -39,6 +40,7 @@ const routes = [
     name: 'NovelInformationRegister',
     component: NovelInformationRegisterView
   },
+
 
 
 ]
