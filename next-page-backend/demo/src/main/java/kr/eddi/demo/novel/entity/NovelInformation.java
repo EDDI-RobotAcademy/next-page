@@ -1,6 +1,7 @@
 package kr.eddi.demo.novel.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.eddi.demo.member.entity.member.NextPageMember;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,6 +44,8 @@ public class NovelInformation {
     @CreatedDate
     private LocalDate createdDate; // 생성시간
 
+
+    @JsonIgnore
     @OneToMany(mappedBy = "information", fetch = FetchType.LAZY)
     private List<NovelEpisode> episodeList = new ArrayList<>();
 
@@ -50,10 +53,12 @@ public class NovelInformation {
     private NovelCoverImage coverImage;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "member_id")
     private NextPageMember member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "category_id")
     private NovelCategory category;
 

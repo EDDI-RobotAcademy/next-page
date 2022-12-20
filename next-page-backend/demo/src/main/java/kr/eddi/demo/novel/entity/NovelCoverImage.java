@@ -1,5 +1,6 @@
 package kr.eddi.demo.novel.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,8 @@ public class NovelCoverImage {
     @Column
     private String reName;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "information_id")
     private NovelInformation information;
 
