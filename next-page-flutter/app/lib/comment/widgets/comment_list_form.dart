@@ -28,7 +28,7 @@ class _CommentListFormState extends State<CommentListForm> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      height: 125,
+                      height: size.height * 0.135,
                       alignment: Alignment.centerLeft,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,29 +37,39 @@ class _CommentListFormState extends State<CommentListForm> {
                             padding: const EdgeInsets.fromLTRB(20, 0, 5, 8),
                             child: Row(
                               children: [
-                                Text('3424234'),
+                                Text('3424234', style: TextStyle(
+                                    fontSize: size.width * 0.035
+                                ),),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
                                 ),
-                                Text('날짜'),
+                                Text('날짜', style: TextStyle(
+                                    fontSize: size.width * 0.0315
+                                ),),
                                 Spacer(flex: 1),
                                 (true)?
                                 Row(
                                   children: [
                                     TextButton(onPressed: (){
+                                      print('수정요청');
                                       setState(() {
                                         _current = index;
                                         _onModify = true;
                                       });
-                                    }, child: Text("수정", style: TextStyle(color: Colors.grey))),
+                                    }, child: Text("수정",
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: size.width * 0.033
+                                        ))),
                                     TextButton(onPressed: (){
                                       print("삭제요청");
                                     },
                                         child: Text(
                                             "삭제",
                                             style: TextStyle(
-                                                color: Colors.grey
-                                            )))
+                                                color: Colors.grey,
+                                                fontSize: size.width * 0.033))
+                                    )
                                   ],
                                 )
                                     :Text("")
@@ -68,7 +78,10 @@ class _CommentListFormState extends State<CommentListForm> {
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                            child: Text('댓글내용글자수제한테스트아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아댓글내용글자수제한테스트아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아'),
+                            child: Text('댓글내용글자수제한테스트아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아댓글내용글자수제한테스트아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아',
+                              style: TextStyle(
+                                  fontSize: size.width * 0.033
+                              ),),
                           ),
                           Container()
                         ],
