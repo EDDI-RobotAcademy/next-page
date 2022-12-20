@@ -26,8 +26,9 @@ public class NextPageMember {
     @Column(nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "memberInfo", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private MemberProfile profile;
+
+    @Column(nullable = false)
+    private String nickName;
 
     @Getter
     @Column
@@ -42,11 +43,11 @@ public class NextPageMember {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<NovelInformation> novelInformationList = new ArrayList<>();
 
-    public NextPageMember(String email, MemberProfile profile) {
+
+    public NextPageMember(String email, String nickName) {
         this.email = email;
-        this.profile = profile;
+        this.nickName = nickName;
         this.point = Long.valueOf(0);
-        profile.setMemberInfo(this);
     }
 
     public boolean isRightPassword(String plainToCheck) {
