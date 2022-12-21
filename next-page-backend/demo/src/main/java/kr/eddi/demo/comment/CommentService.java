@@ -1,14 +1,11 @@
 package kr.eddi.demo.comment;
 
-import kr.eddi.demo.comment.request.CommentModify;
-import kr.eddi.demo.comment.request.CommentWrite;
-
-import java.util.List;
+import kr.eddi.demo.comment.request.CommentModifyRequest;
+import kr.eddi.demo.comment.request.CommentWriteRequest;
 
 public interface CommentService {
-    public void commentWrite(CommentWrite commentWrite, Long novelEpisodeNo);
-    public List<CommentEntity> commentList(Long novelEpisodeNo);
-    public void commentDelete(Long commentNo);
-    public void commentModify(Long commentNo, CommentModify commentModify);
+    Boolean commentWrite(CommentWriteRequest commentWriteRequest, Long novelEpisodeNo);
+    Boolean commentDelete(Long commentNo);
+    Boolean commentModify(Long commentNo, CommentModifyRequest commentModifyRequest);
 
 }
