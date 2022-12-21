@@ -43,9 +43,9 @@ public class CommentServiceImpl implements CommentService {
         NextPageMember nextPageMember = maybeNextPageMember.get();
 
         //코멘트 엔티티 생성
-        CommentEntity commentEntity = new CommentEntity(commentWriteRequest.getComment(), nextPageMember, episode);
+        Comment comment = new Comment(commentWriteRequest.getComment(), nextPageMember, episode);
 
-        commentRepository.save(commentEntity);
+        commentRepository.save(comment);
 
         return true;
     }
@@ -61,16 +61,16 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Boolean commentModify(Long commentNo, CommentModifyRequest commentModifyRequest) {
-        Optional<CommentEntity> maybeComment = commentRepository.findById(commentNo);
+        Optional<Comment> maybeComment = commentRepository.findById(commentNo);
         if(maybeComment.isEmpty()) {
             return false;
         }
-        CommentEntity commentEntity = maybeComment.get();
+        Comment comment = maybeComment.get();
 
-        commentEntity.modifyComment(commentModifyRequest.getComment());
-        commentEntity.updateToEpisode();
+        comment.modifyComment(commentModifyRequest.getComment());
+        comment.updateToEpisode();
 
-        commentRepository.save(commentEntity);
+        commentRepository.save(comment);
         return true;
     }
 

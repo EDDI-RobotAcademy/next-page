@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CommentEntity {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentNo;
@@ -42,7 +42,7 @@ public class CommentEntity {
     @JoinColumn(name = "novelEpisode_id")
     private NovelEpisode novelEpisode;
 
-    public CommentEntity(String comment, NextPageMember member, NovelEpisode episode) {
+    public Comment(String comment, NextPageMember member, NovelEpisode episode) {
         this.comment = comment;
         this.member = member;
         this.novelEpisode = episode;

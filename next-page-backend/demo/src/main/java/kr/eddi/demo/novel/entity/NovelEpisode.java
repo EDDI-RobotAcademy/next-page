@@ -1,7 +1,7 @@
 package kr.eddi.demo.novel.entity;
 
 
-import kr.eddi.demo.comment.CommentEntity;
+import kr.eddi.demo.comment.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -43,7 +43,7 @@ public class NovelEpisode {
 
 
     @OneToMany(mappedBy = "novelEpisode", fetch = FetchType.LAZY)
-    private List<CommentEntity> commentList = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
     public NovelEpisode(Long episodeNumber, String episodeTitle, String text, Boolean needToBuy, NovelInformation information) {
         this.episodeNumber = episodeNumber;
@@ -60,7 +60,7 @@ public class NovelEpisode {
         this.information.updateEpisode(this);
     }
 
-    public void updateComment(CommentEntity comment) {
+    public void updateComment(Comment comment) {
         commentList.add(comment);
     }
 

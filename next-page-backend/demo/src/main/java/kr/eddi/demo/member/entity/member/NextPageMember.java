@@ -1,6 +1,6 @@
 package kr.eddi.demo.member.entity.member;
 
-import kr.eddi.demo.comment.CommentEntity;
+import kr.eddi.demo.comment.Comment;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.point.PointPayment;
 import lombok.AllArgsConstructor;
@@ -45,7 +45,7 @@ public class NextPageMember {
     private List<NovelInformation> novelInformationList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<CommentEntity> commentList = new ArrayList<>();
+    private List<Comment> commentList = new ArrayList<>();
 
 
     public NextPageMember(String email, String nickName) {
@@ -105,7 +105,7 @@ public class NextPageMember {
      * 회원이 쓴 댓글 리스트를 업데이트 합니다.
      * @param comment 쓴 댓글
      */
-    public void updateCommentList(CommentEntity comment) {
+    public void updateCommentList(Comment comment) {
         this.commentList.add(comment);
     }
 }
