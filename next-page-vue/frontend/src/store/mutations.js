@@ -1,7 +1,8 @@
 import {
-    CHECK_DUPLICATE_EMAIL_TO_SPRING, CHECK_DUPLICATE_NICKNAME_TO_SPRING, REQUEST_CURRENT_USER_NICKNAME_FROM_SPRING,
-
-
+    CHECK_DUPLICATE_EMAIL_TO_SPRING,
+    CHECK_DUPLICATE_NICKNAME_TO_SPRING,
+    REQUEST_CURRENT_USER_NICKNAME_FROM_SPRING,
+    REQUEST_UPLOADER_NOVEL_INFO_LIST,
 
 
 } from './mutation-types'
@@ -20,7 +21,9 @@ export default {
     },
 
 
-
+    [REQUEST_UPLOADER_NOVEL_INFO_LIST] (state, passingData) {
+        state.uploaderNovelInfoList = passingData
+    }
 
 
 

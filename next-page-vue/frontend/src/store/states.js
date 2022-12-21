@@ -7,5 +7,7 @@ export default {
 
     memberInfo: {},
 
+    uploaderNovelInfoList: {},
+
 
 }
