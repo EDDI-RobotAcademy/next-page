@@ -1,6 +1,7 @@
 package kr.eddi.demo.novel.entity;
 
 
+import kr.eddi.demo.comment.CommentEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -8,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,9 +41,9 @@ public class NovelEpisode {
     @JoinColumn(name = "information_id")
     private NovelInformation information;
 
-    // 여기에 댓글 리스트 매핑
-    // @OneToMany
-    // private List<코멘트 엔티티> commentList;
+
+    @OneToMany(mappedBy = "novelEpisode", fetch = FetchType.LAZY)
+    private List<CommentEntity> commentList = new ArrayList<>();
 
     public NovelEpisode(Long episodeNumber, String episodeTitle, String text, Boolean needToBuy, NovelInformation information) {
         this.episodeNumber = episodeNumber;
@@ -55,6 +58,10 @@ public class NovelEpisode {
      */
     public void updateToInformation() {
         this.information.updateEpisode(this);
+    }
+
+    public void updateComment(CommentEntity comment) {
+        commentList.add(comment);
     }
 
 }

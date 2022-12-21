@@ -1,14 +1,16 @@
 package kr.eddi.demo.comment;
 
-import kr.eddi.demo.comment.request.CommentModify;
-import kr.eddi.demo.comment.request.CommentWrite;
-import kr.eddi.demo.episode.NovelEpisodeEntity;
-import kr.eddi.demo.episode.NovelEpisodeRepository;
+import kr.eddi.demo.comment.request.CommentModifyRequest;
+import kr.eddi.demo.comment.request.CommentWriteRequest;
+import kr.eddi.demo.member.entity.member.NextPageMember;
+import kr.eddi.demo.member.entity.repository.member.MemberRepository;
+import kr.eddi.demo.novel.entity.NovelEpisode;
+import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Slf4j
@@ -19,41 +21,57 @@ public class CommentServiceImpl implements CommentService {
     CommentRepository commentRepository;
 
     @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
     NovelEpisodeRepository novelEpisodeRepository;
 
     @Override
-    public void commentWrite(CommentWrite commentWrite, Long novelEpisodeNo) {
-        Optional<NovelEpisodeEntity> maybeNovelEpisode = novelEpisodeRepository.findById(novelEpisodeNo);
-        NovelEpisodeEntity novelEpisodeEntity = maybeNovelEpisode.get();
+    @Transactional
+    public Boolean commentWrite(CommentWriteRequest commentWriteRequest, Long novelEpisodeNo) {
 
-        CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setNovelEpisodeEntity(novelEpisodeEntity);
-        commentEntity.setComment(commentWrite.getComment());
-        commentEntity.setCommentWriter(commentWrite.getCommentWriter());
+        Optional<NovelEpisode> maybeNovelEpisode = novelEpisodeRepository.findById(novelEpisodeNo);
+        if(maybeNovelEpisode.isEmpty()) {
+            return false;
+        }
+        NovelEpisode episode = maybeNovelEpisode.get();
+
+        Optional<NextPageMember> maybeNextPageMember = memberRepository.findById(commentWriteRequest.getCommentWriterId());
+        if(maybeNextPageMember.isEmpty()) {
+            return false;
+        }
+        NextPageMember nextPageMember = maybeNextPageMember.get();
+
+        //코멘트 엔티티 생성
+        CommentEntity commentEntity = new CommentEntity(commentWriteRequest.getComment(), nextPageMember, episode);
 
         commentRepository.save(commentEntity);
 
+        return true;
     }
 
-    @Override
-    public List<CommentEntity> commentList(Long novelEpisodeNo) {
-       return commentRepository.findAllCommentsById(novelEpisodeNo);
-    }
+
 
     @Override
-    public void commentDelete(Long commentNo) {
+    public Boolean commentDelete(Long commentNo) {
         commentRepository.deleteById(commentNo);
-
+        return true;
     }
 
     @Override
-    public void commentModify(Long commentNo, CommentModify commentModify) {
+    @Transactional
+    public Boolean commentModify(Long commentNo, CommentModifyRequest commentModifyRequest) {
         Optional<CommentEntity> maybeComment = commentRepository.findById(commentNo);
+        if(maybeComment.isEmpty()) {
+            return false;
+        }
         CommentEntity commentEntity = maybeComment.get();
 
-        commentEntity.modifyComment(commentModify.getComment());
+        commentEntity.modifyComment(commentModifyRequest.getComment());
+        commentEntity.updateToEpisode();
 
         commentRepository.save(commentEntity);
+        return true;
     }
 
 }
