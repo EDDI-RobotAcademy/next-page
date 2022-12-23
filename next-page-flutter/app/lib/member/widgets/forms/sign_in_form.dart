@@ -1,11 +1,10 @@
 
 import 'package:app/member/api/SpringMemberApi.dart';
 import 'package:app/member/api/requests.dart';
-import 'package:app/member/utility/user_data_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/responses.dart';
 import '../../utility/custom_text_style.dart';
@@ -28,8 +27,6 @@ class _SignInFormState extends State <SignInForm>{
   late String email;
   late String password;
 
-  late UserDataProvider _userDataProvider;
-
   late TextEditingController emailController = TextEditingController();
   late TextEditingController passwordController = TextEditingController();
   late SignInResponse signInResponse;
@@ -42,7 +39,6 @@ class _SignInFormState extends State <SignInForm>{
     passwordController.addListener(() {
       password = passwordController.text;
     });
-    _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
 
     super.initState();
   }
@@ -57,7 +53,7 @@ class _SignInFormState extends State <SignInForm>{
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    debugPrint("loginState: " + _userDataProvider.loginState.toString());
+
     return Form(
       key: _formKey,
       child: Container(
@@ -85,13 +81,11 @@ class _SignInFormState extends State <SignInForm>{
                               if(_formKey.currentState!.validate()) {
                                 signInResponse = await SpringMemberApi().signIn(SignInRequest(email, password));
                                 if(signInResponse.result == true) {
-                                  // spring서버가 응답한 token값을 provider class의 userToken에 저장
-                                  _userDataProvider.setUserToken(signInResponse.userToken.toString());
-                                  debugPrint("provider userToken: " + _userDataProvider.userToken.toString());
-                                  _userDataProvider.isLogin();
-                                  debugPrint("loginState: " + _userDataProvider.loginState.toString());
+                                  // spring서버가 응답한 token값을 prefs로 디스크에 저장
+                                  final prefs = await SharedPreferences.getInstance();
+                                  await prefs.setString('userToken', signInResponse.userToken);
+                                  Navigator.pop(context);
                                   // 이전 페이지로 이동하는 기능 추가 예정
-                                  showResultDialog(context, "알림", "로그인 성공!");
                                 } else {
                                   showResultDialog(context, "알림", signInResponse.userToken.toString());
                                 }
