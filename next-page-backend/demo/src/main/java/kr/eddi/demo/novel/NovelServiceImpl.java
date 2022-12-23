@@ -138,7 +138,7 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional
     public Boolean episodeRegister(NovelEpisodeRegisterRequest request) {
-        Optional<NovelInformation> maybeInformation = informationRepository.findById(1L);
+        Optional<NovelInformation> maybeInformation = informationRepository.findById(request.getInformation_id());
         if(maybeInformation.isEmpty()) {
             return false;
         }
@@ -152,6 +152,17 @@ public class NovelServiceImpl implements NovelService {
     @Override
     public Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request) {
         return informationRepository.findByMember_Id(member_id, request);
+    }
+
+    @Override
+    public NovelInformation getNovelInfoDetail(Long novelInfoId) {
+        Optional<NovelInformation> maybeInfo = informationRepository.findById(novelInfoId);
+        if(maybeInfo.isEmpty()) {
+            return null;
+        } else {
+            NovelInformation novelInfo = maybeInfo.get();
+            return novelInfo;
+        }
     }
 
 

@@ -5,6 +5,7 @@ import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.form.NovelEpisodeRegisterForm;
 import kr.eddi.demo.novel.form.NovelInformationRegisterForm;
 import kr.eddi.demo.novel.form.PageForm;
+import kr.eddi.demo.novel.repository.NovelInformationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,5 +44,10 @@ public class NovelController {
     public Page<NovelInformation> getUploaderNovelInfoList(@PathVariable("member_id") Long member_id, @RequestBody PageForm form){
         PageRequest request = PageRequest.of(form.getPage(), form.getSize());
         return novelService.getUploaderNovelInfoList(member_id, request);
+    }
+
+    @GetMapping("/{novel_info_id}/information-detail")
+    public NovelInformation getNovelInfoDetail (@PathVariable("novel_info_id") Long novel_info_id) {
+        return novelService.getNovelInfoDetail(novel_info_id);
     }
 }

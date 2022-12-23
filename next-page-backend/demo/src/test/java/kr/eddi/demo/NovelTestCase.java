@@ -61,4 +61,17 @@ public class NovelTestCase {
         Page<NovelInformation> informationList = informationRepository.findByMember_Id(1L, request);
         System.out.println("informationList: " + informationList);
     }
+
+    @Test
+    void getNovelInfoDetailWithEpisodeList() {
+        Optional<NovelInformation> maybeInfo = informationRepository.findById(1l);
+        Boolean isOk;
+        if(maybeInfo.isEmpty()) {
+            isOk = false;
+        } else {
+            NovelInformation novelInfo = maybeInfo.get();
+            System.out.println(novelInfo);
+        }
+    }
+
 }

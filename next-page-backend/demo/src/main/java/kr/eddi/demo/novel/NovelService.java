@@ -18,4 +18,6 @@ public interface NovelService {
     Boolean episodeRegister(NovelEpisodeRegisterRequest request);
 
     Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request);
+
+    NovelInformation getNovelInfoDetail(Long novelInfoId);
 }
