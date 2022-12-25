@@ -1,3 +1,4 @@
+import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:app/member/utility/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,16 +72,22 @@ class _MypageScreenState extends State<MypageScreen> {
                   child: ListTile(
                     title: Text("로그인이 필요합니다."),
                     trailing: ElevatedButton(
-                        onPressed: () => Navigator.pushNamed(context, '/sign-in'),
+                        onPressed: () async {
+                          // 로그인 페이지에서 돌아올 때 반환값 받기
+                          bool isBack = await Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
+                          // true(로그인 성공)면 돌아와서 _loginState true로 변경
+                          if(isBack) { setState(() { _loginState = true; });}
+                          },
                         child: Text('로그인'))),
                 ),
                 // 화면 전환 확인용 임시 버튼
-                TextButton(
+                /*TextButton(
                     onPressed: () async {
                       var prefs = await SharedPreferences.getInstance();
                       prefs.setString('userToken', 'tmptoken11111');
                       setState(() { _loginState = true; }); },
                     child: Text("로그인 전환"))
+                */
               ],
             ));
       } else {

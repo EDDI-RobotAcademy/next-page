@@ -84,8 +84,8 @@ class _SignInFormState extends State <SignInForm>{
                                   // spring서버가 응답한 token값을 prefs로 디스크에 저장
                                   final prefs = await SharedPreferences.getInstance();
                                   await prefs.setString('userToken', signInResponse.userToken);
-                                  Navigator.pop(context);
-                                  // 이전 페이지로 이동하는 기능 추가 예정
+                                  // 이전 페이지로 돌아가면서 true값 반환
+                                  Navigator.pop(context, true);
                                 } else {
                                   showResultDialog(context, "알림", signInResponse.userToken.toString());
                                 }
