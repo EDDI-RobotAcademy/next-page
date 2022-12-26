@@ -1,8 +1,8 @@
 <template>
+
   <div>
     <SignInForm @submit="onSubmit"/>
   </div>
-
 
 </template>
 
