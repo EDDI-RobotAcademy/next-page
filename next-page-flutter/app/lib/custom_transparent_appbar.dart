@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-AppBar customTranparentAppbar(){
+AppBar customTransparentAppbar(){
   return AppBar(
     backgroundColor: Colors.transparent,
     elevation: 0.0,
