@@ -1,6 +1,7 @@
 <template>
   <div style="font-family: Arial">
-    <br><br><br><br>
+    <HeadlineMenuForm/>
+    <br><br><br>
     <v-row justify="center">
 
       <v-col cols="3" style="padding-bottom: 90px">
@@ -51,14 +52,20 @@
         </v-form>
       </v-col>
     </v-row>
+
+    <br><br><br>
+    <footer-menu-form/>
   </div>
 
 
 </template>
 
 <script>
+import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
 export default {
   name: "SignInForm",
+  components: {FooterMenuForm, HeadlineMenuForm},
   data() {
     return {
       email: "",
