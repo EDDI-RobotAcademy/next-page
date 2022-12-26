@@ -1,5 +1,6 @@
 package kr.eddi.demo.novel;
 
+import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
@@ -20,4 +21,6 @@ public interface NovelService {
     Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request);
 
     NovelInformation getNovelInfoDetail(Long novelInfoId);
+
+    Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request);
 }

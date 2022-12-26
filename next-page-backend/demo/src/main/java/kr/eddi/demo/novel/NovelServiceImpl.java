@@ -165,5 +165,11 @@ public class NovelServiceImpl implements NovelService {
         }
     }
 
+    @Override
+    @Transactional
+    public Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request) {
+        return episodeRepository.findByInformation_Id(novelInfoId, request);
+    }
+
 
 }

@@ -1,10 +1,12 @@
 package kr.eddi.demo.novel;
 
 
+import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.form.NovelEpisodeRegisterForm;
 import kr.eddi.demo.novel.form.NovelInformationRegisterForm;
 import kr.eddi.demo.novel.form.PageForm;
+import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import kr.eddi.demo.novel.repository.NovelInformationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,10 @@ public class NovelController {
     @Autowired
     NovelServiceImpl novelService;
 
+    @Autowired
+    NovelEpisodeRepository episodeRepository;
+
+
     @PostMapping(value = "/information-register",  consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public Boolean informationRegister(@RequestPart(value = "fileList") List<MultipartFile> imgList,
                                        @RequestPart(value = "info") NovelInformationRegisterForm form) {
@@ -46,8 +52,14 @@ public class NovelController {
         return novelService.getUploaderNovelInfoList(member_id, request);
     }
 
-    @GetMapping("/{novel_info_id}/information-detail")
+    @GetMapping("/information-detail/{novel_info_id}")
     public NovelInformation getNovelInfoDetail (@PathVariable("novel_info_id") Long novel_info_id) {
         return novelService.getNovelInfoDetail(novel_info_id);
+    }
+
+    @PostMapping("/episode-list/{novel_info_id}")
+    public Page<NovelEpisode> getNovelEpisodeList(@PathVariable("novel_info_id") Long novel_info_id, @RequestBody PageForm form) {
+        PageRequest request = PageRequest.of(form.getPage(), form.getSize());
+        return novelService.getNovelEpisodeListByInfoId(novel_info_id, request);
     }
 }

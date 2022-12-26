@@ -50,7 +50,7 @@ public class NovelTestCase {
 
     @Test
     void episodeRegisterAtService() {
-        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(1L, 3L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇsㄴㅇㄹ", false);
+        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(1L, 1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇsㄴㅇㄹ", false);
         Boolean isOk = service.episodeRegister(request);
         System.out.println("isOk?: " + isOk);
     }
@@ -73,5 +73,10 @@ public class NovelTestCase {
             System.out.println(novelInfo);
         }
     }
-
+    @Test
+    void getNovelEpisodeListByInfoIdTest() {
+        PageRequest request = PageRequest.of(0,1);
+        Page<NovelEpisode> episodePage = episodeRepository.findByInformation_Id(1l, request);
+        System.out.println("result: " + episodePage);
+    }
 }
