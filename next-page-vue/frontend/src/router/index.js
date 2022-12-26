@@ -5,6 +5,9 @@ import PointChargeView from "@/views/Payment/PointChargeView";
 import PaymentSuccessView from "@/views/Payment/PaymentSuccessView";
 
 import NovelInformationRegisterView from "@/views/Upload/NovelInformationRegisterView";
+import MemberJoinForm from "@/component/account/MemberJoinForm";
+import SignUpView from "@/views/account/SignUpView";
+import SignInView from "@/views/account/SignInView";
 
 
 Vue.use(VueRouter)
@@ -35,15 +38,34 @@ const routes = [
       paymentData: true
     }*/
   },
-
-
-
- 
   {
     path: '/information-register',
     name: 'NovelInformationRegister',
     component: NovelInformationRegisterView
   },
+
+  { // 회원 약관 동의 UI
+    path: '/member-join-form',
+    name: 'Member-Join-Form',
+    component: MemberJoinForm
+  },
+  { // 회원가입 UI
+    path: '/signUp-view',
+    name: 'SignUp-View',
+    component: SignUpView
+  },
+  { // 로그인 UI
+    path: '/signin-view',
+    name: 'SignIn-View',
+    component: SignInView
+  },
+
+
+
+
+
+
+
 
 
 

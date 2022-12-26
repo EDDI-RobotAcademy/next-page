@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
                   systemOverlayStyle: SystemUiOverlayStyle.dark
               )
           ),
-          home: HomeScreen(),
+          home: CustomBottomAppbar(routeIndex: 0,),
           routes: {
             "/sign-in": (context) => const SignInScreen(),
             "/sign-up": (context) => const SignUpScreen(),

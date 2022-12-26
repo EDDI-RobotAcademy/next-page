@@ -1,4 +1,5 @@
 class TmpNovelModel {
+  int id;
   int episode;
   String title;
   String content;
@@ -11,19 +12,21 @@ class TmpNovelModel {
   String introduction;
 
   TmpNovelModel(
-      {this.episode = 0,
-      this.title = '',
-      this.content = '',
-      this.rating = 0.0,
-      this.writer = '',
-      this.category = '',
-      this.regDate = '',
-      this.thumbnail = '',
-      this.isLike = false,
-      this.introduction = ''});
+      {this.id = 0,
+        this.episode = 0,
+        this.title = '',
+        this.content = '',
+        this.rating = 0.0,
+        this.writer = '',
+        this.category = '',
+        this.regDate = '',
+        this.thumbnail = '',
+        this.isLike = false,
+        this.introduction = ''});
 
   static List<TmpNovelModel> novelList = <TmpNovelModel>[
     TmpNovelModel(
+        id: 1,
         episode: 1,
         title: '근육조선',
         content: """   본문 시작
@@ -129,7 +132,7 @@ ds
         category: '판타지',
         thumbnail: 'assets/images/thumbnail/tmpThumbnail1.png',
         isLike: true,
-      introduction: '''
+        introduction: '''
         
 안타까운 역사라 한탄한 적도 있었다.
 그러나 한탄은 사라지고 몸이 재산이라는 사실을 깨달았다. 그렇게 몸을 길러 나름 성공하였더니 이런 일이 일어나다니.
@@ -144,16 +147,139 @@ ds
    
 이제 조선은 변할 것이다.
 다른 어떠한 것도 아닌 근육으로 시작되어.
-모두 변할 것이다.'''
-
-    ),
+모두 변할 것이다.'''),
     TmpNovelModel(
-      episode: 2,
-      rating: 8.0,
-    ),
+        id: 2,
+        episode: 2,
+        rating: 8.0,
+        category: '현대판타지',
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail2.png',
+        title: '코딩의 신이 되었다',
+        writer: '히아이스'),
     TmpNovelModel(
+      id: 3,
       episode: 3,
       rating: 9.1,
+      category: '현대판타지',
+      thumbnail: 'assets/images/thumbnail/tmpThumbnail3.png',
+      title: '코딩의 신 IT재벌되다',
+      writer: '새결',
     ),
+    TmpNovelModel(
+        id: 4,
+        episode: 3,
+        rating: 9.1,
+        category: '현대판타지',
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail4.png',
+        title: '감염병 생존기',
+        writer: '티미, TLT'),
+    TmpNovelModel(
+        id: 1,
+        episode: 1,
+        title: '근육조선',
+        content: """   본문 시작
+      근육조선
+  
+본문 끝
+                       """,
+        rating: 9.7,
+        writer: '차돌박E',
+        regDate: '2022.12.01',
+        category: '판타지',
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail1.png',
+        isLike: true,
+        introduction: '''
+        
+'''),
+    TmpNovelModel(
+        id: 2,
+        episode: 2,
+        rating: 8.0,
+        category: '현대판타지',
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail2.png',
+        title: '코딩의 신이 되었다',
+        writer: '히아이스'),
+    TmpNovelModel(
+      id: 3,
+      episode: 3,
+      rating: 9.1,
+      thumbnail: 'assets/images/thumbnail/tmpThumbnail3.png',
+      title: '코딩의 신 IT재벌되다',
+      writer: '새결',
+    ),
+    TmpNovelModel(
+        id: 4,
+        episode: 3,
+        rating: 9.1,
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail4.png',
+        title: '감염병 생존기',
+        writer: '티미, TLT'),
+    TmpNovelModel(
+        id: 2,
+        episode: 2,
+        rating: 8.0,
+        category: '현대판타지',
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail2.png',
+        title: '코딩의 신이 되었다',
+        writer: '히아이스'),
+    TmpNovelModel(
+      id: 3,
+      episode: 3,
+      rating: 9.1,
+      thumbnail: 'assets/images/thumbnail/tmpThumbnail3.png',
+      title: '코딩의 신 IT재벌되다',
+      writer: '새결',
+    ),
+    TmpNovelModel(
+        id: 4,
+        episode: 3,
+        rating: 9.1,
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail4.png',
+        title: '감염병 생존기',
+        writer: '티미, TLT'),
+    TmpNovelModel(
+        id: 2,
+        episode: 2,
+        rating: 8.0,
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail2.png',
+        title: '코딩의 신이 되었다',
+        writer: '히아이스'),
+    TmpNovelModel(
+      id: 3,
+      episode: 3,
+      rating: 9.1,
+      thumbnail: 'assets/images/thumbnail/tmpThumbnail3.png',
+      title: '코딩의 신 IT재벌되다',
+      writer: '새결',
+    ),
+    TmpNovelModel(
+        id: 4,
+        episode: 3,
+        rating: 9.1,
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail4.png',
+        title: '감염병 생존기',
+        writer: '티미, TLT'),
+    TmpNovelModel(
+        id: 2,
+        episode: 2,
+        rating: 8.0,
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail2.png',
+        title: '코딩의 신이 되었다',
+        writer: '히아이스'),
+    TmpNovelModel(
+      id: 3,
+      episode: 3,
+      rating: 9.1,
+      thumbnail: 'assets/images/thumbnail/tmpThumbnail3.png',
+      title: '코딩의 신 IT재벌되다',
+      writer: '새결',
+    ),
+    TmpNovelModel(
+        id: 4,
+        episode: 3,
+        rating: 9.1,
+        thumbnail: 'assets/images/thumbnail/tmpThumbnail4.png',
+        title: '감염병 생존기',
+        writer: '티미, TLT'),
   ];
 }

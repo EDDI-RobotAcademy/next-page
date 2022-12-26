@@ -8,9 +8,10 @@ import '../widgets/sliding_appbar.dart';
 class ScrollNovelViewerScreen extends StatefulWidget {
   final String appBarTitle;
   final int episode;
+  final int id;
 
   const ScrollNovelViewerScreen(
-      {Key? key, required this.appBarTitle, required this.episode})
+      {Key? key, required this.appBarTitle, required this.episode, required this.id})
       : super(key: key);
 
   @override
@@ -96,7 +97,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => const NovelDetailScreen()),
+                  builder: (BuildContext context) => NovelDetailScreen(id: widget.id,)),
                   (route) => false);
         },
       ),
@@ -193,6 +194,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                     context,
                     MaterialPageRoute(
                         builder: (context) => CommentListScreen(
+                          id: widget.id,
                           appBarTitle:
                           TmpNovelModel.novelList[0].title,
                           fromWhere: widget.episode,

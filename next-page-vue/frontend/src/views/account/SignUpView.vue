@@ -1,8 +1,9 @@
 <template>
-<div>
 
+<div>
   <SignUpForm @submit="onSubmit"/>
 </div>
+
 </template>
 
 <script>
