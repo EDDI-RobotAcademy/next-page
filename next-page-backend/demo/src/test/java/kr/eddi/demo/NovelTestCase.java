@@ -79,4 +79,19 @@ public class NovelTestCase {
         Page<NovelEpisode> episodePage = episodeRepository.findByInformation_Id(1l, request);
         System.out.println("result: " + episodePage);
     }
+
+    @Test
+    void getNovelEpisodeDetailTest() {
+        NovelEpisode episode;
+
+        Optional<NovelEpisode> maybeEpisode =  episodeRepository.findById(1L);
+        if(maybeEpisode.isEmpty()) {
+            episode = null;
+        }
+
+        episode = maybeEpisode.get();
+
+        System.out.println("getEpisodeDetail: " + episode);
+
+    }
 }

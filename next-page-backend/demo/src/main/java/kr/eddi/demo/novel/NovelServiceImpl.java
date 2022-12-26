@@ -166,9 +166,20 @@ public class NovelServiceImpl implements NovelService {
     }
 
     @Override
-    @Transactional
     public Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request) {
         return episodeRepository.findByInformation_Id(novelInfoId, request);
+    }
+
+    @Override
+    public NovelEpisode getNovelEpisodeDetail(Long episodeId) {
+
+        Optional<NovelEpisode> maybeEpisode =  episodeRepository.findById(1L);
+        if(maybeEpisode.isEmpty()) {
+            return null;
+        }
+
+        NovelEpisode episode = maybeEpisode.get();
+        return episode;
     }
 
 

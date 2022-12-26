@@ -23,4 +23,6 @@ public interface NovelService {
     NovelInformation getNovelInfoDetail(Long novelInfoId);
 
     Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request);
+
+    NovelEpisode getNovelEpisodeDetail(Long episodeId);
 }
