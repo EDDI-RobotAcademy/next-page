@@ -8,7 +8,12 @@
 
 <script>
 import SignInForm from "@/component/account/SignInForm";
+import cookies from 'vue-cookies';
 import axios from "axios";
+import Vue from "vue";
+Vue.use(cookies);
+
+
 export default {
   name: "SignInView",
   components: {
@@ -28,12 +33,13 @@ export default {
   },
 
   methods: {
-    onSubmit (payload) {
+    onSubmit(payload) {
       if (!this.isLogin) {
-        const { email, password } = payload
-        axios.post("http://localhost:7777/member/sign-in", { email, password })
+        const {email, password} = payload
+        axios.post("http://localhost:7777/member/sign-in", {email, password})
             .then((res) => {
               if (res.data) {
+
                 console.log(res.data)
                 alert("로그인 성공하였습니다.")
                 this.$store.state.isAuthenticated = true
