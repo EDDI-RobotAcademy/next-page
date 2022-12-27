@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../buttons/navigation_btn.dart';
 
 class CustomResultAndPushAlert extends StatelessWidget {
   const CustomResultAndPushAlert({Key? key, required this.title, required this.alertMsg, required this.route})
@@ -19,7 +18,12 @@ class CustomResultAndPushAlert extends StatelessWidget {
             title: Text(title),
             content: Text(alertMsg),
             actions: <Widget>[
-              NavigationButton(buttonText: '확인', route: route,)
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
+                },
+                child: Text('확인'),
+              )
             ]
         );
   }
