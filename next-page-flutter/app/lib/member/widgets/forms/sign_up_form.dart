@@ -1,4 +1,6 @@
 
+import 'package:app/member/api/SpringMemberApi.dart';
+import 'package:app/member/api/requests.dart';
 import 'package:app/member/utility/custom_text_style.dart';
 import 'package:app/member/widgets/alerts/custom_result_alert.dart';
 import 'package:app/member/widgets/alerts/custom_result_and_push_alert.dart';
@@ -30,9 +32,9 @@ class SignUpFormState extends State <SignUpForm>{
   late TextEditingController passwordController = TextEditingController();
   late TextEditingController nicknameController = TextEditingController();
 
-  bool emailPass = false;
-  bool nicknamePass = false;
-  bool? signUpSuccess = false;
+  bool? emailPass;
+  bool? nicknamePass;
+  bool? signUpSuccess;
 
   @override
   void initState() {
@@ -84,7 +86,8 @@ class SignUpFormState extends State <SignUpForm>{
                                 if(emailController.text.isEmpty) {
                                   _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '내용을 입력해주세요!'));
                                 } else {
-                                // 이메일 중복 확인 api
+                                emailPass = await SpringMemberApi().emailCheck(email);
+                                debugPrint(emailPass.toString());
                                 _showDupCheckResult(context, emailPass, '이메일'); }
                                 },
                               child: Text("중복 확인"),)
@@ -96,11 +99,13 @@ class SignUpFormState extends State <SignUpForm>{
                         children: [
                           Expanded( child: NicknameTextField(controller: nicknameController)),
                           ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if(nicknameController.text.isEmpty) {
                                 _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '내용을 입력해주세요!'));
                               } else {
-                              /* 닉네임 중복확인 api */
+                                debugPrint("nickname:" + nickname);
+                              nicknamePass = await SpringMemberApi().nicknameCheck(nickname);
+                              debugPrint(nicknamePass.toString());
                               _showDupCheckResult(context, nicknamePass, '닉네임');}},
                             child: Text("중복 확인"),)
                         ],
@@ -115,10 +120,11 @@ class SignUpFormState extends State <SignUpForm>{
                           style: ElevatedButton.styleFrom(
                               primary: Color(0xff6699FF),
                               minimumSize: Size(size.width * 0.4, size.height * 0.05)),
-                          onPressed: () {
+                          onPressed: () async {
                             if(_formKey.currentState!.validate()) {
                               if(emailPass == true && nicknamePass == true) {
-                                // signUpSuccess = 회원가입 요청 api
+                                signUpSuccess = await SpringMemberApi().signUp(SignUpRequest(email, password, nickname));
+                                debugPrint(signUpSuccess.toString());
                                 _showSignUpResult(context);
                               } else {
                                   _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '이메일 혹은 닉네임 중복 여부를 체크해주세요!'));}
@@ -137,13 +143,13 @@ class SignUpFormState extends State <SignUpForm>{
   // 회원가입 결과 알림창 보여주기 메서드
   void _showSignUpResult(BuildContext context) {
     if(signUpSuccess == true) {
-      _showAlertDialog(context, CustomResultAndPushAlert(title: '알림', alertMsg: '회원 가입을 축하합니다! \n 로그인 페이지로 이동합니다.', route: 'sign-in'));
+      _showAlertDialog(context, CustomResultAndPushAlert(title: '알림', alertMsg: '회원 가입을 축하합니다! \n로그인 페이지로 이동합니다.', route: '/sign-in'));
     } else {
-      _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '통신이 원활하지 않습니다. \n 다시 시도해주세요.'));
+      _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '통신이 원활하지 않습니다. \n다시 시도해주세요.'));
     }
   }
   // 중복검사 결과 알림창 보여주기 메서드
-  void _showDupCheckResult(BuildContext context, bool result, String type) {
+  void _showDupCheckResult(BuildContext context, bool? result, String type) {
     if(result == true) {
       _showAlertDialog(context, CustomResultAlert(title: '중복 확인', alertMsg: '사용 가능한 $type 입니다.'));
     } else {
