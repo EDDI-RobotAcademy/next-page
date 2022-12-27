@@ -1,13 +1,13 @@
-import 'package:app/home_screen.dart';
+
 import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:app/member/screens/sign_up_screen.dart';
 
 import 'package:app/member/utility/user_data_provider.dart';
-import 'package:app/point/screens/point_charge_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'custom_bottom_appbar.dart';
 import 'member/screens/sign_in_screen.dart';
 
 void main() {
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           ),
           home: CustomBottomAppbar(routeIndex: 0,),
           routes: {
-            "/sign-in": (context) => const SignInScreen(),
+            "/sign-in": (context) => const SignInScreen(fromWhere: 0, novel: "none"),
             "/sign-up": (context) => const SignUpScreen(),
           }
       )

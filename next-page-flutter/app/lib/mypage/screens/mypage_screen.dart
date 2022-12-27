@@ -1,3 +1,4 @@
+import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:app/member/utility/user_data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class MypageScreen extends StatefulWidget {
 class _MypageScreenState extends State<MypageScreen> {
   late bool? _loginState;
   bool _isLoading = true;
+  final int fromMy = 4;
 
   @override
   void initState() {
@@ -71,16 +73,21 @@ class _MypageScreenState extends State<MypageScreen> {
                   child: ListTile(
                     title: Text("로그인이 필요합니다."),
                     trailing: ElevatedButton(
-                        onPressed: () => Navigator.pushNamed(context, '/sign-in'),
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: fromMy, novel: "none")));
+                          },
                         child: Text('로그인'))),
                 ),
                 // 화면 전환 확인용 임시 버튼
-                TextButton(
+                /*TextButton(
                     onPressed: () async {
                       var prefs = await SharedPreferences.getInstance();
                       prefs.setString('userToken', 'tmptoken11111');
                       setState(() { _loginState = true; }); },
                     child: Text("로그인 전환"))
+                */
               ],
             ));
       } else {
@@ -164,10 +171,6 @@ class _MypageScreenState extends State<MypageScreen> {
         appBar: AppBar(
             elevation: 0,
             title: Text("MY"),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () => Navigator.pop(context),
-            )
         ),
         body: Stack(
             children: stack
