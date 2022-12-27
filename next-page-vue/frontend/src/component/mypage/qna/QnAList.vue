@@ -23,10 +23,12 @@
             <th align="center" width="180" height="50" style="color: #6699FF">카테고리</th>
             <th align="center" width="640" height="50" style="color: #6699FF">제목</th>
             <th align="center" width="240" height="50" style="color: #6699FF">등록일자</th>
+        </tr>
 
         <tr v-if="!qnas || (Array.isArray(qnas) && qnas.length === 0)">
           <td colspan="4">
             현재 등록된 QnA가 없습니다.
+
           </td>
         </tr>
         <tr v-else v-for="qna in qnas" :key="qna.qnaNo">
@@ -51,6 +53,7 @@
 
 
         </tr>
+
       </table>
       <br><br><br>
 
