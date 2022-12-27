@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'custom_card_list.dart';
+import '../custom_title_appbar.dart';
+import 'widgets/custom_card_list.dart';
+import 'widgets/custom_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -13,16 +15,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: customTitleAppbar(context),
       body: Container(
         width: double.infinity,
         color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: size.height * 0.1,
-            ),
-            CustomCardList()
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const CustomCarousel(),
+              SizedBox(
+                height: size.height * 0.05,
+              ),
+              const CustomCardList()
+            ],
+          ),
         ),
       ),
     );
