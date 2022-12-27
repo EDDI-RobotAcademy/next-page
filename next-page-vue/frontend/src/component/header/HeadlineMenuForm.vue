@@ -47,9 +47,9 @@
               구입내역
             </v-btn>
           </router-link>
-          <router-link to="/">
+          <router-link to="/qna-list-view">
             <v-btn color="black" text plain :ripple="false">
-              마이페이지?
+              마이페이지
             </v-btn>
           </router-link>&nbsp;
           <v-dialog v-model="logoutDialog" persisten max-width="400">
