@@ -1,5 +1,8 @@
 import {
-    CHECK_DUPLICATE_EMAIL_TO_SPRING, CHECK_DUPLICATE_NICKNAME_TO_SPRING, REQUEST_UPLOADER_NOVEL_INFO_LIST,
+    CHECK_DUPLICATE_EMAIL_TO_SPRING,
+    CHECK_DUPLICATE_NICKNAME_TO_SPRING, REQUEST_BOARD_FROM_SPRING,
+    REQUEST_BOARD_LIST_FROM_SPRING,
+    REQUEST_UPLOADER_NOVEL_INFO_LIST,
 
 } from './mutation-types'
 import axios from "axios";
@@ -84,7 +87,64 @@ export default{
             .catch((error) => {
                 alert(error)
             })
+    },
+
+    requestBoardListFromSpring ({ commit }) {
+        console.log('requestBoardListFromSpring()')
+
+        return axios.get('http://localhost:7777/qna/list')
+            .then((res) => {
+                commit(REQUEST_BOARD_LIST_FROM_SPRING, res.data)
+            })
+    },
+
+    // eslint-disable-next-line no-empty-pattern
+    requestCreateBoardContentsToSpring ({ }, payload) {
+        console.log('requestCreateBoardContentsToSpring()')
+
+        const { title, category, content } = payload
+        return axios.post('http://localhost:7777/qna/register',
+            { title, category, content })
+            .then(() => {
+                alert('📚 QnA를 등록 하였습니다. 📚')
+            })
+    },
+
+
+    requestBoardFromSpring ({ commit }, qnaNo) {
+        console.log('requestBoardFromSpring()')
+
+        return axios.get(`http://localhost:7777/qna/${qnaNo}`)
+            .then((res) => {
+                commit(REQUEST_BOARD_FROM_SPRING, res.data)
+            })
+    },
+
+
+
+    // eslint-disable-next-line no-empty-pattern
+    requestDeleteBoardToSpring ({ }, qnaNo) {
+        console.log('requestDeleteBoardToSpring()')
+
+        return axios.delete(`http://localhost:7777/qna/${qnaNo}`)
+            .then(() => {
+                alert('📚 QnA를 삭제 하였습니다.📚')
+            })
+    },
+    // eslint-disable-next-line no-empty-pattern
+    requestBoardModifyToSpring ({ }, payload) {
+        console.log('requestBoardModifyToSpring()')
+
+        const { title, content, qnaNo, category, regDate } = payload
+
+        return axios.put(`http://localhost:7777/qna/${qnaNo}`,
+            { title, content, category, regDate })
+            .then(() => {
+                alert('📚 QnA를 수정 하였습니다. 📚 ')
+            })
     }
+
+
 
 
 

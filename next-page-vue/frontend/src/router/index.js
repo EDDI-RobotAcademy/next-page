@@ -8,6 +8,10 @@ import NovelInformationRegisterView from "@/views/Upload/NovelInformationRegiste
 import MemberJoinForm from "@/component/account/MemberJoinForm";
 import SignUpView from "@/views/account/SignUpView";
 import SignInView from "@/views/account/SignInView";
+import QnARegisterView from "@/views/mypage/qna/QnARegisterView";
+import QnAListView from "@/views/mypage/qna/QnAListView";
+import QnAReadView from "@/views/mypage/qna/QnAReadView";
+import QnAModifyView from "@/views/mypage/qna/QnAModifyView";
 
 
 Vue.use(VueRouter)
@@ -62,6 +66,39 @@ const routes = [
 
 
 
+  {
+    path: '/QnZ-Register-View',
+    name: 'QnA-Register-View',
+    component: QnARegisterView
+  },
+
+  {
+    path: '/QnA-List-View',
+    name: 'QnA-List-View',
+    component: QnAListView
+  },
+
+
+  {
+    path: '/QnA-Read-View',
+    name: 'QnA-Read-View',
+    components: {
+      default: QnAReadView
+    },
+    props: {
+      default: true
+    }
+  },
+  {
+    path: '/QnA-Modify-View',
+    name: 'QnA-Modify-View',
+    components: {
+      default: QnAModifyView
+    },
+    props: {
+      default: true
+    }
+  }
 
 
 

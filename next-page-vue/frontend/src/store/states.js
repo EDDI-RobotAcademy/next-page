@@ -9,5 +9,6 @@ export default {
 
     uploaderNovelInfoList: {},
 
-
+    qnas: [],
+    qna: {},
 }
