@@ -23,12 +23,12 @@
         <v-spacer></v-spacer>
         <!-- 비로그인 상태에서 보이는 회원메뉴 UI -->
         <div v-if="($store.state.isAuthenticated == false)">
-          <router-link to="/sign-up">
+          <router-link to="/member-join-form">
             <v-btn color="black" text plain :ripple="false">
               회원가입
             </v-btn>
           </router-link>&nbsp;
-          <router-link to="/sign-in">
+          <router-link to="/signin-view">
             <v-btn color="black" text plain :ripple="false">  
               로그인
             </v-btn>

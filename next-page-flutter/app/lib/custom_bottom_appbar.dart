@@ -9,7 +9,9 @@ import 'search_screen.dart';
 import 'storage_screen.dart';
 
 class CustomBottomAppbar extends StatefulWidget {
-  const CustomBottomAppbar({Key? key}) : super(key: key);
+  final int routeIndex;
+
+  const CustomBottomAppbar({Key? key, required this.routeIndex}) : super(key: key);
 
   @override
   State<CustomBottomAppbar> createState() => _CustomBottomAppbarState();
@@ -35,6 +37,7 @@ class _CustomBottomAppbarState extends State<CustomBottomAppbar> {
 
   @override
   void initState() {
+    _selectedIndex = widget.routeIndex;
     super.initState();
   }
 

@@ -7,10 +7,11 @@ import 'widgets/comment_list_form.dart';
 
 
 class CommentListScreen extends StatefulWidget {
+  final int id;
   final String appBarTitle;
   final int fromWhere;
 
-  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere}) : super(key: key);
+  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere, required this.id}) : super(key: key);
 
   @override
   State<CommentListScreen> createState() => _CommentListScreenState();
@@ -25,8 +26,8 @@ class _CommentListScreenState extends State<CommentListScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: _buildCommentScreenAppBar(),
-        body: CommentListForm()
+          appBar: _buildCommentScreenAppBar(),
+          body: CommentListForm()
       ),
     );
   }
@@ -42,13 +43,14 @@ class _CommentListScreenState extends State<CommentListScreen> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
-                  const NovelDetailScreen()),
+                      NovelDetailScreen(id: widget.id)),
                   (route) => false)
               : Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
                       ScrollNovelViewerScreen(
+                        id: widget.id,
                         appBarTitle: widget.appBarTitle,
                         episode: widget.fromWhere,)),
                   (route) => false);

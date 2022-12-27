@@ -1,6 +1,8 @@
 <template>
 <div style="font-family: Arial">
-    <br>
+
+  <HeadlineMenuForm/>
+
     <v-row justify="center">
       <v-col cols="4">
 
@@ -64,6 +66,10 @@
         </div>
       </v-col>
     </v-row>
+
+<br><br><br>
+
+  <FooterMenuForm/>
 </div>
 </template>
 
@@ -71,9 +77,12 @@
 
 
 import {mapActions, mapState} from "vuex";
+import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
 
 export default {
   name: "SignUpForm",
+  components: {FooterMenuForm, HeadlineMenuForm},
   data() {
     return {
       email: "",

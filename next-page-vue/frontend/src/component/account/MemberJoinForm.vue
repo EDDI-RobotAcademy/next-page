@@ -1,5 +1,8 @@
 <template>
   <div>
+
+    <HeadlineMenuForm/>
+
     <v-container>
       <v-row justify="center" class="logo"><div style="color:#6699FF">NEXT-PAGE</div></v-row>
       <v-layout column class="mx-auto">
@@ -209,6 +212,10 @@
       </v-row>
 
     </v-container>
+
+    <br><br><br>
+
+    <footer-menu-form/>
   </div>
 
 
@@ -216,8 +223,12 @@
 </template>
 
 <script>
+
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
+import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
 export default {
   name: "MemberJoinForm",
+  components: {HeadlineMenuForm, FooterMenuForm, },
   data() {
     return {
       checkedValues: [],
