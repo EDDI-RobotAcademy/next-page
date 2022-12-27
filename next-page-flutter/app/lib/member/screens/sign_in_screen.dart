@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../custom_transparent_appbar.dart';
 import '../widgets/forms/sign_in_form.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  final int fromWhere;
+  final dynamic novel;
+  const SignInScreen({Key? key, required this.fromWhere, required this.novel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,11 @@ class SignInScreen extends StatelessWidget {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-            body: SignInForm())
+          appBar: customTransparentAppbar(),
+            // overflow 나서 SingleChildScrollView 추가
+            body: SingleChildScrollView(
+              child: SignInForm(fromWhere: fromWhere,novel: novel,),
+            ))
     );
   }
 }
