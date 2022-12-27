@@ -28,7 +28,7 @@ class _CommentListFormState extends State<CommentListForm> {
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      height: size.height * 0.135,
+                      height: size.height * 0.18,
                       alignment: Alignment.centerLeft,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,6 +76,7 @@ class _CommentListFormState extends State<CommentListForm> {
                               ],
                             ),
                           ),
+                          //본문 내용
                           Padding(
                             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                             child: Text('댓글내용글자수제한테스트아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아댓글내용글자수제한테스트아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아아',

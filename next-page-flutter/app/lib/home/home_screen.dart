@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../custom_title_appbar.dart';
+import '../widgets/custom_title_appbar.dart';
 import 'widgets/custom_card_list.dart';
 import 'widgets/custom_carousel.dart';
 
