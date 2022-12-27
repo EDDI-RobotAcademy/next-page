@@ -16,6 +16,7 @@ class MypageScreen extends StatefulWidget {
 class _MypageScreenState extends State<MypageScreen> {
   late bool? _loginState;
   bool _isLoading = true;
+  final int fromMy = 4;
 
   @override
   void initState() {
@@ -73,10 +74,9 @@ class _MypageScreenState extends State<MypageScreen> {
                     title: Text("로그인이 필요합니다."),
                     trailing: ElevatedButton(
                         onPressed: () async {
-                          // 로그인 페이지에서 돌아올 때 반환값 받기
-                          bool isBack = await Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen()));
-                          // true(로그인 성공)면 돌아와서 _loginState true로 변경
-                          if(isBack) { setState(() { _loginState = true; });}
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: fromMy, novel: "none")));
                           },
                         child: Text('로그인'))),
                 ),
@@ -171,10 +171,6 @@ class _MypageScreenState extends State<MypageScreen> {
         appBar: AppBar(
             elevation: 0,
             title: Text("MY"),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () => Navigator.pop(context),
-            )
         ),
         body: Stack(
             children: stack
