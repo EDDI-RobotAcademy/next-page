@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'novel/screens/novel_detail_screen.dart';
+import '../../novel/screens/novel_detail_screen.dart';
 
 class CustomVerticalCard extends StatefulWidget {
   final dynamic novel;

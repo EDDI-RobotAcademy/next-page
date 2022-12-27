@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'app_theme.dart';
-import 'home_screen.dart';
-import 'mypage_screen.dart';
-import 'novel_screen.dart';
-import 'search_screen.dart';
-import 'storage_screen.dart';
+import '../app_theme.dart';
+import '../home/home_screen.dart';
+import '../mypage/screens/mypage_screen.dart';
+import '../novel_screen.dart';
+import '../search_screen.dart';
+import '../storage_screen.dart';
 
 class CustomBottomAppbar extends StatefulWidget {
   final int routeIndex;

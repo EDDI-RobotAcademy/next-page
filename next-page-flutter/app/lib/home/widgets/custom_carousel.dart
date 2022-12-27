@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:test1_project/model/tmp_carousel.dart';
-import 'package:test1_project/model/tmp_novel_model.dart';
+import '../../model/tmp_carousel.dart';
+
 
 class CustomCarousel extends StatefulWidget {
   const CustomCarousel({Key? key}) : super(key: key);

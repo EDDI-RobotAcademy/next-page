@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'custom_vertical_card.dart';
-import 'model/tmp_novel_model.dart';
+import '../../model/tmp_novel_model.dart';
 
 class CustomCardList extends StatefulWidget {
   const CustomCardList({Key? key}) : super(key: key);
