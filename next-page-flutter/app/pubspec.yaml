@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.4
   in_app_purchase: ^3.0.8
   shared_preferences: ^2.0.15
+  carousel_slider: ^4.1.1
 
 dev_dependencies:
   mockito: ^5.2.0
