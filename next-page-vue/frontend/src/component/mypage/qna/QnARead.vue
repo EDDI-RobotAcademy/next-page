@@ -20,7 +20,6 @@
         <textarea cols="138" rows="20" :value="qna.content" type="text" readonly></textarea><br>
 
       </div>
-
     </div>
   </div>
 </template>

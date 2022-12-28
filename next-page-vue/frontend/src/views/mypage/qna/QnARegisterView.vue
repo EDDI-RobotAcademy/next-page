@@ -1,11 +1,9 @@
 <template>
 <div>
 
-
   <div align="center">
     <QnARegister @submit="onSubmit"/>
   </div>
-
 
 </div>
 </template>

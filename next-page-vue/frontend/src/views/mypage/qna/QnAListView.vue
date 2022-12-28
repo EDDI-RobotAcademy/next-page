@@ -1,12 +1,8 @@
 <template>
 
   <div id="qna">
-
     <QnAList :qnas="qnas"/>
-
   </div>
-
-
 
 </template>
 
@@ -18,7 +14,6 @@ export default {
   name: "QnAListView",
   components:{
     QnAList
-
 
   },
 
