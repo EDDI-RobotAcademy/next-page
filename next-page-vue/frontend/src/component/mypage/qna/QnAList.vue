@@ -55,9 +55,8 @@
         </tr>
 
       </table>
-      <br><br><br>
 
-      <br><br><br><br><br><br><br><br><br><br><br><br>
+      <br><br>
 
       <ul>
 
@@ -69,10 +68,12 @@
 
       </ul>
 
-
-
-
+      <br><br><br>
     </v-container>
+
+    <footer-menu-form/>
+
+
   </div>
 
 </template>
@@ -81,9 +82,10 @@
 
 
 import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
 export default {
   name: "QnAList",
-  components: {HeadlineMenuForm },
+  components: {FooterMenuForm, HeadlineMenuForm },
   props: {
     qnas: {
       type: Array
