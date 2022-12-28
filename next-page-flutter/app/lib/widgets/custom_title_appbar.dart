@@ -5,6 +5,7 @@ import '../app_theme.dart';
 AppBar customTitleAppbar(context, String title) {
   return AppBar(
     backgroundColor: Colors.white,
+    centerTitle: true,
     elevation: 0.0,
     title: Text(
       title,
