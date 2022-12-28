@@ -3,6 +3,7 @@ package kr.eddi.demo.novel.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.eddi.demo.member.entity.member.NextPageMember;
+import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -69,6 +70,15 @@ public class NovelInformation {
         this.author = author;
         this.openToPublic = openToPublic;
         this.purchasePoint = purchasePoint;
+    }
+
+    public void modify(NovelInformationModifyRequest request) {
+        this.title = request.getTitle();
+        this.introduction = request.getIntroduction();
+        this.publisher = request.getPublisher();
+        this.author = request.getAuthor();
+        this.openToPublic = request.getOpenToPublic();
+        this.purchasePoint = request.getPurchasePoint();
     }
 
     /**

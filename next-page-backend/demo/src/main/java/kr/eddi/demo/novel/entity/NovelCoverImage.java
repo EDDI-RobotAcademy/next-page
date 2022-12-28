@@ -34,6 +34,11 @@ public class NovelCoverImage {
         this.information = information;
     }
 
+    public void modify(String originalName, String reName) {
+        this.originalName = originalName;
+        this.reName = reName;
+    }
+
     /**
      * 맵핑된 소설 정보 엔티티에 표지 정보를 업데이트 합니다.
      */

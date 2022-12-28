@@ -4,6 +4,7 @@ package kr.eddi.demo.novel;
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.form.NovelEpisodeRegisterForm;
+import kr.eddi.demo.novel.form.NovelInformationModifyForm;
 import kr.eddi.demo.novel.form.NovelInformationRegisterForm;
 import kr.eddi.demo.novel.form.PageForm;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
@@ -37,6 +38,22 @@ public class NovelController {
 
         log.info("information form: " + form);
         return novelService.informationRegister(imgList, form.toRequest());
+    }
+
+    @PostMapping("/information-modify-text/{novel_info_id}")
+    public Boolean informationModifyWithOutFile(@PathVariable("novel_info_id") Long novel_info_id, @RequestBody NovelInformationModifyForm form) {
+        log.info("information modify form: " + form);
+        return novelService.informationModifyWithOutImg(novel_info_id, form.toRequest());
+    }
+
+    @PostMapping(value = "/information-modify-with-file/{novel_info_id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public Boolean informationModifyWithFile(@PathVariable("novel_info_id") Long novel_info_id,
+                                             @RequestPart(value = "fileList") List<MultipartFile> imgList,
+                                             @RequestPart(value = "info") NovelInformationModifyForm form) {
+
+        log.info("information modify form: " + form);
+
+        return novelService.informationModifyWithImg(novel_info_id, imgList, form.toRequest());
     }
 
 
