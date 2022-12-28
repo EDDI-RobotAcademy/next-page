@@ -3,7 +3,6 @@
 
 
   <div align="center">
-
     <QnARegister @submit="onSubmit"/>
   </div>
 

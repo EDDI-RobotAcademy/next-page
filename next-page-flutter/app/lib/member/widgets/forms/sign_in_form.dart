@@ -28,7 +28,8 @@ class SignInForm extends StatefulWidget {
 class _SignInFormState extends State <SignInForm>{
   final _formKey = GlobalKey<FormState>();
 
-  final int fromMy = 4;
+  final int homeIdx = 0;
+  final int myIdx = 4;
   final int fromEpisode = 5;
 
   late String email;
@@ -91,18 +92,25 @@ class _SignInFormState extends State <SignInForm>{
                                   // spring서버가 응답한 token값을 prefs로 디스크에 저장
                                   final prefs = await SharedPreferences.getInstance();
                                   await prefs.setString('userToken', signInResponse.userToken);
-                                  if(widget.fromWhere == fromMy) {
+                                  if(widget.fromWhere == myIdx) {
                                     Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                CustomBottomAppbar(routeIndex: widget.fromWhere,)),
+                                                CustomBottomAppbar(routeIndex: myIdx,)),
                                             (route) => false);
                                   } else if(widget.fromWhere == fromEpisode) {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                         builder: (BuildContext context) => NovelDetailScreen(id: widget.novel.id)));
+                                  } else {
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                CustomBottomAppbar(routeIndex: homeIdx)),
+                                            (route) => false);
                                   }
 
                                 } else {

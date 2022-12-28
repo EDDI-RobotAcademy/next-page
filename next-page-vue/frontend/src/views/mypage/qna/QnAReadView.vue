@@ -4,18 +4,18 @@
     <QnARead v-if="qna" :qna="qna"/>
 
 
-
-
     <v-icon style="color: #6699FF">mdi-cloud-upload</v-icon>
-    <router-link :to="{ name: 'QnA-Modify-View', params: { qnaNo } }" style="font-size: 25px; color: #6699FF" >
+    <router-link :to="{ name: 'QnA-Modify-View', params: { qnaNo } }" style="font-size: 25px; color: #6699FF">
       수정
     </router-link>
 
     <v-icon style="color: #6699FF">mdi-trash-can</v-icon>
     <button @click="onDelete" style="font-size: 25px; color: #6699FF">삭제</button>
 
+    <br><br><br><br><br>
+    <footer-menu-form/>
 
-</div>
+  </div>
 
 
 </template>
@@ -23,10 +23,11 @@
 <script>
 import {mapActions, mapState} from "vuex";
 import QnARead from "@/component/mypage/qna/QnARead";
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
 
 export default {
   name: "QnAReadView",
-  components: {QnARead},
+  components: {FooterMenuForm, QnARead},
   props: {
     qnaNo: {
       type: String,
@@ -41,9 +42,9 @@ export default {
       'requestBoardFromSpring',
       'requestDeleteBoardToSpring',
     ]),
-    async onDelete () {
+    async onDelete() {
       await this.requestDeleteBoardToSpring(this.qnaNo);
-      await this.$router.push({ name: 'QnA-List-View' })
+      await this.$router.push({name: 'QnA-List-View'})
     }
   },
   created() {
@@ -57,7 +58,6 @@ export default {
 a {
   text-decoration: none;
 }
-
 
 
 </style>

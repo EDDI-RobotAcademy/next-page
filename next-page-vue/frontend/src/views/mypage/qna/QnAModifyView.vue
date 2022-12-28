@@ -3,6 +3,7 @@
 
     <QnAModify v-if="qna" :qna="qna" @submit="onSubmit"/>
 
+
   </div>
 </template>
 

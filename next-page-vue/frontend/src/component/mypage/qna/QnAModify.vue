@@ -30,6 +30,8 @@
         <v-icon style="color: #6699FF">mdi-cloud-upload</v-icon>
         <button type="submit" style="font-size: 25px; color: #6699FF">수정 완료</button>
 
+      <br><br><br><br><br><br>
+      <footer-menu-form/>
 
     </form>
   </div>
@@ -39,9 +41,10 @@
 
 
 import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
 export default {
   name: "QnAModify",
-  components: {HeadlineMenuForm},
+  components: {FooterMenuForm, HeadlineMenuForm},
   props: {
     qna: {
       type: Object,
