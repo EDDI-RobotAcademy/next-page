@@ -3,6 +3,7 @@
   <div id="qna">
 
     <QnAList :qnas="qnas"/>
+
   </div>
 
 
