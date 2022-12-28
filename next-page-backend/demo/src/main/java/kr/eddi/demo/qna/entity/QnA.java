@@ -32,7 +32,7 @@ public class QnA {
     @Column(length = 32, nullable = false)
     private String category;
 
-    @Lob
+    @Column
     private String content;
 
     @CreationTimestamp
