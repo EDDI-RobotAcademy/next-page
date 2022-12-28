@@ -1,22 +1,21 @@
 import {
     CHECK_DUPLICATE_EMAIL_TO_SPRING,
     CHECK_DUPLICATE_NICKNAME_TO_SPRING, REQUEST_BOARD_FROM_SPRING,
-    REQUEST_BOARD_LIST_FROM_SPRING,
+    REQUEST_BOARD_LIST_FROM_SPRING, REQUEST_NOVEL_EPISODE_LIST,
     REQUEST_UPLOADER_NOVEL_INFO_LIST,
 
 } from './mutation-types'
 import axios from "axios";
 
 
-export default{
-
+export default {
 
 
     requestUploaderNovelInfoListToSpring({commit}, payload) {
         console.log("requestUploaderNovelInfoListToSpring()")
 
-        const { member_id, page, size } = payload
-        return axios.post(`http://localhost:7777/novel/${member_id}/information-list`, { page, size })
+        const {member_id, page, size} = payload
+        return axios.post(`http://localhost:7777/novel/${member_id}/information-list`, {page, size})
             .then((res) => {
                 commit(REQUEST_UPLOADER_NOVEL_INFO_LIST, res.data)
             })
@@ -74,13 +73,13 @@ export default{
     },
 
     // eslint-disable-next-line no-empty-pattern
-    requestPayAndChargePointToSpring({ }, payload) {
+    requestPayAndChargePointToSpring({}, payload) {
         console.log("requestPayAndChargePointToSpring()")
 
-        const { member_id, payment_id, amount, point } = payload
-        return axios.post('http://localhost:7777/point/pay-charge', { member_id, payment_id, amount, point})
+        const {member_id, payment_id, amount, point} = payload
+        return axios.post('http://localhost:7777/point/pay-charge', {member_id, payment_id, amount, point})
             .then((res) => {
-                if(res.data) {
+                if (res.data) {
                     alert("포인트 충전이 완료되었습니다.")
                 }
             })
@@ -89,7 +88,7 @@ export default{
             })
     },
 
-    requestBoardListFromSpring ({ commit }) {
+    requestBoardListFromSpring({commit}) {
         console.log('requestBoardListFromSpring()')
 
         return axios.get('http://localhost:7777/qna/list')
@@ -99,19 +98,19 @@ export default{
     },
 
     // eslint-disable-next-line no-empty-pattern
-    requestCreateBoardContentsToSpring ({ }, payload) {
+    requestCreateBoardContentsToSpring({}, payload) {
         console.log('requestCreateBoardContentsToSpring()')
 
-        const { title, category, content } = payload
+        const {title, category, content} = payload
         return axios.post('http://localhost:7777/qna/register',
-            { title, category, content })
+            {title, category, content})
             .then(() => {
                 alert('📚 QnA를 등록 하였습니다. 📚')
             })
     },
 
 
-    requestBoardFromSpring ({ commit }, qnaNo) {
+    requestBoardFromSpring({commit}, qnaNo) {
         console.log('requestBoardFromSpring()')
 
         return axios.get(`http://localhost:7777/qna/${qnaNo}`)
@@ -121,9 +120,8 @@ export default{
     },
 
 
-
     // eslint-disable-next-line no-empty-pattern
-    requestDeleteBoardToSpring ({ }, qnaNo) {
+    requestDeleteBoardToSpring({}, qnaNo) {
         console.log('requestDeleteBoardToSpring()')
 
         return axios.delete(`http://localhost:7777/qna/${qnaNo}`)
@@ -132,27 +130,33 @@ export default{
             })
     },
     // eslint-disable-next-line no-empty-pattern
-    requestBoardModifyToSpring ({ }, payload) {
+    requestBoardModifyToSpring({}, payload) {
         console.log('requestBoardModifyToSpring()')
 
-        const { title, content, qnaNo, category, regDate } = payload
+        const {title, content, qnaNo, category, regDate} = payload
 
         return axios.put(`http://localhost:7777/qna/${qnaNo}`,
-            { title, content, category, regDate })
+            {title, content, category, regDate})
             .then(() => {
                 alert('📚 QnA를 수정 하였습니다. 📚 ')
             })
-    }
+    },
 
 
+    requestEpisodeListToSpring({commit}, payload) {
 
+        console.log("requestPayAndChargePointToSpring()")
 
+        const {novel_info_id, page, size } = payload
 
-
-    /*requestUploaderNovelInfoListToSpring() {
-
-        console.log("requestUploaderNovelInfoListToSpring()")
-        return axios.get
-    }*/
+        return axios.post(`http://localhost:7777/novel/episode-list/${novel_info_id}`, { page, size })
+            .then((res) =>{
+                console.log(res.data)
+                commit(REQUEST_NOVEL_EPISODE_LIST, res.data)
+            })
+            .catch((error) => {
+                alert(error.message)
+            })
+    },
 
 }
