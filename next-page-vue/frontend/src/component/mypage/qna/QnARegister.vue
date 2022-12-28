@@ -29,6 +29,11 @@
       <v-btn class="white--text" id="BtnRegister" type="submit">등록</v-btn>
 
     </div>
+
+    <br><br><br><br><br>
+    <footer-menu-form/>
+
+
   </form>
 
 </div>
@@ -37,9 +42,10 @@
 <script>
 
 import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
 export default {
   name: "QnARegister",
-  components: {HeadlineMenuForm},
+  components: {FooterMenuForm, HeadlineMenuForm},
   data () {
     return {
       title: '',
