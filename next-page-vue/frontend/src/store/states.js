@@ -7,6 +7,8 @@ export default {
 
     memberInfo: {},
 
+    loginUserProfile: [],
+
     uploaderNovelInfoList: {},
 
     qnas: [],

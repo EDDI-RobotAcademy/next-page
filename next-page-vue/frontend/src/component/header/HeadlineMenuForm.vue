@@ -102,7 +102,13 @@ export default {
       this.logoutDialog = false
     },
     logoutBtn() {
-
+      this.$store.state.isAuthenticated = false
+      this.$store.state.loginUserProfile = []
+      this.$cookies.remove("user")
+      localStorage.removeItem("userInfo")
+      localStorage.removeItem("vuex")
+      alert("로그아웃 되었습니다.")
+      this.$router.push("/")
     }
   },
 }
