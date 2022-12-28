@@ -34,6 +34,7 @@
         <tr v-else v-for="qna in qnas" :key="qna.qnaNo">
           <td align="center">
             {{ qna.qnaNo }}
+
           </td>
           <td align="center">
             <router-link :to="{ name: 'QnA-Read-View',
@@ -44,7 +45,12 @@
           </td>
           <td align="center">
 
+            <router-link :to="{ name: 'QnA-Read-View',
+                              params: { qnaNo: qna.qnaNo.toString() }}">
             {{ qna.title }}
+
+
+            </router-link>
           </td>
           <td align="center">
             {{ qna.regDate }}
