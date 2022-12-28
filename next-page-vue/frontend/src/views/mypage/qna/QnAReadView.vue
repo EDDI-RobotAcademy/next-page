@@ -3,15 +3,17 @@
 
     <QnARead v-if="qna" :qna="qna"/>
 
+    <div id='btn'>
 
-    <v-icon style="color: #6699FF">mdi-cloud-upload</v-icon>
-    <router-link :to="{ name: 'QnA-Modify-View', params: { qnaNo } }" style="font-size: 25px; color: #6699FF">
-      수정
-    </router-link>
+      <v-btn color="#6699FF" @click="onModify" style="font-size: 25px; color: white; width:180px;height:  50px">
+        수정
+      </v-btn> &nbsp; &nbsp; &nbsp;
 
-    <v-icon style="color: #6699FF">mdi-trash-can</v-icon>
-    <button @click="onDelete" style="font-size: 25px; color: #6699FF">삭제</button>
+      <v-btn color="#6699FF" @click="onDelete" style="font-size: 25px; color: white; width:180px;height:  50px">
+        삭제
+      </v-btn>
 
+    </div>
     <br><br><br><br><br>
     <footer-menu-form/>
 
@@ -42,6 +44,14 @@ export default {
       'requestBoardFromSpring',
       'requestDeleteBoardToSpring',
     ]),
+
+    onModify() {
+      this.$router.push({
+        name: "QnA-Modify-View",
+        params: {qnaNo: this.qna.qnaNo}
+      })
+    },
+
     async onDelete() {
       await this.requestDeleteBoardToSpring(this.qnaNo);
       await this.$router.push({name: 'QnA-List-View'})
@@ -59,5 +69,10 @@ a {
   text-decoration: none;
 }
 
+#btn {
+  text-align: center;
+  color: #6699FF;
+
+}
 
 </style>
