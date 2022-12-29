@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -249,6 +250,20 @@ public class NovelServiceImpl implements NovelService {
     public Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request) {
         return informationRepository.findByMember_Id(member_id, request);
     }
+
+    /**
+     * 등록된 모든 소설 리스트를 가져옵니다.
+     * @return
+     */
+    @Override
+    public List<NovelInformation> getNovelList(){
+        List<NovelInformation> tmpList = informationRepository .findAll(Sort.by(Sort.Direction.DESC, "id"));
+
+        log.info("모든 소설 리스트: "+tmpList.toString());
+
+        return tmpList;
+    }
+
 
     /**
      * 소설 정보 상세 사항을 가져옵니다.

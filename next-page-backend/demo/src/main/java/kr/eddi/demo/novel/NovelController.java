@@ -68,6 +68,13 @@ public class NovelController {
         return novelService.getUploaderNovelInfoList(member_id, request);
     }
 
+    @GetMapping("/all-novel-list")
+    public List<NovelInformation> getNovelList(){
+        log.info("getNovelList()");
+
+        return novelService.getNovelList();
+    }
+
     @GetMapping("/information-detail/{novel_info_id}")
     public NovelInformation getNovelInfoDetail (@PathVariable("novel_info_id") Long novel_info_id) {
         return novelService.getNovelInfoDetail(novel_info_id);
