@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 public interface NovelService {
 
@@ -28,7 +29,7 @@ public interface NovelService {
 
     List<NovelInformation> getNovelList();
 
-    NovelInformation getNovelInfoDetail(Long novelInfoId);
+    Map<String, Object> getNovelInfoDetail(Long novelInfoId);
 
     Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request);
 

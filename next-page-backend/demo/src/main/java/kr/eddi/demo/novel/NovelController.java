@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/novel")
@@ -76,7 +77,7 @@ public class NovelController {
     }
 
     @GetMapping("/information-detail/{novel_info_id}")
-    public NovelInformation getNovelInfoDetail (@PathVariable("novel_info_id") Long novel_info_id) {
+    public Map<String, Object> getNovelInfoDetail (@PathVariable("novel_info_id") Long novel_info_id) {
         return novelService.getNovelInfoDetail(novel_info_id);
     }
 
