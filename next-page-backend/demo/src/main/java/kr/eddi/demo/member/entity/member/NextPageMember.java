@@ -16,6 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
+
 public class NextPageMember {
 
     @Id
@@ -28,6 +29,7 @@ public class NextPageMember {
     private String email;
 
 
+    @Getter
     @Column(nullable = false)
     private String nickName;
 
@@ -103,6 +105,7 @@ public class NextPageMember {
 
     /**
      * 회원이 쓴 댓글 리스트를 업데이트 합니다.
+     *
      * @param comment 쓴 댓글
      */
     public void updateCommentList(Comment comment) {
