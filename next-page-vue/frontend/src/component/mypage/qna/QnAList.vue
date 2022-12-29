@@ -4,7 +4,7 @@
 
 <br><br><br><br>
     <div id='btn'>
-      <v-btn class='white--text' id='btnRegisterPage'
+      <v-btn class='white--text' id='btnRegisterPage' style="font-size: 18px"
              :to="{ name: 'QnA-Register-View' }">QnA 등록
       </v-btn>
     </div>
@@ -34,6 +34,7 @@
         <tr v-else v-for="qna in qnas" :key="qna.qnaNo">
           <td align="center">
             {{ qna.qnaNo }}
+
           </td>
           <td align="center">
             <router-link :to="{ name: 'QnA-Read-View',
@@ -44,7 +45,11 @@
           </td>
           <td align="center">
 
+            <router-link :to="{ name: 'QnA-Read-View',
+                              params: { qnaNo: qna.qnaNo.toString() }}">
+
             {{ qna.title }}
+            </router-link>
           </td>
           <td align="center">
             {{ qna.regDate }}
@@ -119,6 +124,8 @@ table{
 
 #btnRegisterPage {
   background: #6699FF;
+  width: 160px; height: 50px;
+
 }
 
 #btn {

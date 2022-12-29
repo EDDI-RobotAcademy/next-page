@@ -26,7 +26,7 @@
     <br><br>
 
     <div id ='btn'>
-      <v-btn class="white--text" id="BtnRegister" type="submit">등록</v-btn>
+      <v-btn class="white--text" id="BtnRegister" type="submit" style="font-size: 25px">등록</v-btn>
 
     </div>
 

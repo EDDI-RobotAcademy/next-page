@@ -27,9 +27,11 @@
 
       <br><br>
 
-        <v-icon style="color: #6699FF">mdi-cloud-upload</v-icon>
-        <button type="submit" style="font-size: 25px; color: #6699FF">수정 완료</button>
+      <div id='btn'>
 
+        <v-btn class="white--text" id="BtnRegister" type="submit" style="font-size: 25px" >수정 </v-btn>
+
+      </div>
       <br><br><br><br><br><br>
       <footer-menu-form/>
 
@@ -81,17 +83,12 @@ export default {
 .text {
   color: #6699FF;
   font-size: 60px;
-
-
 }
-
 
 .text2 {
 
   margin-right: 20%;
   margin-left: 20%;
-
-
 }
 
 
@@ -105,5 +102,9 @@ a {
   text-decoration: none;
 }
 
+
+#btn { text-align: center; font-size: 25px;  right:auto}
+
+#BtnRegister { background-color: #6699FF; width: 180px; height: 50px;}
 
 </style>
