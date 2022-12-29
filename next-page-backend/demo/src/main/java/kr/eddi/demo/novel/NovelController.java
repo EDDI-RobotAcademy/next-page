@@ -1,10 +1,13 @@
 package kr.eddi.demo.novel;
 
 
+import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.form.NovelEpisodeRegisterForm;
+import kr.eddi.demo.novel.form.NovelInformationModifyForm;
 import kr.eddi.demo.novel.form.NovelInformationRegisterForm;
 import kr.eddi.demo.novel.form.PageForm;
+import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,12 +28,32 @@ public class NovelController {
     @Autowired
     NovelServiceImpl novelService;
 
+    @Autowired
+    NovelEpisodeRepository episodeRepository;
+
+
     @PostMapping(value = "/information-register",  consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public Boolean informationRegister(@RequestPart(value = "fileList") List<MultipartFile> imgList,
                                        @RequestPart(value = "info") NovelInformationRegisterForm form) {
 
         log.info("information form: " + form);
         return novelService.informationRegister(imgList, form.toRequest());
+    }
+
+    @PostMapping("/information-modify-text/{novel_info_id}")
+    public Boolean informationModifyWithOutFile(@PathVariable("novel_info_id") Long novel_info_id, @RequestBody NovelInformationModifyForm form) {
+        log.info("information modify form: " + form);
+        return novelService.informationModifyWithOutImg(novel_info_id, form.toRequest());
+    }
+
+    @PostMapping(value = "/information-modify-with-file/{novel_info_id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public Boolean informationModifyWithFile(@PathVariable("novel_info_id") Long novel_info_id,
+                                             @RequestPart(value = "fileList") List<MultipartFile> imgList,
+                                             @RequestPart(value = "info") NovelInformationModifyForm form) {
+
+        log.info("information modify form: " + form);
+
+        return novelService.informationModifyWithImg(novel_info_id, imgList, form.toRequest());
     }
 
 
@@ -43,5 +66,21 @@ public class NovelController {
     public Page<NovelInformation> getUploaderNovelInfoList(@PathVariable("member_id") Long member_id, @RequestBody PageForm form){
         PageRequest request = PageRequest.of(form.getPage(), form.getSize());
         return novelService.getUploaderNovelInfoList(member_id, request);
+    }
+
+    @GetMapping("/information-detail/{novel_info_id}")
+    public NovelInformation getNovelInfoDetail (@PathVariable("novel_info_id") Long novel_info_id) {
+        return novelService.getNovelInfoDetail(novel_info_id);
+    }
+
+    @PostMapping("/episode-list/{novel_info_id}")
+    public Page<NovelEpisode> getNovelEpisodeList(@PathVariable("novel_info_id") Long novel_info_id, @RequestBody PageForm form) {
+        PageRequest request = PageRequest.of(form.getPage(), form.getSize());
+        return novelService.getNovelEpisodeListByInfoId(novel_info_id, request);
+    }
+
+    @GetMapping("/episode/{episode_id}")
+    public NovelEpisode getNovelEpisodeDetail(@PathVariable("episode_id") Long episode_id) {
+       return novelService.getNovelEpisodeDetail(episode_id);
     }
 }

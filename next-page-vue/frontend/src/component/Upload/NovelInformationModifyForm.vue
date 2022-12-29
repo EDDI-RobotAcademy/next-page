@@ -3,6 +3,7 @@
     <v-row>
       <v-col>
         <div class="mt-5 mb-5 ml-3">
+          <v-img v-show="this.file.length == 0" max-width="200px" :src="require(`@/assets/coverImages/${novelInfo.coverImage.reName}`)"/>
           <v-img v-for="(image, idx) in this.coverImagePreview" :key="idx" :src="image.url"
                  max-width="200px" contain style="margin-left: auto; margin-right: auto; display: block;" />
           <label>Files
@@ -23,18 +24,22 @@
         <v-select v-model="category" label="카테고리" :items="categoryList"/>
       </v-col>
     </v-row>
-    <v-btn color="#6699FF" @click="submitNovelInfo">
+    <v-btn color="#6699FF" @click="submitNovelInfoModify">
       등록
     </v-btn>
   </v-card>
 </template>
 
 <script>
-
-import axios from 'axios'
+import axios from "axios";
 
 export default {
-  name: "NovelInformationRegisterForm",
+  name: "NovelInformationModifyForm",
+  props: {
+    novelInfo: {
+      type: Object,
+    }
+  },
   data() {
     return {
       file: '',
@@ -49,6 +54,17 @@ export default {
       purchasePoint: 0,
     }
   },
+
+  mounted() {
+    this.title = this.novelInfo.title
+    this.category = this.novelInfo.category
+    this.introduction = this.novelInfo.introduction.replace(/<br\s*\/?>/gi, '\r\n') // 엔터를 <br>로 저장했던 텍스트의 html 코드를 다시 /n으로 변환
+    this.publisher = this.novelInfo.publisher
+    this.author = this.novelInfo.author
+    this.openToPublic = this.novelInfo.openToPublic
+    this.purchasePoint = this.novelInfo.purchasePoint
+  },
+
   methods: {
     uploadCoverImage() {
       this.coverImagePreview = []
@@ -63,13 +79,11 @@ export default {
           reader.readAsDataURL(this.file[idx])
         }
       }
-    },
+    }, //uploadCoverImage
 
-    submitNovelInfo() {
-      let formData = new FormData()
+    submitNovelInfoModify() {
 
       let novelInfo = {
-        member_id: 1,
         title: this.title,
         category: this.category,
         introduction: this.introduction.replaceAll(/(\n|\r\n)/g,'<br>'), // /n을 <br>로 대체하여 저장
@@ -79,27 +93,51 @@ export default {
         purchasePoint: this.purchasePoint,
       }
 
-      for (let idx = 0; idx < this.file.length; idx++) {
-        console.log("파일리스트 반복문:"+idx)
-        formData.append('fileList', this.file[idx])
+      let novel_info_id = this.novelInfo.id
+
+      if(this.file.length == 0) {
+
+        console.log("파일 없이 수정")
+
+        axios.post(`http://localhost:7777/novel/information-modify-text/${novel_info_id}`, novelInfo)
+            .then (res => {
+              if(res.data) {
+                alert("수정 완료되었습니다!")
+                this.$router.push('/information-list')
+              }
+            })
+            .catch(res => {
+              alert('오류: ' + res.message)
+            })
       }
 
-      formData.append(
-          "info",
-          new Blob([JSON.stringify(novelInfo)], { type: "application/json" })
-      )
+      else {
 
-      axios.post('http://localhost:7777/novel/information-register', formData)
-          .then (res => {
-            if(res.data) {
-              alert("등록 완료되었습니다!")
-              this.$router.push('/information-list')
-            }
-          })
-          .catch(res => {
-            alert('오류: ' + res.message)
-          })
-    }
+        let formData = new FormData()
+
+        for (let idx = 0; idx < this.file.length; idx++) {
+          console.log("파일리스트:"+idx)
+          formData.append('fileList', this.file[idx])
+        }
+
+        formData.append(
+            "info",
+            new Blob([JSON.stringify(novelInfo)], { type: "application/json" })
+        )
+
+        axios.post(`http://localhost:7777/novel/information-modify-with-file/${novel_info_id}`, formData)
+            .then (res => {
+              if(res.data) {
+                alert("등록 완료되었습니다!")
+                this.$router.push('/information-list')
+              }
+            })
+            .catch(res => {
+              alert('오류: ' + res.message)
+            })
+      }
+
+    } // submitNovelInfo
 
   }
 }

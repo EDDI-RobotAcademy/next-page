@@ -13,4 +13,7 @@ export default {
 
     qnas: [],
     qna: {},
+
+    novelInfoDetail: {},
+    novelEpisodeList: {},
 }

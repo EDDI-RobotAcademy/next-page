@@ -1,6 +1,7 @@
 package kr.eddi.demo.novel.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.eddi.demo.comment.Comment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,10 +39,12 @@ public class NovelEpisode {
     private LocalDate uploadedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "information_id")
     private NovelInformation information;
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "novelEpisode", fetch = FetchType.LAZY)
     private List<Comment> commentList = new ArrayList<>();
 
