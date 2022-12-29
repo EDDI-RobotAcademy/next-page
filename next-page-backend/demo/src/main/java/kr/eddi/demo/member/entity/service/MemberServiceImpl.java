@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,9 +47,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-
     @Override
-    public Boolean nickNameValidation (String nickName) {
+    public Boolean nickNameValidation(String nickName) {
         Optional<NextPageMember> MemberNickname = memberRepository.findByNickName(nickName);
 
         if (MemberNickname.isPresent()) {
@@ -56,7 +57,6 @@ public class MemberServiceImpl implements MemberService {
 
         return true;
     }
-
 
 
     @Override
@@ -73,7 +73,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String signIn(MemberSignInRequest signInRequest) {
+    public Map<String,String> signIn(MemberSignInRequest signInRequest) {
         String email = signInRequest.getEmail();
         Optional<NextPageMember> maybeMember = memberRepository.findByEmail(email);
 
@@ -89,15 +89,22 @@ public class MemberServiceImpl implements MemberService {
             redisService.deleteByKey(userToken.toString());
             redisService.setKeyAndValue(userToken.toString(), memberInfo.getId());
 
-            return userToken.toString();
+            Map<String, String> userInfo = new HashMap<>();
+
+            userInfo.put("userToken", userToken.toString());
+            userInfo.put("userEmail", memberInfo.getEmail());
+            userInfo.put("userNickName", memberInfo.getNickName());
+            userInfo.put("userPoint", memberInfo.getPoint().toString());
+            userInfo.put("userId", memberInfo.getId().toString());
+
+            log.info("userProfile()" + userInfo);
+
+
+            return userInfo;
         }
 
         throw new RuntimeException("회원가입이 되어있지 않는 회원입니다. ");
     }
-
-
-
-
 
 
 
