@@ -26,6 +26,8 @@ public interface NovelService {
 
     Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request);
 
+    List<NovelInformation> getNovelList();
+
     NovelInformation getNovelInfoDetail(Long novelInfoId);
 
     Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request);
