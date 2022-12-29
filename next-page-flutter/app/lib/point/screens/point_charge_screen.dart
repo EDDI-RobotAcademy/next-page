@@ -1,85 +1,259 @@
+import 'dart:async';
 import 'dart:core';
+import 'dart:io';
 
 import 'package:app/member/utility/user_data_provider.dart';
+import 'package:app/point/api/request_forms.dart';
+import 'package:app/point/api/spring_point_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 
-import '../point_option.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PointChargeScreen extends StatelessWidget {
+class PointChargeScreen extends StatefulWidget {
   const PointChargeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // 충전할 포인트와 포인트 결제금액 옵션 리스트
-    List<PointOption> pointOptions = [
-      PointOption(point: 500, price: 500),
-      PointOption(point: 1000, price: 1000),
-      PointOption(point: 3000, price: 3000),
-      PointOption(point: 5000, price: 5000),
-      PointOption(point: 10000, price: 10000),
-      PointOption(point: 30000, price: 30000),
-      PointOption(point: 50000, price: 50000),
-      PointOption(point: 100000, price: 100000),
-    ];
+  State<PointChargeScreen> createState() => _PointChargeScreenState();
+}
 
-    Size size = MediaQuery.of(context).size;
-    UserDataProvider _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
-    // _userDataProvider.requestPointData();
-    // requestPointData()는 스프링 서버에 유저의 포인트 정보를 요청하는 api를 넣을 예정
+class _PointChargeScreenState extends State<PointChargeScreen> {
+
+  final InAppPurchase _inAppPurchase = InAppPurchase.instance;
+  late StreamSubscription<List<PurchaseDetails>> _subscription;
+  List<ProductDetails> _products = <ProductDetails>[];
+  bool _isAvailable = false;
+  bool _purchasePending = false;
+  bool _loading = true;
+  late UserDataProvider _userDataProvider;
+
+  late int currentPoint;
+  late int memberId;
+  late int paymentId;
+  late int amount;
+  late int purchasePoint;
+
+  static const Set<String> _ids = <String>{'500p', '1000p', '3000p', '5000p', '10000p', '30000p', '50000p', '100000p'};
+
+  @override
+  void initState() {
+    _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
+    _tmpSetUserPoint();
+    currentPoint = _userDataProvider.point;
+
+    final Stream<List<PurchaseDetails>> purchaseUpdated =
+        _inAppPurchase.purchaseStream;
+    //결제 관련 동작 감지
+    _subscription =
+        purchaseUpdated.listen((List<PurchaseDetails> purchaseDetailsList) {
+          _listenToPurchaseUpdated(purchaseDetailsList);
+        }, onDone: () {
+          _subscription.cancel();
+        }, onError: (Object error) {
+          debugPrint("_subscription 초기화 실패");
+        });
+    initStoreInfo();
+  }
+
+  void _tmpSetUserPoint() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setInt('point', 0);
+    currentPoint = prefs.getInt('point')!;
+  }
+
+  Future<void> initStoreInfo() async {
+    // 인앱 구매가 가능한지 체크
+    debugPrint("initStoreInfo()");
+    // 임의의 아이디값 할당
+    memberId = 1;
+    final bool isAvailable = await _inAppPurchase.isAvailable();
+
+    if (!isAvailable) { debugPrint("인앱결제 불가능!"); }
+
+    //플랫폼이 ios면
+    if (Platform.isIOS) {
+      final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
+      _inAppPurchase
+          .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
+      await iosPlatformAddition.setDelegate(ExamplePaymentQueueDelegate());
+    }
+    // 인앱 상품 로드
+    final ProductDetailsResponse productDetailResponse =
+    await _inAppPurchase.queryProductDetails(_ids);
+
+    setState(() {
+      _isAvailable = isAvailable;
+      _products = productDetailResponse.productDetails;
+      // 포인트 상품을 가격순으로 오름차순 정렬
+      _products.sort((a, b) => a.rawPrice.compareTo(b.rawPrice));
+      _purchasePending = false;
+      _loading = false;
+    });
+  }
+
+  // 인앱결제 업데이트 처리
+  Future<void> _listenToPurchaseUpdated(
+      List<PurchaseDetails> purchaseDetailsList) async {
+    for (final PurchaseDetails purchaseDetails in purchaseDetailsList) {
+      // 인앱결제가 처리중일때
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        setState(() { _purchasePending = true; });
+      } else {
+        // 인앱 결제 에러
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          debugPrint("구매 실패!");
+          setState(() { _purchasePending = false; });
+        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+            purchaseDetails.status == PurchaseStatus.restored) {
+          // 인앱 결제 성공 시 스프링 서버에 포인트 충전 요청
+          final bool valid = await _verifyPurchase(purchaseDetails);
+          if (valid) {
+            debugPrint("포인트 충전 완료!");
+            var prefs =  await SharedPreferences.getInstance();
+            prefs.setInt('point', currentPoint + purchasePoint);
+            setState(() {
+              currentPoint = prefs.getInt('point')!;
+              _loading = true;
+            });
+            // debugPrint(currentPoint.toString());
+            Future.delayed(Duration(milliseconds: 200), () {
+              setState(() => _loading = false );});
+          } else {
+            debugPrint("invalid purchase!");
+            return;
+          }
+        }
+        if (Platform.isAndroid) {
+            final InAppPurchaseAndroidPlatformAddition androidAddition =
+            _inAppPurchase.getPlatformAddition<
+                InAppPurchaseAndroidPlatformAddition>();
+            await androidAddition.consumePurchase(purchaseDetails);
+        }
+        if (purchaseDetails.pendingCompletePurchase) {
+          await _inAppPurchase.completePurchase(purchaseDetails);
+        }
+      }
+    }
+  }
+  // 스프링에 포인트 충전 요청
+  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) async {
+    paymentId = DateTime.now().millisecondsSinceEpoch;
+     var res;
+     res = await SpringPointApi().requestPointCharge(
+         PointChargeForm(member_id: memberId, payment_id: paymentId, amount: amount, point: purchasePoint));
+     return res;
+  }
+
+  @override
+  void dispose() {
+    if (Platform.isIOS) {
+      final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
+      _inAppPurchase
+          .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
+      iosPlatformAddition.setDelegate(null);
+    }
+    _subscription.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    final List<Widget> stack = <Widget>[];
+      stack.add(
+        ListView(
+          children: <Widget>[
+            _buildProductList(),
+          ],
+        ),
+      );
 
     return Scaffold(
-          // 뒤로 가기 버튼이 있는 앱바
             appBar: AppBar(
                 elevation: 0,
                 title: Text("포인트 충전"),
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: () => Navigator.pop(context),
-                )
             ),
-            body: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: ListView(
-                  children: [
-                    SizedBox(height: size.height * 0.05),
-                    // 사용자의 현재 보유 포인트를 보여주는 부분
-                    Text("현재 보유 포인트 : ${_userDataProvider.point} point", style: TextStyle(fontSize: 20)),
-                    SizedBox(height: size.height * 0.05),
-                    // 포인트 충전 옵션 리스트가 출력되는 부분
-                    ListView.separated(
-                        itemCount: pointOptions.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Row(
-                            children: [
-                              Expanded(
-                                  child: ListTile(
-                                      title: Text(
-                                          "${pointOptions[index].point} p"))),
-                              Container(
-                                  margin: EdgeInsets.all(10.0),
-                                  height: size.width * 0.1,
-                                  width: size.width * 0.23,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        //인앱결제 연결
-                                      },
-                                      child: Text("${pointOptions[index].price}원")))
-                            ],
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) => Divider(thickness: 1, height: 1),),
-                    SizedBox(height: size.height * 0.05),
-                    Text("이용안내"),
-                    Text("환불 규정이 어쩌고 저쩌고,,,"),
-                    Text("환불 규정이 어쩌고 저쩌고,,,"),
-                    Text("환불 규정이 어쩌고 저쩌고,,,"),
-                    Text("환불 규정이 어쩌고 저쩌고,,,"),
-                  ],
-                )
-            )
+            body: Stack(
+              children: stack,
+            ),
+    );
+  }
+
+  Card _buildProductList() {
+    Size size = MediaQuery.of(context).size;
+
+    if (_loading) {
+      return const Card(
+          child: ListTile(
+              leading: CircularProgressIndicator(),
+              title: Text('Fetching products...')));
+    }
+    // 인앱 결제 사용 불가능이면 빈 카드
+    if (!_isAvailable) {
+      return const Card();
+    }
+
+    final List<Widget> productList = <Widget>[];
+
+    ListTile userPoint =  ListTile(
+        title: Text('현재 보유 포인트: $currentPoint p',
+            style: TextStyle(fontSize: 20)));
+
+    productList.addAll(_products.map(
+          (ProductDetails productDetails) {
+        var title = productDetails.title;
+        var price = productDetails.price;
+        return Column( children: [
+          Divider(),
+          ListTile(
+            title: Text( title.substring(0, title.indexOf('(') - 1) ),
+            //가격이 표시되는 결제 버튼
+            trailing: Container(
+                height: size.width * 0.1,
+                width: size.width * 0.25,
+                child: ElevatedButton(
+                  onPressed: () {
+                  late PurchaseParam purchaseParam;
+                  // 특수기호 제거하고 int 형변환
+                  amount = int.parse(price.substring(1).replaceAll(RegExp('\\D'), ""));
+                  // 숫자 부분만 남기고 형변환(title이 'xxx 포인트' 형식입니다.)
+                  purchasePoint = int.parse(title.substring(0, title.indexOf(' ')));
+                  if (Platform.isAndroid) {
+                    purchaseParam = GooglePlayPurchaseParam( productDetails: productDetails,);
+                  } else {
+                  purchaseParam = PurchaseParam(productDetails: productDetails,);
+                  }
+                  _inAppPurchase.buyConsumable(purchaseParam: purchaseParam);
+                  },
+                  child: Text('${price.substring(1)}원'),
+                  ),
+                ),
+              ),
+        ],
         );
+      },
+    ));
+
+    return Card(
+        child: Column(
+            children: <Widget>[userPoint] + productList));
+  }
+}
+
+class ExamplePaymentQueueDelegate implements SKPaymentQueueDelegateWrapper {
+  @override
+  bool shouldContinueTransaction(
+      SKPaymentTransactionWrapper transaction, SKStorefrontWrapper storefront) {
+    return true;
+  }
+
+  @override
+  bool shouldShowPriceConsent() {
+    return false;
   }
 }
