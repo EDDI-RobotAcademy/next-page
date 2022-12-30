@@ -3,10 +3,7 @@ package kr.eddi.demo.member.entity.member;
 import kr.eddi.demo.comment.Comment;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.point.PointPayment;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,6 +12,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 
 
 public class NextPageMember {
@@ -37,7 +35,7 @@ public class NextPageMember {
     @Column
     private Long point;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Authentication> authentications = new HashSet<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)

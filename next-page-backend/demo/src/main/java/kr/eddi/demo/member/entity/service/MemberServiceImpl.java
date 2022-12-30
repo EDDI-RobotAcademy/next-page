@@ -73,7 +73,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Map<String,String> signIn(MemberSignInRequest signInRequest) {
+    public Map<String, String> signIn(MemberSignInRequest signInRequest) {
         String email = signInRequest.getEmail();
         Optional<NextPageMember> maybeMember = memberRepository.findByEmail(email);
 
@@ -107,7 +107,20 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+    @Override
+    public void deleteMember(Long userId) {
 
+        Optional<NextPageMember> maybeMember = memberRepository.findById(userId);
+
+        if (maybeMember.isPresent()) {
+
+            NextPageMember member = maybeMember.get();
+
+            memberRepository.delete(member);
+
+        }
+
+    }
 
 
 }

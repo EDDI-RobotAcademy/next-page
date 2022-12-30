@@ -1,4 +1,4 @@
-package kr.eddi.demo.member;
+package kr.eddi.demo;
 
 import kr.eddi.demo.member.entity.member.NextPageMember;
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
@@ -20,23 +20,22 @@ public class MemberTest {
 
     @Test
     void checkEmail() { // 이메일 Test
-        boolean Success = service.emailValidation("test0@test.com");
+        boolean Success = service.emailValidation("");
         System.out.println("Success: " + Success);
     }
 
 
     @Test
     public void nickNameCheck() { //닉네임 Test
-        boolean Success = service.nickNameValidation("test0");
+        boolean Success = service.nickNameValidation("");
         System.out.println("Success: " + Success);
     }
 
 
     @Test
     public void SignUpTest() { // 회원가입 Test
-        MemberSignUpRequest request = new MemberSignUpRequest("test0@test.com", "00000000", "test0");
+        MemberSignUpRequest request = new MemberSignUpRequest("", "", "");
         boolean Success = service.signUp(request);
-
         System.out.println("Success: " + Success);
     }
 
@@ -45,8 +44,7 @@ public class MemberTest {
     @Transactional
 
     public void SignInTest() {  // 로그인 Test
-        MemberSignInRequest request = new MemberSignInRequest("test0@test.com", "00000000");
-
+        MemberSignInRequest request = new MemberSignInRequest("", "");
         Map<String, String> memberInfo = service.signIn(request);
         String token = memberInfo.get("userToken");
         System.out.println(token);
@@ -54,11 +52,13 @@ public class MemberTest {
     }
 
 
+    @Test
+    public void deleteMember() { // 회원탈퇴 Test
+
+        Long userId = Long.valueOf("");
+        service.deleteMember(userId);
 
 
-
-
-
-
+    }
 
 }
