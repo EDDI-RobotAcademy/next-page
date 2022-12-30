@@ -108,7 +108,7 @@ class _MypageScreenState extends State<MypageScreen> {
                       title: Text("보유 포인트: $currentPoint p"),
                       //title: Text("보유포인트 0 p"),
                       trailing: ElevatedButton(
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PointChargeScreen())),
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PointChargeScreen(fromWhere: fromMy,))),
                           child: Text('충전하기'))),
                   ),
                   const Card(
