@@ -5,15 +5,17 @@ import '../../novel/screens/novel_detail_screen.dart';
 class CustomVerticalCard extends StatefulWidget {
   final dynamic novel;
 
-  const CustomVerticalCard({Key? key, this.novel}) : super(key: key);
+  const  CustomVerticalCard({Key? key, this.novel}) : super(key: key);
 
   @override
   State<CustomVerticalCard> createState() => _CustomVerticalCardState();
 }
 
 class _CustomVerticalCardState extends State<CustomVerticalCard> {
+
   @override
   Widget build(BuildContext context) {
+    String _path = 'assets/images/thumbnail/${widget.novel.coverImage['reName']}';
     Size size = MediaQuery.of(context).size;
     return Card(
         child: InkWell(
@@ -27,13 +29,21 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
               );
             },
             child: Container(
-                width: MediaQuery.of(context).size.width * 0.3,
+                width: size.width * 0.3,
                 child: Card(
                     elevation: 0.0,
                     child: Wrap(children: [
-                      Image.asset(
-                        widget.novel.thumbnail,
-                        fit: BoxFit.cover,
+                      Container(
+                        height: size.height * 0.175,
+                        width: size.width * 0.28,
+                        child: Image.asset(
+                          _path,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Divider(
+                        height: size.height * 0.001,
+                        thickness: size.height * 0.01,
                       ),
                       ListTile(
                         title: Text(
@@ -44,7 +54,7 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                           ),
                         ),
                         subtitle: Text(
-                          widget.novel.writer,
+                          widget.novel.author,
                           style: TextStyle(
                             fontSize: size.width * 0.035,
                           ),
