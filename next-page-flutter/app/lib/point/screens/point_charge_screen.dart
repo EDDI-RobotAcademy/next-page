@@ -2,27 +2,31 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:app/member/utility/user_data_provider.dart';
+import 'package:app/member/api/requests.dart';
+import 'package:app/member/api/spring_member_api.dart';
 import 'package:app/point/api/request_forms.dart';
 import 'package:app/point/api/spring_point_api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:provider/provider.dart';
 
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../widgets/custom_bottom_appbar.dart';
+
 class PointChargeScreen extends StatefulWidget {
-  const PointChargeScreen({Key? key}) : super(key: key);
+  const PointChargeScreen({Key? key, required this.fromWhere}) : super(key: key);
+  final int fromWhere;
 
   @override
   State<PointChargeScreen> createState() => _PointChargeScreenState();
 }
 
 class _PointChargeScreenState extends State<PointChargeScreen> {
+  final int myIdx = 4;
 
   final InAppPurchase _inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<List<PurchaseDetails>> _subscription;
@@ -30,7 +34,6 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
   bool _isAvailable = false;
   bool _purchasePending = false;
   bool _loading = true;
-  late UserDataProvider _userDataProvider;
 
   late int currentPoint;
   late int memberId;
@@ -42,9 +45,7 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
 
   @override
   void initState() {
-    _userDataProvider = Provider.of<UserDataProvider>(context, listen: false);
-    _tmpSetUserPoint();
-    currentPoint = _userDataProvider.point;
+    _setUserData();
 
     final Stream<List<PurchaseDetails>> purchaseUpdated =
         _inAppPurchase.purchaseStream;
@@ -60,9 +61,9 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
     initStoreInfo();
   }
 
-  void _tmpSetUserPoint() async {
+  void _setUserData() async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setInt('point', 0);
+    memberId = prefs.getInt('userId')!;
     currentPoint = prefs.getInt('point')!;
   }
 
@@ -114,8 +115,10 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
           final bool valid = await _verifyPurchase(purchaseDetails);
           if (valid) {
             debugPrint("포인트 충전 완료!");
+            // 포인트 충전 후 유저 포인트 데이터 spring 서버에 요청
+            int chargedPoint = await SpringMemberApi().lookUpUserPoint(MemberPointRequest(memberId));
             var prefs =  await SharedPreferences.getInstance();
-            prefs.setInt('point', currentPoint + purchasePoint);
+            prefs.setInt('point', chargedPoint);
             setState(() {
               currentPoint = prefs.getInt('point')!;
               _loading = true;
@@ -177,6 +180,24 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
             appBar: AppBar(
                 elevation: 0,
                 title: Text("포인트 충전"),
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {
+                    // 마이페이지에서 포인트 충전 페이지로 이동힌 경우
+                    // 뒤로가기 버튼을 누르면 충전 후 포인트 정보가 적용되게 함.
+                    // pushAndRemoveUntil로 마이페이지 앱바에 뒤로가기 생기는 것 방지
+                    if(widget.fromWhere == myIdx) {
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  CustomBottomAppbar(routeIndex: myIdx,)),
+                              (route) => false);
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  }
+                )
             ),
             body: Stack(
               children: stack,
