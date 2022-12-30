@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../http_uri.dart';
 import 'requests.dart';
@@ -81,14 +82,44 @@ class SpringMemberApi {
       body: body,
     );
 
+    var prefs = await SharedPreferences.getInstance();
+
     if (response.statusCode == 200) {
       debugPrint("통신 확인");
-      debugPrint('userToken: '+ response.body);
 
-      return SignInResponse(true, response.body);
+      Map<String, dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      prefs.setString('userToken', jsonData['userToken']);
+      prefs.setString('email', jsonData['userEmail']);
+      prefs.setString('nickname', jsonData['userNickName']);
+      prefs.setInt('point', int.parse(jsonData['userPoint']));
+      prefs.setInt('userId', int.parse(jsonData['userId']));
+
+      return SignInResponse(true);
     } else {
       debugPrint("통신 실패");
-      return SignInResponse(false, '로그인 실패!');
+      return SignInResponse(false);
+    }
+  }
+
+  Future<int> lookUpUserPoint(MemberPointRequest request) async {
+    var data = { 'memberId': request.memberId };
+    var body = json.encode(data);
+
+    debugPrint(body);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/member/find-point'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("통신 확인");
+      int userPoint = jsonDecode(utf8.decode(response.bodyBytes));
+
+      return userPoint;
+    } else {
+      throw Exception("통신 실패");
     }
   }
 }

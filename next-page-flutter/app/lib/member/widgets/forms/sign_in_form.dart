@@ -1,13 +1,13 @@
 
-import 'package:app/member/api/SpringMemberApi.dart';
-import 'package:app/member/api/requests.dart';
-import 'package:app/novel/screens/novel_detail_screen.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../custom_bottom_appbar.dart';
+import '../../../novel/screens/novel_detail_screen.dart';
+import '../../../widgets/custom_bottom_appbar.dart';
+import '../../api/spring_member_api.dart';
+import '../../api/requests.dart';
 import '../../api/responses.dart';
 import '../../utility/custom_text_style.dart';
 import '../buttons/navigation_btn.dart';
@@ -89,9 +89,6 @@ class _SignInFormState extends State <SignInForm>{
                               if(_formKey.currentState!.validate()) {
                                 signInResponse = await SpringMemberApi().signIn(SignInRequest(email, password));
                                 if(signInResponse.result == true) {
-                                  // spring서버가 응답한 token값을 prefs로 디스크에 저장
-                                  final prefs = await SharedPreferences.getInstance();
-                                  await prefs.setString('userToken', signInResponse.userToken);
                                   if(widget.fromWhere == myIdx) {
                                     Navigator.pushAndRemoveUntil(
                                         context,
@@ -114,7 +111,7 @@ class _SignInFormState extends State <SignInForm>{
                                   }
 
                                 } else {
-                                  showResultDialog(context, "알림", signInResponse.userToken.toString());
+                                  showResultDialog(context, "알림", "이메일 혹은 비밀번호가 올바르지 않습니다.");
                                 }
                               } else {
                                 showResultDialog(context, "알림", "유효한 값을 모두 입력해주세요!");
