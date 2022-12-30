@@ -10,8 +10,9 @@ import '../screens/scroll_novel_viewer_screen.dart';
 class EpisodeList extends StatefulWidget {
   final String thumbnail;
   final int id;
+  final String title;
 
-  const EpisodeList({Key? key, required this.thumbnail, required this.id})
+  const EpisodeList({Key? key, required this.thumbnail, required this.id, required this.title})
       : super(key: key);
 
   @override
@@ -71,12 +72,12 @@ class _EpisodeListState extends State<EpisodeList> {
               MaterialPageRoute(
                   builder: (context) => ScrollNovelViewerScreen(
                       id: widget.id,
-                      appBarTitle: TmpNovelModel.novelList[0].title,
+                      appBarTitle: widget.title,
                       episode: episode.episode)),
             )
                 : Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SignInScreen()),
+              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: 5, novel: TmpNovelModel.novelList[widget.id-1],)),
             );
           },
           child: Row(
@@ -87,7 +88,7 @@ class _EpisodeListState extends State<EpisodeList> {
                 decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     image: DecorationImage(
-                        image: AssetImage(widget.thumbnail),
+                        image: AssetImage('assets/images/thumbnail/${widget.thumbnail}'),
                         fit: BoxFit.cover)),
               ),
               Padding(
@@ -96,7 +97,7 @@ class _EpisodeListState extends State<EpisodeList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '${TmpNovelModel.novelList[widget.id-1].title} ${episode.episode.toString()}화',
+                      '${widget.title} ${episode.episode.toString()}화',
                       style: const TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 17),
                     ),
