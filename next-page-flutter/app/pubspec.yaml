@@ -40,6 +40,7 @@ dependencies:
   in_app_purchase: ^3.0.8
   shared_preferences: ^2.0.15
   carousel_slider: ^4.1.1
+  url_launcher: ^6.1.7
 
 dev_dependencies:
   mockito: ^5.2.0

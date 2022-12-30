@@ -26,9 +26,7 @@ import javax.transaction.Transactional;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -259,7 +257,7 @@ public class NovelServiceImpl implements NovelService {
     public List<NovelInformation> getNovelList(){
         List<NovelInformation> tmpList = informationRepository .findAll(Sort.by(Sort.Direction.DESC, "id"));
 
-        log.info("모든 소설 리스트: "+tmpList.toString());
+        log.info("모든 소설 리스트: "+String.valueOf(tmpList));
 
         return tmpList;
     }
@@ -271,14 +269,32 @@ public class NovelServiceImpl implements NovelService {
      * @return
      */
 
+    @Transactional
     @Override
-    public NovelInformation getNovelInfoDetail(Long novelInfoId) {
+    public Map<String, Object> getNovelInfoDetail(Long novelInfoId) {
         Optional<NovelInformation> maybeInfo = informationRepository.findById(novelInfoId);
         if(maybeInfo.isEmpty()) {
             return null;
         } else {
             NovelInformation novelInfo = maybeInfo.get();
-            return novelInfo;
+
+           Map<String, Object> tmpNovelInfo = new HashMap<>();
+            tmpNovelInfo.put("category", novelInfo.getCategory().getCategoryName());
+            tmpNovelInfo.put("id", novelInfo.getId());
+            tmpNovelInfo.put("title", novelInfo.getTitle());
+            tmpNovelInfo.put("introduction", novelInfo.getIntroduction());
+            tmpNovelInfo.put("publisher", novelInfo.getPublisher());
+            tmpNovelInfo.put("author", novelInfo.getAuthor());
+            tmpNovelInfo.put("purchasePoint", novelInfo.getPurchasePoint());
+            tmpNovelInfo.put("openToPublic", novelInfo.getOpenToPublic());
+            tmpNovelInfo.put("createdDate", novelInfo.getCreatedDate());
+            tmpNovelInfo.put("thumbnail", novelInfo.getCoverImage().getReName());
+
+
+
+            log.info(tmpNovelInfo.toString());
+
+            return tmpNovelInfo;
         }
     }
 
