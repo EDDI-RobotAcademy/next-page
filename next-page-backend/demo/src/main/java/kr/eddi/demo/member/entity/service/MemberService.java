@@ -17,7 +17,7 @@ public interface MemberService {
 
     Map<String,String> signIn(MemberSignInRequest signInRequest);
 
-
+   void deleteMember(Long userId);
 
 
 }

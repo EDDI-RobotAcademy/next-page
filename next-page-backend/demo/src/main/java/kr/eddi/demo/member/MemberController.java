@@ -45,11 +45,24 @@ public class MemberController {
     }
 
     @PostMapping("/sign-in") // 로그인
-    public Map<String,String> SignIn(@RequestBody MemberSignInForm Form) {
+    public Map<String, String> SignIn(@RequestBody MemberSignInForm Form) {
         log.info("SignIn: " + Form);
 
         return service.signIn(Form.toMemberSignInRequest());
     }
+
+
+    @DeleteMapping("/member-delete/{userId}") // 회원 탈퇴
+    public void memberDelete(@PathVariable("userId") Long userId){
+        log.info("memberDelete"+ userId);
+
+        service.deleteMember(userId);
+    }
+
+
+
+
+
 
 
 
