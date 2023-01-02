@@ -6,6 +6,7 @@ import kr.eddi.demo.member.entity.member.BasicAuthentication;
 import kr.eddi.demo.member.entity.member.NextPageMember;
 import kr.eddi.demo.member.entity.repository.member.AuthenticationRepository;
 import kr.eddi.demo.member.entity.repository.member.MemberRepository;
+import kr.eddi.demo.member.entity.service.member.request.MemberNicknameModifyRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
 import kr.eddi.demo.member.entity.service.security.RedisServiceImpl;
@@ -123,4 +124,36 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+    @Override
+    public String modifyNickName(Long memberId, String reNickName) {
+
+
+        String msg = "msg";
+        if (nickNameValidation(reNickName)) {
+
+            Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
+
+            if (maybeMember.isEmpty()) {
+
+                msg = "회원정보를 찾을수 없습니다.";
+                return msg;
+
+            }
+            NextPageMember member = maybeMember.get();
+            member.setNickName(reNickName);
+
+
+            memberRepository.save(member);
+            msg = "닉네임 변경 되었습니다.";
+        } else {
+            msg = "중복된 닉네임 입니다.";
+        }
+
+        return msg;
+    }
+
+
 }
+
+
+

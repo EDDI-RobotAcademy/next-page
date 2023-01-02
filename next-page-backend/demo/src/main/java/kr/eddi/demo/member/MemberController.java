@@ -1,8 +1,8 @@
 package kr.eddi.demo.member;
 
 
-import kr.eddi.demo.member.entity.member.NextPageMember;
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
+import kr.eddi.demo.member.entity.service.member.request.MemberNicknameModifyRequest;
 import kr.eddi.demo.member.form.MemberSignInForm;
 import kr.eddi.demo.member.form.MemberSignUpForm;
 import lombok.extern.slf4j.Slf4j;
@@ -53,18 +53,24 @@ public class MemberController {
 
 
     @DeleteMapping("/member-delete/{userId}") // 회원 탈퇴
-    public void memberDelete(@PathVariable("userId") Long userId){
-        log.info("memberDelete"+ userId);
+    public void memberDelete(@PathVariable("userId") Long userId) {
+        log.info("memberDelete" + userId);
 
         service.deleteMember(userId);
     }
 
 
+    @PostMapping("/modify-nickName") // 닉네임 수정
 
+    public String modifyNickName(@RequestBody MemberNicknameModifyRequest memberNicknameModifyRequest) {
 
+        log.info("닉네임 변경 멤버 아이디 : " + memberNicknameModifyRequest.getMemberId());
+        log.info("변경할 닉네임 : " +memberNicknameModifyRequest.getReNickName());
 
+        Long memberId = memberNicknameModifyRequest.getMemberId();
+        String reNickName = memberNicknameModifyRequest.getReNickName();
 
-
-
+        return service.modifyNickName(memberId,reNickName);
+    }
 
 }

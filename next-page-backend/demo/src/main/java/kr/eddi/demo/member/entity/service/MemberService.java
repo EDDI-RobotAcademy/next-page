@@ -1,7 +1,7 @@
 package kr.eddi.demo.member.entity.service;
 
 
-import kr.eddi.demo.member.entity.member.NextPageMember;
+
 import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
 
@@ -17,7 +17,9 @@ public interface MemberService {
 
     Map<String,String> signIn(MemberSignInRequest signInRequest);
 
-   void deleteMember(Long userId);
+    void deleteMember(Long userId);
+
+    String modifyNickName(Long memberId, String reNickName);
 
 
 }

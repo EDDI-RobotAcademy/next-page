@@ -23,11 +23,13 @@ public class NextPageMember {
     private Long id;
 
     @Getter
+    @Setter
     @Column(nullable = false)
     private String email;
 
 
     @Getter
+    @Setter
     @Column(nullable = false)
     private String nickName;
 
