@@ -13,12 +13,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  int newNovelList = 0;
-  int liveHotList = 1;
+  int _newNovelList = 0;
+  int _liveHotList = 1;
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: customTitleAppbar(context, 'NEXT PAGE'),
       body: Container(
@@ -29,17 +29,17 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               const CustomCarousel(),
               SizedBox(
-                height: size.height * 0.04,
+                height: _size.height * 0.04,
               ),
-              CustomCardList(sortOfList: newNovelList,),
+              CustomCardList(sortOfList: _newNovelList,),
               SizedBox(
-                height: size.height * 0.04,
+                height: _size.height * 0.04,
               ),
               LinkBannerBox(),
               SizedBox(
-                height: size.height * 0.04,
+                height: _size.height * 0.04,
               ),
-              CustomCardList(sortOfList: liveHotList,),
+              CustomCardList(sortOfList: _liveHotList,),
             ],
           ),
         ),

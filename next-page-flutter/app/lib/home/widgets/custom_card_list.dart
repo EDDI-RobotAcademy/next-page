@@ -16,7 +16,7 @@ class CustomCardList extends StatefulWidget {
 class _CustomCardListState extends State<CustomCardList> {
   late Future<dynamic> _future;
   List<dynamic>? _allNovelList = [];
-  late String listTitle;
+  late String _listTitle;
 
   @override
   void initState() {
@@ -25,8 +25,8 @@ class _CustomCardListState extends State<CustomCardList> {
     _future = getAllNovelList();
     setState(() {
       (widget.sortOfList == 0)
-          ?listTitle = 'New 연재 작품'
-          :listTitle = '실시간 인기 작품';
+          ?_listTitle = 'New 연재 작품'
+          :_listTitle = '실시간 인기 작품';
     });
   }
 
@@ -45,7 +45,7 @@ class _CustomCardListState extends State<CustomCardList> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            listTitle,
+            _listTitle,
             style: TextStyle(
                 fontSize: size.width * 0.05, fontWeight: FontWeight.bold),
           ),
