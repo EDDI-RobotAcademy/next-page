@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import '../../http_uri.dart';
-import 'novel_requests.dart';
+import 'novel_responses.dart';
 
 class SpringNovelApi {
 
-  Future<List<NovelListRequest>?> allNovelList() async {
+  Future<List<NovelListResponse>?> allNovelList() async {
     var response = await http.get(Uri.http(httpUri, '/novel/all-novel-list'),
         headers: {"Content-Type": "application/json"});
 
@@ -17,8 +17,8 @@ class SpringNovelApi {
 
       debugPrint(jsonData.toString());
 
-      List<NovelListRequest> novelList =
-      jsonData.map((dataJson) => NovelListRequest.fromJson(dataJson)).toList();
+      List<NovelListResponse> novelList =
+      jsonData.map((dataJson) => NovelListResponse.fromJson(dataJson)).toList();
 
 
       return novelList;
@@ -27,7 +27,7 @@ class SpringNovelApi {
     }
   }
 
-  Future<NovelRequest> getNovelInfo(int novelId) async {
+  Future<NovelResponse> getNovelInfo(int novelId) async {
     var response = await http.get(Uri.http(httpUri, '/novel/information-detail/$novelId'),
         headers: {"Content-Type": "application/json"});
 
@@ -37,7 +37,7 @@ class SpringNovelApi {
 
       debugPrint(jsonData.toString());
 
-      NovelRequest novel = NovelRequest.fromJson(jsonData);
+      NovelResponse novel = NovelResponse.fromJson(jsonData);
 
       return novel;
     } else {

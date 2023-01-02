@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-class NovelListRequest {
+class NovelListResponse {
   int id;
   String title;
   String introduction;
@@ -11,7 +11,7 @@ class NovelListRequest {
   String createdDate;
   LinkedHashMap<String, dynamic> coverImage;
 
-  NovelListRequest(
+  NovelListResponse(
       {required this.id,
         required this.title,
         required this.introduction,
@@ -22,8 +22,8 @@ class NovelListRequest {
         required this.createdDate,
         required this.coverImage});
 
-  factory NovelListRequest.fromJson(Map<String, dynamic> json) {
-    return NovelListRequest(
+  factory NovelListResponse.fromJson(Map<String, dynamic> json) {
+    return NovelListResponse(
         id: json["id"],
         title: json["title"],
         introduction: json["introduction"],
@@ -36,7 +36,7 @@ class NovelListRequest {
   }
 }
 
-class NovelRequest {
+class NovelResponse {
   int id;
   String title;
   String introduction;
@@ -48,7 +48,7 @@ class NovelRequest {
   String category;
   String thumbnail;
 
-  NovelRequest(
+  NovelResponse(
       {required this.id,
         required this.title,
         required this.introduction,
@@ -60,8 +60,8 @@ class NovelRequest {
         required this.category,
         required this.thumbnail});
 
-  factory NovelRequest.fromJson(Map<String, dynamic> json) {
-    return NovelRequest(
+  factory NovelResponse.fromJson(Map<String, dynamic> json) {
+    return NovelResponse(
         id: json["id"],
         title: json["title"],
         introduction: json["introduction"],
