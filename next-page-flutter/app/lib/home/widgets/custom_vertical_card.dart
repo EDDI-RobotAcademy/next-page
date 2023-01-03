@@ -25,6 +25,7 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                 MaterialPageRoute(
                     builder: (context) => NovelDetailScreen(
                       id: widget.novel.id,
+                      routeIndex: 0,
                     )),
               );
             },
@@ -33,6 +34,7 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                 child: Card(
                     elevation: 0.0,
                     child: Wrap(children: [
+                      //카드 이미지
                       Container(
                         height: _size.height * 0.175,
                         width: _size.width * 0.28,
@@ -46,6 +48,7 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                         thickness: _size.height * 0.01,
                       ),
                       ListTile(
+                        //소설 제목
                         title: Text(
                           widget.novel.title,
                           style: TextStyle(
@@ -53,6 +56,7 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                             fontSize: _size.width * 0.041,
                           ),
                         ),
+                        //소설 작가
                         subtitle: Text(
                           widget.novel.author,
                           style: TextStyle(

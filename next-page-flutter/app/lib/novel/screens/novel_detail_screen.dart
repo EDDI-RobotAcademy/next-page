@@ -11,8 +11,9 @@ import '../widgets/novel_notice.dart';
 
 class NovelDetailScreen extends StatefulWidget {
   final int id;
+  final int routeIndex;
 
-  const NovelDetailScreen({Key? key, required this.id}) : super(key: key);
+  const NovelDetailScreen({Key? key, required this.id, required this.routeIndex}) : super(key: key);
 
   @override
   State<NovelDetailScreen> createState() => _NovelDetailScreenState();
@@ -23,6 +24,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
 
   late Future<dynamic> _future;
   dynamic _novel;
+  late int toBottomAppBar;
 
   final ScrollController _scrollController = ScrollController();
   late TabController _controller;
@@ -53,6 +55,11 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     _scrollController.addListener(() {
       print('offset = ${_scrollController.offset}');
     });
+    if(widget.routeIndex == 0){
+      toBottomAppBar = 0;
+    } if(widget.routeIndex == 1){
+      toBottomAppBar =1;
+    }
   }
 
   Future getNovelInfo() async {
@@ -373,7 +380,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                            const CustomBottomAppbar(routeIndex: 0,)),
+                                                CustomBottomAppbar(routeIndex: toBottomAppBar,)),
                                             (route) => false);
                                   },
                                   icon: const Icon(
