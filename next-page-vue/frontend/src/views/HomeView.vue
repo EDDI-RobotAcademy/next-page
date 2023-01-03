@@ -15,7 +15,7 @@
       <CarouselsNovel/>
     </div>
     
-    
+    <br><br><br><br><br>
     <!-- 풋터는 맨 아래 고정 -->
     <div id="footer">
       <FooterMenuForm/>
