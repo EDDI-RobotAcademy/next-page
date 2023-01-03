@@ -14,7 +14,7 @@ class MyInfoModifyScreen extends StatefulWidget {
 }
 
 class _MyInfoModifyScreenState extends State<MyInfoModifyScreen> {
-  late String email;
+  String email = '';
 
   @override
   void initState() {
@@ -27,12 +27,10 @@ class _MyInfoModifyScreenState extends State<MyInfoModifyScreen> {
     setState(() {
       email = prefs.getString('email')!;
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
