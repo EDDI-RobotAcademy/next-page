@@ -1,7 +1,7 @@
 n<template>
   <div class="d-flex justify-center">
     <v-card elevation="0">
-      <v-card-text class="text-lg-center">
+      <v-card-text class="text-lg-center" style="color: #6699FF">
         <h2>포인트 충전</h2>
       </v-card-text>
       <v-row justify="center">
