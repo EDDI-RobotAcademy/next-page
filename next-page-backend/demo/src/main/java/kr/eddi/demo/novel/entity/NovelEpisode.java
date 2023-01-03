@@ -3,6 +3,7 @@ package kr.eddi.demo.novel.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.eddi.demo.comment.Comment;
+import kr.eddi.demo.episode_payment.entity.EpisodePayment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,6 +49,10 @@ public class NovelEpisode {
     @OneToMany(mappedBy = "novelEpisode", fetch = FetchType.LAZY)
     private List<Comment> commentList = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "novelEpisode", fetch = FetchType.LAZY)
+    private List<EpisodePayment> episodePayments = new ArrayList<>();
+
     public NovelEpisode(Long episodeNumber, String episodeTitle, String text, Boolean needToBuy, NovelInformation information) {
         this.episodeNumber = episodeNumber;
         this.episodeTitle = episodeTitle;
@@ -65,6 +70,10 @@ public class NovelEpisode {
 
     public void updateComment(Comment comment) {
         commentList.add(comment);
+    }
+
+    public void updateEpisodePayments(EpisodePayment episodePayment) {
+        this.episodePayments.add(episodePayment);
     }
 
 }
