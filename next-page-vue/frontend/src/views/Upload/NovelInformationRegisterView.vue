@@ -1,14 +1,27 @@
 <template>
-  <v-container>
-    <novel-information-register-form/>
-  </v-container>
+<div>
+<HeadlineMenuForm/>
+  <br><br><br><br>
+
+  <novel-information-register-form/>
+
+  <br><br><br><br><br>
+
+  <FooterMenuForm/>
+
+</div>
+
+
+
 </template>
 
 <script>
 import NovelInformationRegisterForm from "@/component/Upload/NovelInformationRegisterForm";
+import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
+import FooterMenuForm from "@/component/footer/FooterMenuForm";
 export default {
   name: "NovelInformationRegisterView",
-  components: {NovelInformationRegisterForm},
+  components: {FooterMenuForm, HeadlineMenuForm, NovelInformationRegisterForm},
 }
 </script>
 
