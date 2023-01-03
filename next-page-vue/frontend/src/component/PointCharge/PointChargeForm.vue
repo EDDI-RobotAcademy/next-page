@@ -1,8 +1,10 @@
-n<template>
+n
+<template>
   <div class="d-flex justify-center">
     <v-card elevation="0">
       <v-card-text class="text-lg-center" style="color: #6699FF">
-        <h2>포인트 충전</h2>
+        <h1>포인트 충전</h1>
+        <br>
       </v-card-text>
       <v-row justify="center">
         <v-col cols="auto">
@@ -26,13 +28,13 @@ n<template>
               <h3> 결제 금액 : {{ this.checkedPrice.toLocaleString() }} 원 </h3>
             </v-card-text>
           </v-card>
-
+          <br>
           <div class="button pt-2 d-flex justify-center">
             <!-- 결제 테스트 진행용 -->
             <v-btn elevation="0" color="#6699FF" class="white--text mx-1" @click="toKakaoPay">
               카카오
             </v-btn>
-
+            &nbsp;&nbsp;
             <!-- 테스트중에도 실결제 필요하니 이용 X -->
             <v-btn elevation="0" color="#6699FF" class="white--text mx-1" @click="toInisisPayment">
               통합 결제
@@ -55,14 +57,14 @@ export default {
     return {
       memberOwnCash: 1000,
       priceOption: [
-        { point: "500 p", price: 500},
-        { point: "1000 p", price: 1000},
-        { point: "3000 p", price: 3000},
-        { point: "5000 p", price: 5000},
-        { point: "10000 p", price: 10000},
-        { point: "30000 p", price: 30000},
-        { point: "50000 p", price: 50000},
-        { point: "100000 p", price: 100000},
+        {point: "500 p", price: 500},
+        {point: "1000 p", price: 1000},
+        {point: "3000 p", price: 3000},
+        {point: "5000 p", price: 5000},
+        {point: "10000 p", price: 10000},
+        {point: "30000 p", price: 30000},
+        {point: "50000 p", price: 50000},
+        {point: "100000 p", price: 100000},
       ],
       checkedPrice: 0,
     }
@@ -86,10 +88,10 @@ export default {
           amount: this.checkedPrice, // 결제 금액
           buyer_email: 'test@gmail.com', // 구매자 메일 받기
           buyer_name: '구매자이름', // 구매자 이름 받기
-      /*  m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}', */
+          /*  m_redirect_url: '{모바일에서 결제 완료 후 리디렉션 될 URL}', */
         }, rsp => { // callback
           console.log(rsp);
-          if (rsp.success){
+          if (rsp.success) {
             let payload = {
               member_id: 1,
               payment_id: rsp.merchant_uid,
@@ -97,7 +99,7 @@ export default {
               point: this.checkedPrice,
             }
 
-            this.requestPayAndChargePointToSpring( payload)
+            this.requestPayAndChargePointToSpring(payload)
 
 
             /* 주문번호 props로 받아서 주문 완료 페이지 작성하고 싶으나 현재는 이슈 발생중
