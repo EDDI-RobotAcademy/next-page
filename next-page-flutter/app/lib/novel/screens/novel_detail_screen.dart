@@ -285,11 +285,10 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                                   (context) =>
                                                                                   CommentListScreen(
                                                                                     id: widget.id,
-                                                                                    appBarTitle: TmpNovelModel
-                                                                                        .novelList[0]
-                                                                                        .title,
+                                                                                    appBarTitle: _novel.title,
                                                                                     fromWhere:
                                                                                     0,
+                                                                                    routeIndex: widget.routeIndex,
                                                                                   )),
                                                                         );
                                                                       },
@@ -358,6 +357,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 id: widget.id,
                                 title: _novel.title,
                                 thumbnail: _novel.thumbnail,
+                                routeIndex: widget.routeIndex,
                               ),
                               NovelIntroduction(
                                   introduction: _novel.introduction),
