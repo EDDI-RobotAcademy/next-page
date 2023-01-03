@@ -78,6 +78,8 @@ public class NovelController {
 
     @GetMapping("/information-detail/{novel_info_id}")
     public Map<String, Object> getNovelInfoDetail (@PathVariable("novel_info_id") Long novel_info_id) {
+        log.info("getNovelInfoDetail()");
+
         return novelService.getNovelInfoDetail(novel_info_id);
     }
 
