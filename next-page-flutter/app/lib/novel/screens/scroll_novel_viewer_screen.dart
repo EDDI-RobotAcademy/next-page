@@ -9,9 +9,10 @@ class ScrollNovelViewerScreen extends StatefulWidget {
   final String appBarTitle;
   final int episode;
   final int id;
+  final int routeIndex;
 
   const ScrollNovelViewerScreen(
-      {Key? key, required this.appBarTitle, required this.episode, required this.id})
+      {Key? key, required this.appBarTitle, required this.episode, required this.id, required this.routeIndex})
       : super(key: key);
 
   @override
@@ -81,6 +82,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
   }
 
   AppBar _buildViewerAppbar() {
+    Size _size = MediaQuery.of(context).size;
     return AppBar(
       backgroundColor: (visible) ? AppTheme.viewerAppbar : Colors.transparent,
       elevation: 0.0,
@@ -97,7 +99,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => NovelDetailScreen(id: widget.id,routeIndex: 99,)),
+                  builder: (BuildContext context) => NovelDetailScreen(id: widget.id,routeIndex: widget.routeIndex,)),
                   (route) => false);
         },
       ),
@@ -195,9 +197,9 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                     MaterialPageRoute(
                         builder: (context) => CommentListScreen(
                           id: widget.id,
-                          appBarTitle:
-                          TmpNovelModel.novelList[0].title,
+                          appBarTitle: widget.appBarTitle,
                           fromWhere: widget.episode,
+                          routeIndex: widget.routeIndex,
                         )),
                   );
                 },

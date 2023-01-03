@@ -10,8 +10,9 @@ class CommentListScreen extends StatefulWidget {
   final int id;
   final String appBarTitle;
   final int fromWhere;
+  final int routeIndex;
 
-  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere, required this.id}) : super(key: key);
+  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere, required this.id, required this.routeIndex}) : super(key: key);
 
   @override
   State<CommentListScreen> createState() => _CommentListScreenState();
@@ -43,7 +44,7 @@ class _CommentListScreenState extends State<CommentListScreen> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      NovelDetailScreen(id: widget.id, routeIndex: 98,)),
+                      NovelDetailScreen(id: widget.id, routeIndex: widget.routeIndex,)),
                   (route) => false)
               : Navigator.pushAndRemoveUntil(
               context,
@@ -52,7 +53,9 @@ class _CommentListScreenState extends State<CommentListScreen> {
                       ScrollNovelViewerScreen(
                         id: widget.id,
                         appBarTitle: widget.appBarTitle,
-                        episode: widget.fromWhere,)),
+                        episode: widget.fromWhere,
+                        routeIndex: widget.routeIndex,
+                      )),
                   (route) => false);
         },
         color: Colors.black,

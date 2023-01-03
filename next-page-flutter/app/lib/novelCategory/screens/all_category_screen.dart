@@ -25,6 +25,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
             setState(() {
               value = "최신순";
             });
+            Navigator.pop(context);
           },
           child: const Text("최신순"),
         ),
@@ -34,52 +35,54 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
             setState(() {
               value = "인기순";
             });
+            Navigator.pop(context);
           },
           child: const Text("인기순"),
         )
       ],
     );
 
+
     return Scaffold(
         body: Column(children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Wrap(children: [
-            ElevatedButton(
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.zero),
-                  backgroundColor:
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Wrap(children: [
+                ElevatedButton(
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      backgroundColor:
                       MaterialStateProperty.all(Colors.transparent),
-                  elevation: MaterialStateProperty.all(0.0),
-                ),
-                child: Row(
-                  children: [
-                    Text(
-                      value,
-                      style: TextStyle(color: Colors.black),
+                      elevation: MaterialStateProperty.all(0.0),
                     ),
-                    const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black,
+                    child: Row(
+                      children: [
+                        Text(
+                          value,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                onPressed: () {
-                  showCupertinoModalPopup(
-                      context: context, builder: (context) => actionSheet);
-                })
-          ]),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.05,
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                          context: context, builder: (context) => actionSheet);
+                    })
+              ]),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.05,
+              ),
+            ],
           ),
-        ],
-      ),
-      Expanded(
-          child: CustomHorizontalCardList(
-            category: widget.category,
+          Expanded(
+              child: CustomHorizontalCardList(
+                category: widget.category,
+              )
           )
-      )
-    ]));
+        ]));
   }
 }

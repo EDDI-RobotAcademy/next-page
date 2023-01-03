@@ -11,8 +11,9 @@ class EpisodeList extends StatefulWidget {
   final String thumbnail;
   final int id;
   final String title;
+  final int routeIndex;
 
-  const EpisodeList({Key? key, required this.thumbnail, required this.id, required this.title})
+  const EpisodeList({Key? key, required this.thumbnail, required this.id, required this.title, required this.routeIndex})
       : super(key: key);
 
   @override
@@ -71,9 +72,11 @@ class _EpisodeListState extends State<EpisodeList> {
               context,
               MaterialPageRoute(
                   builder: (context) => ScrollNovelViewerScreen(
-                      id: widget.id,
-                      appBarTitle: widget.title,
-                      episode: episode.episode)),
+                    id: widget.id,
+                    appBarTitle: widget.title,
+                    episode: episode.episode,
+                    routeIndex: widget.routeIndex,
+                  )),
             )
                 : Navigator.push(
               context,
