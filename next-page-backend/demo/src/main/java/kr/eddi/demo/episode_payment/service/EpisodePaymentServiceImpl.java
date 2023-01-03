@@ -41,6 +41,7 @@ public class EpisodePaymentServiceImpl implements EpisodePaymentService{
                 log.info("포인트 부족으로 구매 실패");
                 return false;
             }
+            // 에피소드 가격만큼 사용자의 포인트를 차감합니다.
             member.payPoint(episodePrice);
 
             EpisodePayment episodePayment = request.toEntity(member, episode);
