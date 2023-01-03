@@ -97,7 +97,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => NovelDetailScreen(id: widget.id,)),
+                  builder: (BuildContext context) => NovelDetailScreen(id: widget.id,routeIndex: 99,)),
                   (route) => false);
         },
       ),

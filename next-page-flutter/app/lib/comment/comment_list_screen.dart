@@ -43,7 +43,7 @@ class _CommentListScreenState extends State<CommentListScreen> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      NovelDetailScreen(id: widget.id)),
+                      NovelDetailScreen(id: widget.id, routeIndex: 98,)),
                   (route) => false)
               : Navigator.pushAndRemoveUntil(
               context,

@@ -100,7 +100,7 @@ class _SignInFormState extends State <SignInForm>{
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                        builder: (BuildContext context) => NovelDetailScreen(id: widget.novel.id)));
+                                        builder: (BuildContext context) => NovelDetailScreen(id: widget.novel.id, routeIndex: 99,)));
                                   } else {
                                     Navigator.pushAndRemoveUntil(
                                         context,
