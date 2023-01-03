@@ -101,6 +101,21 @@ class SpringMemberApi {
     }
   }
 
+  Future<bool> deleteMember(int userId) async {
+    var response = await http.delete(
+        Uri.http( httpUri, '/member/member-delete/$userId'),
+        headers: {"Content-Type": "application/json"},
+    );
+
+    if(response.statusCode == 200) {
+      debugPrint("통신 확인");
+      return true;
+    } else {
+      debugPrint("통신 실패");
+      return false;
+    }
+  }
+
   Future<int> lookUpUserPoint(MemberPointRequest request) async {
     var data = { 'memberId': request.memberId };
     var body = json.encode(data);
