@@ -12,3 +12,9 @@ class SignUpRequest {
 
   SignUpRequest(this.email, this.password, this.nickName);
 }
+
+class MemberPointRequest {
+  int memberId;
+
+  MemberPointRequest(this.memberId);
+}

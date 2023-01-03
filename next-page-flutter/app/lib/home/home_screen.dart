@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_title_appbar.dart';
+import '../widgets/link_banner_box.dart';
 import 'widgets/custom_card_list.dart';
 import 'widgets/custom_carousel.dart';
 
@@ -11,9 +12,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  int _newNovelList = 0;
+  int _liveHotList = 1;
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: customTitleAppbar(context, 'NEXT PAGE'),
       body: Container(
@@ -24,9 +29,17 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               const CustomCarousel(),
               SizedBox(
-                height: size.height * 0.05,
+                height: _size.height * 0.04,
               ),
-              const CustomCardList()
+              CustomCardList(sortOfList: _newNovelList,),
+              SizedBox(
+                height: _size.height * 0.04,
+              ),
+              LinkBannerBox(),
+              SizedBox(
+                height: _size.height * 0.04,
+              ),
+              CustomCardList(sortOfList: _liveHotList,),
             ],
           ),
         ),

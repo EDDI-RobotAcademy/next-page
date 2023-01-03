@@ -1,7 +1,6 @@
+
 import 'package:app/member/screens/sign_in_screen.dart';
-import 'package:app/member/utility/user_data_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../point/screens/point_charge_screen.dart';
@@ -14,9 +13,11 @@ class MypageScreen extends StatefulWidget {
 }
 
 class _MypageScreenState extends State<MypageScreen> {
-  late bool? _loginState;
+  bool _loginState = false;
   bool _isLoading = true;
   final int fromMy = 4;
+  late String nickname;
+  late int currentPoint;
 
   @override
   void initState() {
@@ -32,9 +33,12 @@ class _MypageScreenState extends State<MypageScreen> {
   void _asyncMethod() async {
     var prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');
+
     if (userToken != null) {
       setState(() {
         _loginState = true;
+        nickname = prefs.getString('nickname')!;
+        currentPoint = prefs.getInt('point')!;
       });
     } else {
       setState(() {
@@ -97,15 +101,14 @@ class _MypageScreenState extends State<MypageScreen> {
               padding: EdgeInsets.all(16.0),
               child: ListView(
                 children: [
-                  // 로그인한 사용자의 닉네임 표시할 예정
-                  // 로그인한 사용자의 정보(닉네임, 포인트)를 언제 불러올지 고민,,
-                  Text("김철수님", style: TextStyle(fontSize: 15)),
+                  Text(nickname + "님", style: TextStyle(fontSize: 20)),
                   SizedBox(height: size.height * 0.01,),
                   Card(
                     child: ListTile(
-                      title: Text("보유 포인트: ${context.watch<UserDataProvider>().point} p"),
+                      title: Text("보유 포인트: $currentPoint p"),
+                      //title: Text("보유포인트 0 p"),
                       trailing: ElevatedButton(
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PointChargeScreen())),
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PointChargeScreen(fromWhere: fromMy,))),
                           child: Text('충전하기'))),
                   ),
                   const Card(
@@ -147,7 +150,7 @@ class _MypageScreenState extends State<MypageScreen> {
                                     onPressed: () async {
                                       var prefs = await SharedPreferences
                                           .getInstance();
-                                      prefs.remove('userToken');
+                                      prefs.clear();
                                       setState(() {
                                         _loginState = false;
                                       });

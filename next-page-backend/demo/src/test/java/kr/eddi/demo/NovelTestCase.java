@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -60,6 +62,14 @@ public class NovelTestCase {
         PageRequest request = PageRequest.of(0, 1);
         Page<NovelInformation> informationList = informationRepository.findByMember_Id(1L, request);
         System.out.println("informationList: " + informationList);
+    }
+
+    @Test
+    void getNovelList(){
+        List<NovelInformation> tmpList = informationRepository .findAll(Sort.by(Sort.Direction.DESC, "id"));
+
+        System.out.println("모든 소설 리스트: "+ tmpList);
+
     }
 
     @Test
