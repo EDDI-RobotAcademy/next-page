@@ -14,8 +14,20 @@
         <router-link to="/monalisa">
           <img class="img-size" src="@/assets/carousel/monalisa.png" />
         </router-link>
-        <router-link to="/monalisa">
-          <img class="img-size" src="@/assets/logo.png" />
+        <router-link to="/21gram">
+          <img class="img-size" src="@/assets/carousel/21gram.png" />
+        </router-link>
+        <router-link to="/briefing">
+          <img class="img-size" src="@/assets/carousel/briefing.png" />
+        </router-link>
+        <router-link to="/heisnot">
+          <img class="img-size" src="@/assets/carousel/heisnot.png" />
+        </router-link>
+        <router-link to="/jingyo">
+          <img class="img-size" src="@/assets/carousel/jingyo.png" />
+        </router-link>
+        <router-link to="/pokya">
+          <img class="img-size" src="@/assets/carousel/pokya.png" />
         </router-link>
       </carousel>
     </div>

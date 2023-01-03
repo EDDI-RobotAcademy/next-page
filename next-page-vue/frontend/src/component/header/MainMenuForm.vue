@@ -1,7 +1,7 @@
 <template>
   <div class="menu" style="margin-bottom: 30px">
     <div class="home_logo" style="font-family: 'Zen Dots', cursive; float: left; margin-right: 100px;">
-      <router-link to="/">   
+      <router-link to="/" class="link_logo">   
         NEXT-PAGE
       </router-link>
     </div>
@@ -45,8 +45,11 @@ a {
 
 .home_logo {
   font-size: 35px;
-  color: #6699FF;
   
+}
+
+.link_logo {
+  color: #6699FF;
 }
 
 .search {
