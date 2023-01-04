@@ -36,7 +36,8 @@ public class NovelTestCase {
         service.createCategory(1L, "판타지");
         service.createCategory(2L, "무협");
         service.createCategory(3L, "로맨스");
-        service.createCategory(4L, "현대");
+        service.createCategory(4L, "현대판타지");
+        service.createCategory(5L, "BL");
     }
 
 
