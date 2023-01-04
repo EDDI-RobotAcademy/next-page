@@ -358,6 +358,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 title: _novel.title,
                                 thumbnail: _novel.thumbnail,
                                 routeIndex: widget.routeIndex,
+                                novel: _novel,
                               ),
                               NovelIntroduction(
                                   introduction: _novel.introduction),
