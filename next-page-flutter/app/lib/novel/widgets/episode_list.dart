@@ -4,16 +4,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../app_theme.dart';
 import '../../member/screens/sign_in_screen.dart';
 import '../../model/tmp_novel_episode.dart';
-import '../../model/tmp_novel_model.dart';
 import '../screens/scroll_novel_viewer_screen.dart';
 
 class EpisodeList extends StatefulWidget {
+  final dynamic novel;
   final String thumbnail;
   final int id;
   final String title;
   final int routeIndex;
 
-  const EpisodeList({Key? key, required this.thumbnail, required this.id, required this.title, required this.routeIndex})
+  const EpisodeList({Key? key, required this.thumbnail, required this.id, required this.title, required this.routeIndex, required this.novel})
       : super(key: key);
 
   @override
@@ -80,7 +80,7 @@ class _EpisodeListState extends State<EpisodeList> {
             )
                 : Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: 5, novel: TmpNovelModel.novelList[widget.id-1],)),
+              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: 5, novel: widget.novel, routeIndex: widget.routeIndex,)),
             );
           },
           child: Row(

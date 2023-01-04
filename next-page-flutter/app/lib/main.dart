@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             ),
             home: CustomBottomAppbar(routeIndex: 0,),
             routes: {
-              "/sign-in": (context) => const SignInScreen(fromWhere: 0, novel: "none",),
+              "/sign-in": (context) => const SignInScreen(fromWhere: 0, novel: "none", routeIndex: 99,),
               "/sign-up": (context) => const SignUpScreen(),
             }
         )
