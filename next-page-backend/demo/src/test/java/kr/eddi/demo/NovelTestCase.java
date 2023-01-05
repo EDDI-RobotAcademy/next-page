@@ -53,9 +53,17 @@ public class NovelTestCase {
 
     @Test
     void episodeRegisterAtService() {
-        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(1L, 1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇsㄴㅇㄹ", false);
+        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(5L, 6L, "몸을 만들자(4)", """
+                 근육 조선 6화
+                 내용이당
+                """, false);
         Boolean isOk = service.episodeRegister(request);
         System.out.println("isOk?: " + isOk);
+    }
+    @Test
+    void deleteEpisode(){
+        Boolean isDelete = service.deleteNovelEpisode(8L);
+        System.out.println("isDelete: " + isDelete);
     }
 
     @Test
