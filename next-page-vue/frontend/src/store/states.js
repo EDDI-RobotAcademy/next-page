@@ -11,6 +11,8 @@ export default {
 
     uploaderNovelInfoList: {},
 
+    allNovelLists:[],
+
     qnas: [],
     qna: {},
 
