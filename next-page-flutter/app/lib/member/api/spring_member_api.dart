@@ -135,6 +135,26 @@ class SpringMemberApi {
     }
   }
 
+  Future<bool> modifyPassword(PasswordModifyRequest request) async {
+    var data = { 'memberId' : request.memberId, 'newPassword' : request.newPassword };
+    var body = json.encode(data);
+    debugPrint(body);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/member/modify-password'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("통신 확인");
+      return json.decode(response.body);
+    } else {
+      debugPrint("통신 실패");
+      return false;
+    }
+  }
+
 
   Future<int> lookUpUserPoint(MemberPointRequest request) async {
     var data = { 'memberId': request.memberId };
