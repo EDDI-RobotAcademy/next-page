@@ -15,8 +15,6 @@ public class MemberNicknameModifyRequest {
 
     private Long memberId;
 
-    private String email;
-
     private String reNickName;
 
 }
