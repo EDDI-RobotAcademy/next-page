@@ -81,7 +81,7 @@ class _MypageScreenState extends State<MypageScreen> {
                         onPressed: () async {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: fromMy, novel: "none")));
+                              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: fromMy, novel: "none", routeIndex: 99,)));
                           },
                         child: Text('로그인'))),
                 ),
@@ -99,7 +99,6 @@ class _MypageScreenState extends State<MypageScreen> {
                   Card(
                     child: ListTile(
                       title: Text("보유 포인트: $currentPoint p"),
-                      //title: Text("보유포인트 0 p"),
                       trailing: ElevatedButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PointChargeScreen(fromWhere: fromMy,))),
                           child: Text('충전하기'))),
