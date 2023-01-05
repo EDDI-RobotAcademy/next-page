@@ -82,7 +82,7 @@ class _SignInFormState extends State <SignInForm>{
                     SizedBox(height: size.height * 0.1),
                     EmailTextField(controller: emailController),
                     SizedBox(height: size.height * 0.03),
-                    PasswordTextField(controller: passwordController),
+                    PasswordTextField(controller: passwordController, label: '비밀번호'),
                     SizedBox(height: size.height * 0.03),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
