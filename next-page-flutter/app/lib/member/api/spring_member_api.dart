@@ -116,6 +116,26 @@ class SpringMemberApi {
     }
   }
 
+  Future<String> modifyNickname(NicknameModifyRequest request) async {
+    var data = { 'memberId' : request.memberId, 'reNickName' : request.newNickname };
+    var body = json.encode(data);
+    debugPrint(body);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/member/modify-nickName'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("통신 확인");
+      return response.body.toString();
+    } else {
+      throw Exception("통신 실패");
+    }
+  }
+
+
   Future<int> lookUpUserPoint(MemberPointRequest request) async {
     var data = { 'memberId': request.memberId };
     var body = json.encode(data);
