@@ -2,6 +2,7 @@ import {
     CHECK_DUPLICATE_EMAIL_TO_SPRING,
     CHECK_DUPLICATE_NICKNAME_TO_SPRING, REQUEST_BOARD_FROM_SPRING,
     REQUEST_BOARD_LIST_FROM_SPRING, REQUEST_NOVEL_EPISODE_LIST,
+    REQUEST_NOVEL_LIST_TO_SPRING,
     REQUEST_UPLOADER_NOVEL_INFO_LIST,
 
 } from './mutation-types'
@@ -18,6 +19,19 @@ export default {
         return axios.post(`http://localhost:7777/novel/${member_id}/information-list`, {page, size})
             .then((res) => {
                 commit(REQUEST_UPLOADER_NOVEL_INFO_LIST, res.data)
+            })
+            .catch((error) => {
+                alert(error)
+            })
+    },
+
+    requestNovelListToSpring({commit}) {
+        console.log("requestNovelListToSpring()")
+
+        return axios.get(`http://localhost:7777/novel/all-novel-list`)
+            .then((res) => {
+                commit(REQUEST_NOVEL_LIST_TO_SPRING, res.data)
+                console.log("res.data : " + res.data)
             })
             .catch((error) => {
                 alert(error)

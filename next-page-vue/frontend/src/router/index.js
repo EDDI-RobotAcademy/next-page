@@ -13,6 +13,8 @@ import QnAListView from "@/views/mypage/qna/QnAListView";
 import QnAReadView from "@/views/mypage/qna/QnAReadView";
 import QnAModifyView from "@/views/mypage/qna/QnAModifyView";
 
+import NovelListView from "@/views/Upload/NovelListView";
+
 
 Vue.use(VueRouter)
 
@@ -62,6 +64,12 @@ const routes = [
     path: '/signin-view',
     name: 'SignIn-View',
     component: SignInView
+  },
+
+  {
+    path: '/information-list',
+    name: 'NovelListView',
+    component: NovelListView
   },
 
 
