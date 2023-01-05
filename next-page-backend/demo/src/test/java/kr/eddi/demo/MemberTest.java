@@ -5,6 +5,7 @@ import kr.eddi.demo.member.entity.member.NextPageMember;
 import kr.eddi.demo.member.entity.repository.member.MemberRepository;
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
 
+import kr.eddi.demo.member.entity.service.member.request.MemberPasswordModifyRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,7 @@ public class MemberTest {
     @Transactional
 
     public void SignInTest() {  // 로그인 Test
-        MemberSignInRequest request = new MemberSignInRequest("", "");
+        MemberSignInRequest request = new MemberSignInRequest("test@test.com", "00000000");
         Map<String, String> memberInfo = service.signIn(request);
         String token = memberInfo.get("userToken");
         System.out.println(token);
@@ -70,7 +71,7 @@ public class MemberTest {
 
 
     @Test
-    public void modifyNickName() {
+    public void modifyNickName() { // 닉네임 Test
 
         String reNickName = ""; // 변경할 닉네임
         Long memberId = 9L; // 변경할 닉네임 멤버 ID 번호
@@ -87,13 +88,25 @@ public class MemberTest {
             repository.save(member);
             System.out.println("닉네임이 변경 되었습니다. : " + member.getNickName());
 
-        }else {
+        } else {
 
             System.out.println("중복된 닉네임 입니다. ");
         }
 
+    }
+
+
+    @Test
+    public void modifyPassword() { // 비밀번호 Test
+
+        MemberPasswordModifyRequest request = new MemberPasswordModifyRequest(9L, "00000000");
+        boolean Success = service.modifyPassword(request);
+
+        System.out.println("Success : 비밀번호를 변경 완료 하였습니다. " + Success);
 
     }
+
+
 
 
 }

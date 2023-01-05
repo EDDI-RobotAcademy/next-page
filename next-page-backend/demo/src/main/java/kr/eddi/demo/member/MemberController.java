@@ -3,6 +3,9 @@ package kr.eddi.demo.member;
 
 import kr.eddi.demo.member.entity.service.MemberServiceImpl;
 import kr.eddi.demo.member.entity.service.member.request.MemberNicknameModifyRequest;
+import kr.eddi.demo.member.entity.service.member.request.MemberPasswordModifyRequest;
+import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
+import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
 import kr.eddi.demo.member.form.MemberSignInForm;
 import kr.eddi.demo.member.form.MemberSignUpForm;
 import lombok.extern.slf4j.Slf4j;
@@ -65,12 +68,26 @@ public class MemberController {
     public String modifyNickName(@RequestBody MemberNicknameModifyRequest memberNicknameModifyRequest) {
 
         log.info("닉네임 변경 멤버 아이디 : " + memberNicknameModifyRequest.getMemberId());
-        log.info("변경할 닉네임 : " +memberNicknameModifyRequest.getReNickName());
+        log.info("변경할 닉네임 : " + memberNicknameModifyRequest.getReNickName());
 
         Long memberId = memberNicknameModifyRequest.getMemberId();
         String reNickName = memberNicknameModifyRequest.getReNickName();
 
-        return service.modifyNickName(memberId,reNickName);
+        return service.modifyNickName(memberId, reNickName);
     }
+
+
+
+    @PostMapping("/modify-password") // 비밀번호 수정
+
+    public Boolean modifyPassword(@RequestBody MemberPasswordModifyRequest request) {
+
+
+        log.info("비밀번호 수정 : " + request);
+
+        return service.modifyPassword(request);
+
+    }
+
 
 }
