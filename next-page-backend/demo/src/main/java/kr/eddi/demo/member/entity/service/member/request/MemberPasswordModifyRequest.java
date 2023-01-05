@@ -1,20 +1,18 @@
 package kr.eddi.demo.member.entity.service.member.request;
 
 
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-
-
 
 @Getter
 @ToString
 @RequiredArgsConstructor
 
-public class MemberNicknameModifyRequest {
+public class MemberPasswordModifyRequest {
 
-    private Long memberId;
-
-    private String reNickName;
+    private final Long memberId;
+    private final String newPassword;
 
 }

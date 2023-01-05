@@ -23,6 +23,7 @@ public abstract class Authentication {
     private Long id = null;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Getter
     @JoinColumn(name = "member_id")
     private NextPageMember member;
 
