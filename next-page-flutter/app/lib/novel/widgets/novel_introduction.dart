@@ -27,7 +27,7 @@ class NovelIntroduction extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0,20,0,20),
                 child: Text(
                   introduction.replaceAll('<br>',
-                      '''
+'''
                   
  '''),
                   style: const TextStyle(

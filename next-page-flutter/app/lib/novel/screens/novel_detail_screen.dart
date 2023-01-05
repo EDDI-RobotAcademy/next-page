@@ -122,7 +122,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                             image: DecorationImage(
                                               //흐릿한 썸네일을 배경으로 깐다
                                               image: AssetImage(
-                                                  'assets/images/thumbnail/${_novel.thumbnail}'),
+                                                'assets/images/thumbnail/${_novel.thumbnail}'),
                                               fit: BoxFit.cover,
                                             )),
                                         child: Column(
@@ -381,7 +381,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                                CustomBottomAppbar(routeIndex: toBottomAppBar,)),
+                                            CustomBottomAppbar(routeIndex: toBottomAppBar,)),
                                             (route) => false);
                                   },
                                   icon: const Icon(

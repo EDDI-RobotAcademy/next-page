@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../comment/comment_list_screen.dart';
-import '../../model/tmp_novel_model.dart';
 import 'novel_detail_screen.dart';
 import '../widgets/sliding_appbar.dart';
 
 class ScrollNovelViewerScreen extends StatefulWidget {
   final String appBarTitle;
-  final int episode;
   final int id;
   final int routeIndex;
+  final String text;
+  final String episodeTitle;
+  final String author;
+  final dynamic episodeInfo;
+  final String publisher;
+  final int purchasePoint;
 
   const ScrollNovelViewerScreen(
-      {Key? key, required this.appBarTitle, required this.episode, required this.id, required this.routeIndex})
+      {Key? key,
+      required this.appBarTitle,
+      required this.id,
+      required this.routeIndex,
+      required this.text,
+      required this.episodeTitle,
+      required this.author,
+      required this.episodeInfo,
+      required this.publisher,
+      required this.purchasePoint})
       : super(key: key);
 
   @override
@@ -36,8 +49,8 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     Future.microtask(() {
       _cdx = MediaQuery.of(context).size.width / 2;
     }).then((value) => setState(() {
-      print(_cdx);
-    }));
+          print(_cdx);
+        }));
     super.initState();
     //애니메이션 사용을 위해서는 initState에서 초기설정 필요
     _animationController = AnimationController(
@@ -50,11 +63,11 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
 
   _scrollListener() async {
     if (_scrollController.offset ==
-        _scrollController.position.maxScrollExtent &&
+            _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       print('스크롤이 맨 바닥에 위치해 있습니다');
     } else if (_scrollController.offset ==
-        _scrollController.position.minScrollExtent &&
+            _scrollController.position.minScrollExtent &&
         !_scrollController.position.outOfRange) {
       print('스크롤이 맨 위에 위치해 있습니다');
     }
@@ -64,7 +77,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      //클릭 위치에 따라 슬라이드하며 보였다 사라지는 반응형 앱바
+        //클릭 위치에 따라 슬라이드하며 보였다 사라지는 반응형 앱바
         appBar: SlidingAppBar(
             controller: _animationController,
             visible: visible,
@@ -82,12 +95,11 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
   }
 
   AppBar _buildViewerAppbar() {
-    Size _size = MediaQuery.of(context).size;
     return AppBar(
       backgroundColor: (visible) ? AppTheme.viewerAppbar : Colors.transparent,
       elevation: 0.0,
       title: Text(
-        '${widget.appBarTitle} ${widget.episode}화',
+        '${widget.appBarTitle} ${widget.episodeInfo['episodeNumber']}화',
         style: const TextStyle(color: Colors.black),
       ),
       leading: IconButton(
@@ -99,8 +111,11 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => NovelDetailScreen(id: widget.id,routeIndex: widget.routeIndex,)),
-                  (route) => false);
+                  builder: (BuildContext context) => NovelDetailScreen(
+                        id: widget.id,
+                        routeIndex: widget.routeIndex,
+                      )),
+              (route) => false);
         },
       ),
       actions: [
@@ -114,7 +129,15 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     );
   }
 
+  Widget _customSizedBox(){
+    Size size = MediaQuery.of(context).size;
+    return SizedBox(
+      height: size.height *0.05,
+    );
+  }
+
   Widget _buildViewerBody() {
+    Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTapDown: (TapDownDetails td) {
         setState(() {
@@ -131,19 +154,80 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
           controller: _scrollController,
           children: [
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  /*
+                  * 소설 에피소드의 제목
+                  * */
                   child: Text(
-                    TmpNovelModel.novelList[0].content,
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
+                    widget.episodeTitle,
+                    style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * 0.08,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.4),
-                Container(
-                  child: Text('작품 정보라던지?'),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(size.width * 0.03, 10, size.width * 0.03, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /*
+                       * 에피소드의 본문 내용
+                       * */
+                      Text(
+                        widget.text,
+                        style: TextStyle(
+                            fontSize:
+                                MediaQuery.of(context).size.width * 0.045),
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.4),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(size.width * 0.06, 10, size.width * 0.06, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.appBarTitle, style: TextStyle(
+                        fontSize: size.width * 0.045
+                      ),),
+                      _customSizedBox(),
+                      Text('${widget.episodeInfo['episodeNumber']}화', style: TextStyle(
+                          fontSize: size.width * 0.045
+                      ),),
+                      _customSizedBox(),
+                      Text('지은이 : ${widget.author}', style: TextStyle(
+                          fontSize: size.width * 0.045
+                      ),),
+                      _customSizedBox(),
+                      Text('출판사 : ${widget.publisher}', style: TextStyle(
+                          fontSize: size.width * 0.045
+                      ),),
+                      _customSizedBox(),
+                      Text('업로드일 : ${widget.episodeInfo['uploadedDate']}', style: TextStyle(
+                          fontSize: size.width * 0.045
+                      ),),
+                      _customSizedBox(),
+                      Text('정가 : ${widget.purchasePoint}원', style: TextStyle(
+                          fontSize: size.width * 0.045
+                      ),),
+                      _customSizedBox(),
+                      Text('제공 : NEXT PAGE', style: TextStyle(
+                          fontSize: size.width * 0.045
+                      ),),
+                      _customSizedBox(),
+                      _customSizedBox(),
+                      Text(''' 이 책은 NEXT PAGE가 저작권자와의 계약에 따라 전자책으로 발행한 것입니다.
+본사의 허락없이 본서의 내용을 무단복제 하는 것은 저작권법에 의해 금지되어 있습니다.''', style: TextStyle(
+                          fontSize: size.width * 0.045
+                      ),),
+                    ],
+                  ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.2),
               ],
@@ -159,80 +243,81 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
         color: AppTheme.viewerAppbar,
         child: visible
             ? Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton.icon(
-                style: ButtonStyle(
-                    foregroundColor:
-                    MaterialStateProperty.all(Colors.black)),
-                onPressed: () {
-                  _scrollController
-                      .jumpTo(_scrollController.position.minScrollExtent);
-                },
-                icon: const Icon(
-                  Icons.keyboard_arrow_up,
-                  size: 20,
-                ),
-                label: const Text("처음으로")),
-            TextButton.icon(
-                style: ButtonStyle(
-                    foregroundColor:
-                    MaterialStateProperty.all(Colors.black)),
-                onPressed: () {
-                  _scrollController
-                      .jumpTo(_scrollController.position.maxScrollExtent);
-                },
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  size: 20,
-                ),
-                label: const Text("맨끝으로")),
-            TextButton.icon(
-                style: ButtonStyle(
-                    foregroundColor:
-                    MaterialStateProperty.all(Colors.black)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CommentListScreen(
-                          id: widget.id,
-                          appBarTitle: widget.appBarTitle,
-                          fromWhere: widget.episode,
-                          routeIndex: widget.routeIndex,
-                        )),
-                  );
-                },
-                icon: const Icon(
-                  Icons.sms_outlined,
-                  size: 20,
-                ),
-                label: const Text("23")),
-            TextButton.icon(
-                style: ButtonStyle(
-                    foregroundColor:
-                    MaterialStateProperty.all(Colors.black)),
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.arrow_back,
-                  size: 20,
-                ),
-                label: const Text("이전")),
-            Directionality(
-              textDirection: TextDirection.rtl,
-              child: TextButton.icon(
-                  style: ButtonStyle(
-                      foregroundColor:
-                      MaterialStateProperty.all(Colors.black)),
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    size: 20,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton.icon(
+                      style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.black)),
+                      onPressed: () {
+                        _scrollController
+                            .jumpTo(_scrollController.position.minScrollExtent);
+                      },
+                      icon: const Icon(
+                        Icons.keyboard_arrow_up,
+                        size: 20,
+                      ),
+                      label: const Text("처음으로")),
+                  TextButton.icon(
+                      style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.black)),
+                      onPressed: () {
+                        _scrollController
+                            .jumpTo(_scrollController.position.maxScrollExtent);
+                      },
+                      icon: const Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 20,
+                      ),
+                      label: const Text("맨끝으로")),
+                  TextButton.icon(
+                      style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.black)),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CommentListScreen(
+                                    id: widget.id,
+                                    appBarTitle: widget.appBarTitle,
+                                    fromWhere:
+                                        widget.episodeInfo['episodeNumber'],
+                                    routeIndex: widget.routeIndex,
+                                  )),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.sms_outlined,
+                        size: 20,
+                      ),
+                      label: const Text("23")),
+                  TextButton.icon(
+                      style: ButtonStyle(
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.black)),
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        size: 20,
+                      ),
+                      label: const Text("이전")),
+                  Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: TextButton.icon(
+                        style: ButtonStyle(
+                            foregroundColor:
+                                MaterialStateProperty.all(Colors.black)),
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          size: 20,
+                        ),
+                        label: const Text("다음")),
                   ),
-                  label: const Text("다음")),
-            ),
-          ],
-        )
+                ],
+              )
             : Container());
   }
 }

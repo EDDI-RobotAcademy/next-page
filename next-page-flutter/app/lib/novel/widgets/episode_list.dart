@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
 import '../../member/screens/sign_in_screen.dart';
-import '../../model/tmp_novel_episode.dart';
+import '../api/novel_requests.dart';
+import '../api/spring_novel_api.dart';
 import '../screens/scroll_novel_viewer_screen.dart';
 
 class EpisodeList extends StatefulWidget {
@@ -13,7 +14,13 @@ class EpisodeList extends StatefulWidget {
   final String title;
   final int routeIndex;
 
-  const EpisodeList({Key? key, required this.thumbnail, required this.id, required this.title, required this.routeIndex, required this.novel})
+  const EpisodeList(
+      {Key? key,
+      required this.thumbnail,
+      required this.id,
+      required this.title,
+      required this.routeIndex,
+      required this.novel})
       : super(key: key);
 
   @override
@@ -21,14 +28,28 @@ class EpisodeList extends StatefulWidget {
 }
 
 class _EpisodeListState extends State<EpisodeList> {
+  late Future<dynamic>? _future;
   late bool _loginState;
+  List<dynamic>? _episodeList = [];
 
   @override
   void initState() {
+    _future = _getEpisodeList();
     Future.delayed(Duration.zero, () async {
       _asyncMethod();
     });
     super.initState();
+  }
+
+  Future _getEpisodeList() async {
+    await SpringNovelApi()
+        .getNovelEpisodeList(EpisodeRequest(0, 100, widget.id))
+        .then((episodeList) {
+      setState(() {
+        _episodeList = episodeList;
+      });
+      print(episodeList.toString());
+    });
   }
 
   void _asyncMethod() async {
@@ -47,15 +68,35 @@ class _EpisodeListState extends State<EpisodeList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: TmpEpisodeModel.episodeList.map((episode) {
-            return _episodeCardList(episode);
-          }).toList(),
-        ),
-      ),
-    );
+    return FutureBuilder(
+        future: _future,
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else {
+              return (_episodeList!.length > 0)
+                  ? Container(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: _episodeList!.map((episode) {
+                            return _episodeCardList(episode);
+                          }).toList(),
+                        ),
+                      ),
+                    )
+                  : const Center(
+                      child: Text('등록된 에피소드가 없습니다.'),
+                    );
+            }
+          } else {
+            return const Text("망");
+          }
+        }));
   }
 
   Widget _episodeCardList(dynamic episode) {
@@ -69,19 +110,30 @@ class _EpisodeListState extends State<EpisodeList> {
             print(_loginState);
             (_loginState)
                 ? Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ScrollNovelViewerScreen(
-                    id: widget.id,
-                    appBarTitle: widget.title,
-                    episode: episode.episode,
-                    routeIndex: widget.routeIndex,
-                  )),
-            )
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ScrollNovelViewerScreen(
+                            episodeInfo: episode,
+                            author: widget.novel.author,
+                            episodeTitle: episode['episodeTitle'],
+                            text: episode['text'],
+                            id: widget.id,
+                            appBarTitle: widget.title,
+                            routeIndex: widget.routeIndex,
+                            publisher: widget.novel.publisher,
+                          purchasePoint: widget.novel.purchasePoint
+
+                        )),
+                  )
                 : Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: 5, novel: widget.novel, routeIndex: widget.routeIndex,)),
-            );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SignInScreen(
+                              fromWhere: 5,
+                              novel: widget.novel,
+                              routeIndex: widget.routeIndex,
+                            )),
+                  );
           },
           child: Row(
             children: <Widget>[
@@ -91,7 +143,8 @@ class _EpisodeListState extends State<EpisodeList> {
                 decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     image: DecorationImage(
-                        image: AssetImage('assets/images/thumbnail/${widget.thumbnail}'),
+                        image: AssetImage(
+                            'assets/images/thumbnail/${widget.thumbnail}'),
                         fit: BoxFit.cover)),
               ),
               Padding(
@@ -100,13 +153,13 @@ class _EpisodeListState extends State<EpisodeList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      '${widget.title} ${episode.episode.toString()}화',
+                      '${widget.title} ${episode['episodeNumber'].toString()}화',
                       style: const TextStyle(
                           fontWeight: FontWeight.w600, fontSize: 17),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
-                      child: Text(episode.regDate),
+                      child: Text(episode['uploadedDate']),
                     )
                   ],
                 ),

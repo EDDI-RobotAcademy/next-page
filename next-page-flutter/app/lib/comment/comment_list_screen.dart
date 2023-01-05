@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
 import '../novel/screens/novel_detail_screen.dart';
-import '../novel/screens/scroll_novel_viewer_screen.dart';
 import 'widgets/comment_list_form.dart';
 
 
@@ -46,7 +45,8 @@ class _CommentListScreenState extends State<CommentListScreen> {
                   builder: (BuildContext context) =>
                       NovelDetailScreen(id: widget.id, routeIndex: widget.routeIndex,)),
                   (route) => false)
-              : Navigator.pushAndRemoveUntil(
+              : Navigator.pop(context);
+          /*pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
@@ -54,9 +54,9 @@ class _CommentListScreenState extends State<CommentListScreen> {
                         id: widget.id,
                         appBarTitle: widget.appBarTitle,
                         episode: widget.fromWhere,
-                        routeIndex: widget.routeIndex,
+                      routeIndex: widget.routeIndex,
                       )),
-                  (route) => false);
+                  (route) => false);*/
         },
         color: Colors.black,
       ),
