@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -34,4 +33,6 @@ public interface NovelService {
     Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request);
 
     NovelEpisode getNovelEpisodeDetail(Long episodeId);
+
+    public Boolean deleteNovelEpisode(Long episodeId);
 }

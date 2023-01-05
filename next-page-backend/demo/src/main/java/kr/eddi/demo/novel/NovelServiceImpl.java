@@ -328,5 +328,28 @@ public class NovelServiceImpl implements NovelService {
         return episode;
     }
 
+    /**
+     * 등록된 에피소드를 삭제합니다.
+     * @param episodeId
+     * @return
+     */
+    @Override
+    public Boolean deleteNovelEpisode(Long episodeId){
+
+        Optional<NovelEpisode> maybeEpisode = episodeRepository.findById(episodeId);
+
+        if (maybeEpisode.isPresent()) {
+
+            NovelEpisode episode = maybeEpisode.get();
+
+            episodeRepository.delete(episode);
+            log.info("에피소드 삭제 성공!");
+            return true;
+
+        }
+        log.info("해당 에피소드가 존재하지 않습니다.");
+        return false;
+    }
+
 
 }
