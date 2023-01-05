@@ -7,12 +7,14 @@ import kr.eddi.demo.member.entity.member.NextPageMember;
 import kr.eddi.demo.member.entity.repository.member.AuthenticationRepository;
 import kr.eddi.demo.member.entity.repository.member.MemberRepository;
 import kr.eddi.demo.member.entity.service.member.request.MemberNicknameModifyRequest;
+import kr.eddi.demo.member.entity.service.member.request.MemberPasswordModifyRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
 import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
 import kr.eddi.demo.member.entity.service.security.RedisServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -150,6 +152,35 @@ public class MemberServiceImpl implements MemberService {
         }
 
         return msg;
+    }
+
+
+
+    @Override
+    public Boolean modifyPassword(MemberPasswordModifyRequest request) {
+
+        Optional<NextPageMember> maybeMember = memberRepository.findById(request.getMemberId());
+
+        if (maybeMember.isPresent()) {
+
+            final NextPageMember member = maybeMember.get();
+
+            final Optional<Authentication> mayAuth = authenticationRepository.findByMemberId(request.getMemberId());
+
+            if (mayAuth.isPresent()) {
+
+                mayAuth.get().getId();
+                authenticationRepository.deleteById(mayAuth.get().getId());
+
+                final BasicAuthentication auth = new BasicAuthentication(member,Authentication.BASIC_AUTH,request.getNewPassword());
+                authenticationRepository.save(auth);
+
+            }
+
+        }
+
+        return true;
+
     }
 
 
