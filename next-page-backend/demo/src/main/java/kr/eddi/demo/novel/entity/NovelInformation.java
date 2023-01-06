@@ -2,7 +2,7 @@ package kr.eddi.demo.novel.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import kr.eddi.demo.member.entity.member.NextPageMember;
+import kr.eddi.demo.member.entity.NextPageMember;
 import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
