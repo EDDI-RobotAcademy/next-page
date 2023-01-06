@@ -1,7 +1,7 @@
 package kr.eddi.demo.member.form;
 
 
-import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
+import kr.eddi.demo.member.request.MemberSignInRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

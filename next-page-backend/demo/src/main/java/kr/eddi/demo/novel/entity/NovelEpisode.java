@@ -2,7 +2,7 @@ package kr.eddi.demo.novel.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import kr.eddi.demo.comment.Comment;
+import kr.eddi.demo.comment.entity.Comment;
 import kr.eddi.demo.episode_payment.entity.EpisodePayment;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
