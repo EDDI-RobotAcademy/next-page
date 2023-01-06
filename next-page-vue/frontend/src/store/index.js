@@ -12,9 +12,10 @@ import getters from "@/store/getters";
 
 export default new Vuex.Store({
 
-  plugins: [
-    createPersistedState( {
-      paths: ['isAuthenticated']
+
+  plugins:[
+    createPersistedState({
+      paths: ['signInValue','memberInfoAfterSignIn', 'userToken']
     })
   ],
 

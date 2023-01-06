@@ -1,11 +1,13 @@
 import {
     CHECK_DUPLICATE_EMAIL_TO_SPRING,
     CHECK_DUPLICATE_NICKNAME_TO_SPRING, REQUEST_BOARD_FROM_SPRING,
-    REQUEST_BOARD_LIST_FROM_SPRING, REQUEST_NOVEL_EPISODE_LIST,
+    REQUEST_BOARD_LIST_FROM_SPRING, REQUEST_NOVEL_EPISODE_LIST, REQUEST_SIGN_IN_TOKEN_FROM_SPRING,
     REQUEST_UPLOADER_NOVEL_INFO_LIST,
 
 } from './mutation-types'
 import axios from "axios";
+import states from "@/store/states";
+import store from "@/store/index";
 
 
 export default {
@@ -158,5 +160,50 @@ export default {
                 alert(error.message)
             })
     },
+
+
+    async requestSignInToSpring({commit}, payload) {
+        console.log('requestSignInToSpring')
+
+        const {email, password} = payload
+
+        await axios.post('http://localhost:7777/member/sign-in', {email, password})
+            .then((res) => {
+                if (localStorage.getItem("userToken") == null) {
+                    alert("로그인 되었습니다.📚 ")
+                    commit(REQUEST_SIGN_IN_TOKEN_FROM_SPRING, res.data)
+                    states.userToken = res.data.userToken
+                    console.log("멤버 닉네임 :"+ res.data.userNickName)
+                    console.log("멤버 이메일 :"+ res.data.userEmail)
+                    console.log("멤버 포인트 :"+ res.data.userPoint)
+                    console.log("멤버 아이디값 :"+ res.data.userId)
+
+
+                    if (localStorage.getItem("userToken") != states.userToken) {
+                        store.commit("USER_TOKEN", res.data.userToken)
+                    }
+                    store.commit('SING_IN_VALUE', true)
+
+                } else {
+                    alert("이미 로그인 되어있습니다.📚 ")
+                }
+            })
+            .catch(() => {
+                alert("아이디 혹은 비밀번호가 존재하지 않거나 틀렸습니다.📚 ")
+            })
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
