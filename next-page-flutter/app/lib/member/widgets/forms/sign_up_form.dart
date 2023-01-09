@@ -1,17 +1,18 @@
 
-import 'package:app/member/api/SpringMemberApi.dart';
-import 'package:app/member/api/requests.dart';
-import 'package:app/member/utility/custom_text_style.dart';
-import 'package:app/member/widgets/alerts/custom_result_alert.dart';
-import 'package:app/member/widgets/alerts/custom_result_and_push_alert.dart';
-import 'package:app/member/widgets/text_fields/email_text_field.dart';
-import 'package:app/member/widgets/text_fields/nickname_text_field.dart';
-import 'package:app/member/widgets/text_fields/password_text_field.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../api/spring_member_api.dart';
+import '../../api/requests.dart';
+import '../../utility/custom_text_style.dart';
+import '../alerts/custom_result_alert.dart';
+import '../alerts/custom_result_and_push_alert.dart';
+import '../text_fields/email_text_field.dart';
+import '../text_fields/nickname_text_field.dart';
 import '../text_fields/password_check_text_field.dart';
+import '../text_fields/password_text_field.dart';
 
 
 class SignUpForm extends StatefulWidget {
@@ -25,7 +26,7 @@ class SignUpFormState extends State <SignUpForm>{
   final _formKey = GlobalKey<FormState>();
 
   late String email;
-  late String password;
+  String password = ''; //LateInitializationError 때문에 late -> ''값으로 초기화
   late String nickname;
 
   late TextEditingController emailController = TextEditingController();
@@ -86,10 +87,11 @@ class SignUpFormState extends State <SignUpForm>{
                                 if(emailController.text.isEmpty) {
                                   _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '내용을 입력해주세요!'));
                                 } else {
-                                emailPass = await SpringMemberApi().emailCheck(email);
-                                debugPrint(emailPass.toString());
-                                _showDupCheckResult(context, emailPass, '이메일'); }
-                                },
+                                    emailPass = await SpringMemberApi().emailCheck(email);
+                                    debugPrint(emailPass.toString());
+                                    _showDupCheckResult(context, emailPass, '이메일');
+                                }
+                              },
                               child: Text("중복 확인"),)
                           ],
                         ),
@@ -97,7 +99,7 @@ class SignUpFormState extends State <SignUpForm>{
                       // 닉네임 입력 텍스트 필드 & 중복 확인 버튼
                       Row(
                         children: [
-                          Expanded( child: NicknameTextField(controller: nicknameController)),
+                          Expanded( child: NicknameTextField(controller: nicknameController, label: '닉네임',)),
                           ElevatedButton(
                             onPressed: () async {
                               if(nicknameController.text.isEmpty) {
@@ -111,9 +113,9 @@ class SignUpFormState extends State <SignUpForm>{
                         ],
                       ),
                       SizedBox(height: size.height * 0.03),
-                      PasswordTextField(controller: passwordController),
+                      PasswordTextField(controller: passwordController, label: '비밀번호',),
                       SizedBox(height: size.height * 0.03),
-                      PasswordCheckTextField(),
+                      PasswordCheckTextField(password: password),
                       SizedBox(height: size.height * 0.03),
                       // 회원가입 버튼
                       ElevatedButton(

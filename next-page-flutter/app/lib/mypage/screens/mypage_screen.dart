@@ -1,5 +1,6 @@
 
 import 'package:app/member/screens/sign_in_screen.dart';
+import 'package:app/mypage/screens/my_info_modify_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,18 +81,10 @@ class _MypageScreenState extends State<MypageScreen> {
                         onPressed: () async {
                           Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: fromMy, novel: "none")));
+                              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: fromMy, novel: "none", routeIndex: 99,)));
                           },
                         child: Text('로그인'))),
                 ),
-                // 화면 전환 확인용 임시 버튼
-                /*TextButton(
-                    onPressed: () async {
-                      var prefs = await SharedPreferences.getInstance();
-                      prefs.setString('userToken', 'tmptoken11111');
-                      setState(() { _loginState = true; }); },
-                    child: Text("로그인 전환"))
-                */
               ],
             ));
       } else {
@@ -106,16 +99,15 @@ class _MypageScreenState extends State<MypageScreen> {
                   Card(
                     child: ListTile(
                       title: Text("보유 포인트: $currentPoint p"),
-                      //title: Text("보유포인트 0 p"),
                       trailing: ElevatedButton(
                           onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PointChargeScreen(fromWhere: fromMy,))),
                           child: Text('충전하기'))),
                   ),
-                  const Card(
+                  Card(
                       child: ListTile(
                         title: Text("회원 정보 변경"),
                         trailing: Icon(Icons.arrow_forward_ios_rounded),
-                        // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 회원정보 변경 페이지)),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyInfoModifyScreen())),
                       )
                   ),
                   const Card(

@@ -1,7 +1,7 @@
 package kr.eddi.demo.episode_payment.requset;
 
 import kr.eddi.demo.episode_payment.entity.EpisodePayment;
-import kr.eddi.demo.member.entity.member.NextPageMember;
+import kr.eddi.demo.member.entity.NextPageMember;
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

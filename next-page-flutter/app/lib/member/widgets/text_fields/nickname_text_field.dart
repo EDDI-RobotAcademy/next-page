@@ -5,8 +5,10 @@ import '../../utility/check_validate.dart';
 import '../forms/sign_up_form.dart';
 
 class NicknameTextField extends StatefulWidget {
-  const NicknameTextField({Key? key, required this.controller}) : super(key: key);
+  const NicknameTextField({Key? key, required this.controller, required this.label}) : super(key: key);
   final TextEditingController controller;
+  // 텍스트 필드 라벨 parameter 추가
+  final String label;
 
   @override
   State<NicknameTextField> createState() => _NicknameTextFieldState();
@@ -22,7 +24,7 @@ class _NicknameTextFieldState extends State<NicknameTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("닉네임"),
+        Text(widget.label),
         SizedBox(height: size.height * 0.01,),
         TextFormField(
           controller: widget.controller,

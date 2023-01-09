@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
 import '../novel/screens/novel_detail_screen.dart';
-import '../novel/screens/scroll_novel_viewer_screen.dart';
 import 'widgets/comment_list_form.dart';
 
 
@@ -10,8 +9,9 @@ class CommentListScreen extends StatefulWidget {
   final int id;
   final String appBarTitle;
   final int fromWhere;
+  final int routeIndex;
 
-  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere, required this.id}) : super(key: key);
+  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere, required this.id, required this.routeIndex}) : super(key: key);
 
   @override
   State<CommentListScreen> createState() => _CommentListScreenState();
@@ -43,17 +43,20 @@ class _CommentListScreenState extends State<CommentListScreen> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      NovelDetailScreen(id: widget.id)),
+                      NovelDetailScreen(id: widget.id, routeIndex: widget.routeIndex,)),
                   (route) => false)
-              : Navigator.pushAndRemoveUntil(
+              : Navigator.pop(context);
+          /*pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) =>
                       ScrollNovelViewerScreen(
                         id: widget.id,
                         appBarTitle: widget.appBarTitle,
-                        episode: widget.fromWhere,)),
-                  (route) => false);
+                        episode: widget.fromWhere,
+                      routeIndex: widget.routeIndex,
+                      )),
+                  (route) => false);*/
         },
         color: Colors.black,
       ),

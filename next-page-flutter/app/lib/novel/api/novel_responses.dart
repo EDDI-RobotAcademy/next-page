@@ -74,3 +74,31 @@ class NovelResponse {
         thumbnail: json["thumbnail"]);
   }
 }
+
+class EpisodeResponse {
+  int id;
+  int episodeNumber;
+  String episodeTitle;
+  String text;
+  bool needToBuy;
+  String uploadedDate;
+
+
+  EpisodeResponse({
+    required this.id,
+    required this.episodeNumber,
+    required this.episodeTitle,
+    required this.text,
+    required this.needToBuy,
+    required this.uploadedDate});
+
+  factory EpisodeResponse.fromJson(Map<String, dynamic> json) {
+    return EpisodeResponse(
+        id: json["id"],
+        episodeNumber: json["episodeNumber"],
+        episodeTitle: json["episodeTitle"],
+        text: json["text"],
+        needToBuy: json["needToBuy"],
+        uploadedDate: json["uploadedDate"]);
+  }
+}

@@ -1,7 +1,7 @@
 package kr.eddi.demo;
 
 
-import kr.eddi.demo.novel.NovelServiceImpl;
+import kr.eddi.demo.novel.service.NovelServiceImpl;
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
@@ -36,7 +36,8 @@ public class NovelTestCase {
         service.createCategory(1L, "판타지");
         service.createCategory(2L, "무협");
         service.createCategory(3L, "로맨스");
-        service.createCategory(4L, "현대");
+        service.createCategory(4L, "현대판타지");
+        service.createCategory(5L, "BL");
     }
 
 
@@ -45,16 +46,24 @@ public class NovelTestCase {
     void episodeRegister() {
         Optional<NovelInformation> maybeInformation = informationRepository.findById(1L);
         NovelInformation information = maybeInformation.get();
-        NovelEpisode episode = new NovelEpisode(1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇㄹ ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ ㄴㅇㄹ", false, information);
+        NovelEpisode episode = new NovelEpisode(1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇㄹ ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ ㄴㅇㄹ", true, information);
         episode.updateToInformation();
         episodeRepository.save(episode);
     }
 
     @Test
     void episodeRegisterAtService() {
-        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(1L, 1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇsㄴㅇㄹ", false);
+        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(5L, 6L, "몸을 만들자(4)", """
+                 근육 조선 6화
+                 내용이당
+                """, false);
         Boolean isOk = service.episodeRegister(request);
         System.out.println("isOk?: " + isOk);
+    }
+    @Test
+    void deleteEpisode(){
+        Boolean isDelete = service.deleteNovelEpisode(8L);
+        System.out.println("isDelete: " + isDelete);
     }
 
     @Test

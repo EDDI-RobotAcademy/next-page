@@ -6,9 +6,9 @@ import 'package:flutter/widgets.dart';
 
 import '../../../novel/screens/novel_detail_screen.dart';
 import '../../../widgets/custom_bottom_appbar.dart';
-import '../../api/spring_member_api.dart';
 import '../../api/requests.dart';
 import '../../api/responses.dart';
+import '../../api/spring_member_api.dart';
 import '../../utility/custom_text_style.dart';
 import '../buttons/navigation_btn.dart';
 import '../alerts/custom_result_alert.dart';
@@ -16,10 +16,13 @@ import '../text_fields/email_text_field.dart';
 import '../text_fields/password_text_field.dart';
 
 
+
 class SignInForm extends StatefulWidget {
   final int fromWhere;
   final dynamic novel;
-  const SignInForm({Key? key, required this.fromWhere, required this.novel}) : super(key: key);
+  final int routeIndex;
+
+  const SignInForm({Key? key, required this.fromWhere, required this.novel, required this.routeIndex}) : super(key: key);
 
   @override
   State<SignInForm> createState() => _SignInFormState();
@@ -63,61 +66,61 @@ class _SignInFormState extends State <SignInForm>{
     Size size = MediaQuery.of(context).size;
 
     return Form(
-      key: _formKey,
-      child: Container(
-        height: size.height,
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text("로그인", style: largeTextStyleMain),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: size.height * 0.1),
-                      EmailTextField(controller: emailController),
-                      SizedBox(height: size.height * 0.03),
-                      PasswordTextField(controller: passwordController),
-                      SizedBox(height: size.height * 0.03),
-                      ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Color(0xff6699FF),
-                                minimumSize: Size(size.width * 0.4, size.height * 0.05)),
-                            onPressed: () async {
-                              if(_formKey.currentState!.validate()) {
-                                signInResponse = await SpringMemberApi().signIn(SignInRequest(email, password));
-                                if(signInResponse.result == true) {
-                                  if(widget.fromWhere == myIdx) {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                CustomBottomAppbar(routeIndex: myIdx,)),
-                                            (route) => false);
-                                  } else if(widget.fromWhere == fromEpisode) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                        builder: (BuildContext context) => NovelDetailScreen(id: widget.novel.id)));
-                                  } else {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                CustomBottomAppbar(routeIndex: homeIdx)),
-                                            (route) => false);
-                                  }
-
-                                } else {
-                                  showResultDialog(context, "알림", "이메일 혹은 비밀번호가 올바르지 않습니다.");
-                                }
+        key: _formKey,
+        child: Container(
+            height: size.height,
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("로그인", style: largeTextStyleMain),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: size.height * 0.1),
+                    EmailTextField(controller: emailController),
+                    SizedBox(height: size.height * 0.03),
+                    PasswordTextField(controller: passwordController, label: '비밀번호'),
+                    SizedBox(height: size.height * 0.03),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Color(0xff6699FF),
+                            minimumSize: Size(size.width * 0.4, size.height * 0.05)),
+                        onPressed: () async {
+                          if(_formKey.currentState!.validate()) {
+                            signInResponse = await SpringMemberApi().signIn(SignInRequest(email, password));
+                            if(signInResponse.result == true) {
+                              if(widget.fromWhere == myIdx) {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            CustomBottomAppbar(routeIndex: myIdx,)),
+                                        (route) => false);
+                              } else if(widget.fromWhere == fromEpisode) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) => NovelDetailScreen(id: widget.novel.id, routeIndex: widget.routeIndex,)));
                               } else {
-                                showResultDialog(context, "알림", "유효한 값을 모두 입력해주세요!");
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            CustomBottomAppbar(routeIndex: homeIdx)),
+                                        (route) => false);
                               }
-                            }, child: Text("로그인", style: smallTextStyleWhite)),
-                      Row(
+
+                            } else {
+                              showResultDialog(context, "알림", "이메일 혹은 비밀번호가 올바르지 않습니다.");
+                            }
+                          } else {
+                            showResultDialog(context, "알림", "유효한 값을 모두 입력해주세요!");
+                          }
+                        }, child: Text("로그인", style: smallTextStyleWhite)),
+                    Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           NavigationButton(buttonText: "계정 찾기", route: "/find-account",),
@@ -126,11 +129,11 @@ class _SignInFormState extends State <SignInForm>{
                           SizedBox(height: size.height * 0.03, child: VerticalDivider(thickness: 1)),// 세로 구분선
                           NavigationButton(buttonText: "회원 가입", route: "/sign-up",)
                         ])
-                    ],
-                  )
-                ],
-              )
-      )
+                  ],
+                )
+              ],
+            )
+        )
     );
   }
   void showResultDialog(BuildContext context, String title, String alertMsg) {

@@ -11,8 +11,9 @@ import '../widgets/novel_notice.dart';
 
 class NovelDetailScreen extends StatefulWidget {
   final int id;
+  final int routeIndex;
 
-  const NovelDetailScreen({Key? key, required this.id}) : super(key: key);
+  const NovelDetailScreen({Key? key, required this.id, required this.routeIndex}) : super(key: key);
 
   @override
   State<NovelDetailScreen> createState() => _NovelDetailScreenState();
@@ -23,6 +24,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
 
   late Future<dynamic> _future;
   dynamic _novel;
+  late int toBottomAppBar;
 
   final ScrollController _scrollController = ScrollController();
   late TabController _controller;
@@ -53,6 +55,11 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     _scrollController.addListener(() {
       print('offset = ${_scrollController.offset}');
     });
+    if(widget.routeIndex == 0){
+      toBottomAppBar = 0;
+    } if(widget.routeIndex == 1){
+      toBottomAppBar =1;
+    }
   }
 
   Future getNovelInfo() async {
@@ -115,7 +122,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                             image: DecorationImage(
                                               //흐릿한 썸네일을 배경으로 깐다
                                               image: AssetImage(
-                                                  'assets/images/thumbnail/${_novel.thumbnail}'),
+                                                'assets/images/thumbnail/${_novel.thumbnail}'),
                                               fit: BoxFit.cover,
                                             )),
                                         child: Column(
@@ -278,11 +285,10 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                                   (context) =>
                                                                                   CommentListScreen(
                                                                                     id: widget.id,
-                                                                                    appBarTitle: TmpNovelModel
-                                                                                        .novelList[0]
-                                                                                        .title,
+                                                                                    appBarTitle: _novel.title,
                                                                                     fromWhere:
                                                                                     0,
+                                                                                    routeIndex: widget.routeIndex,
                                                                                   )),
                                                                         );
                                                                       },
@@ -351,6 +357,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 id: widget.id,
                                 title: _novel.title,
                                 thumbnail: _novel.thumbnail,
+                                routeIndex: widget.routeIndex,
+                                novel: _novel,
                               ),
                               NovelIntroduction(
                                   introduction: _novel.introduction),
@@ -373,7 +381,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                            const CustomBottomAppbar(routeIndex: 0,)),
+                                            CustomBottomAppbar(routeIndex: toBottomAppBar,)),
                                             (route) => false);
                                   },
                                   icon: const Icon(

@@ -1,13 +1,14 @@
 package kr.eddi.demo;
 
 
-import kr.eddi.demo.member.entity.member.NextPageMember;
-import kr.eddi.demo.member.entity.repository.member.MemberRepository;
-import kr.eddi.demo.member.entity.service.MemberServiceImpl;
+import kr.eddi.demo.member.entity.NextPageMember;
+import kr.eddi.demo.member.repository.MemberRepository;
+import kr.eddi.demo.member.request.MemberPointRequest;
+import kr.eddi.demo.member.service.MemberServiceImpl;
 
-import kr.eddi.demo.member.entity.service.member.request.MemberPasswordModifyRequest;
-import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
-import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
+import kr.eddi.demo.member.request.MemberPasswordModifyRequest;
+import kr.eddi.demo.member.request.MemberSignInRequest;
+import kr.eddi.demo.member.request.MemberSignUpRequest;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,13 @@ public class MemberTest {
 
         System.out.println("Success : 비밀번호를 변경 완료 하였습니다. " + Success);
 
+    }
+
+    @Test
+    public void findMemberPoint() {
+        MemberPointRequest pointRequest = new MemberPointRequest(1L);
+
+        System.out.println("memberPoint: " + service.findMemberPoint(pointRequest));
     }
 
 
