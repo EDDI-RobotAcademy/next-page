@@ -1,6 +1,7 @@
 package kr.eddi.demo.member.controller;
 
 
+import kr.eddi.demo.member.request.MemberPointRequest;
 import kr.eddi.demo.member.service.MemberServiceImpl;
 import kr.eddi.demo.member.request.MemberNicknameModifyRequest;
 import kr.eddi.demo.member.request.MemberPasswordModifyRequest;
@@ -84,6 +85,13 @@ public class MemberController {
 
         return service.modifyPassword(request);
 
+    }
+
+    @PostMapping("/find-point")
+    public Long findUserPoint (@RequestBody MemberPointRequest request) {
+        log.info("findUserPoint"  + request);
+
+        return service.findMemberPoint(request);
     }
 
 
