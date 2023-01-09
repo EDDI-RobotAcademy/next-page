@@ -1,13 +1,13 @@
 package kr.eddi.demo;
 
 
-import kr.eddi.demo.member.entity.member.NextPageMember;
-import kr.eddi.demo.member.entity.repository.member.MemberRepository;
-import kr.eddi.demo.member.entity.service.MemberServiceImpl;
+import kr.eddi.demo.member.entity.NextPageMember;
+import kr.eddi.demo.member.repository.MemberRepository;
+import kr.eddi.demo.member.service.MemberServiceImpl;
 
-import kr.eddi.demo.member.entity.service.member.request.MemberPasswordModifyRequest;
-import kr.eddi.demo.member.entity.service.member.request.MemberSignInRequest;
-import kr.eddi.demo.member.entity.service.member.request.MemberSignUpRequest;
+import kr.eddi.demo.member.request.MemberPasswordModifyRequest;
+import kr.eddi.demo.member.request.MemberSignInRequest;
+import kr.eddi.demo.member.request.MemberSignUpRequest;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;

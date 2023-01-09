@@ -1,7 +1,7 @@
 package kr.eddi.demo;
 
 
-import kr.eddi.demo.novel.NovelServiceImpl;
+import kr.eddi.demo.novel.service.NovelServiceImpl;
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
@@ -46,7 +46,7 @@ public class NovelTestCase {
     void episodeRegister() {
         Optional<NovelInformation> maybeInformation = informationRepository.findById(1L);
         NovelInformation information = maybeInformation.get();
-        NovelEpisode episode = new NovelEpisode(1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇㄹ ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ ㄴㅇㄹ", false, information);
+        NovelEpisode episode = new NovelEpisode(1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇㄹ ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ ㄴㅇㄹ", true, information);
         episode.updateToInformation();
         episodeRepository.save(episode);
     }

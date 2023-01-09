@@ -1,7 +1,7 @@
 package kr.eddi.demo;
 
 
-import kr.eddi.demo.comment.CommentServiceImpl;
+import kr.eddi.demo.comment.service.CommentServiceImpl;
 import kr.eddi.demo.comment.request.CommentModifyRequest;
 import kr.eddi.demo.comment.request.CommentWriteRequest;
 import org.junit.jupiter.api.Test;
