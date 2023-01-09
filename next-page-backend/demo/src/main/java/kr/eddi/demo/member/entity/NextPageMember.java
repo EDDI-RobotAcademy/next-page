@@ -41,7 +41,7 @@ public class NextPageMember {
     @Column
     private Long point;
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Authentication> authentications = new HashSet<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
