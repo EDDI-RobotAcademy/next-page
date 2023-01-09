@@ -1,6 +1,7 @@
 package kr.eddi.demo.member.service;
 
 
+import kr.eddi.demo.member.request.MemberPointRequest;
 import kr.eddi.demo.security.entity.Authentication;
 import kr.eddi.demo.security.entity.BasicAuthentication;
 import kr.eddi.demo.member.entity.NextPageMember;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@Transactional
 
 public class MemberServiceImpl implements MemberService {
 
@@ -180,6 +183,18 @@ public class MemberServiceImpl implements MemberService {
         return true;
 
     }
+    @Override
+    public Long findMemberPoint(MemberPointRequest memberPointRequest) {
+        Long memberId = memberPointRequest.getMemberId();
+        Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
+
+        if(maybeMember.isPresent()) {
+            Long memberPoint = maybeMember.get().getPoint();
+            return memberPoint;
+        }
+        throw new RuntimeException("회원 정보 없음");
+    }
+
 
 
 }

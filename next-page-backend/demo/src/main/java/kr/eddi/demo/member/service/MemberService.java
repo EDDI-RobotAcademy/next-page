@@ -2,6 +2,7 @@ package kr.eddi.demo.member.service;
 
 
 import kr.eddi.demo.member.request.MemberPasswordModifyRequest;
+import kr.eddi.demo.member.request.MemberPointRequest;
 import kr.eddi.demo.member.request.MemberSignInRequest;
 import kr.eddi.demo.member.request.MemberSignUpRequest;
 
@@ -22,6 +23,8 @@ public interface MemberService {
     String modifyNickName(Long memberId, String reNickName);
 
     Boolean modifyPassword(MemberPasswordModifyRequest request);
+
+    Long findMemberPoint(MemberPointRequest memberPointRequest);
 
 
 }

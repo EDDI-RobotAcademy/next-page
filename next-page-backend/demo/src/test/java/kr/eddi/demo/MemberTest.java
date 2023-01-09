@@ -3,6 +3,7 @@ package kr.eddi.demo;
 
 import kr.eddi.demo.member.entity.NextPageMember;
 import kr.eddi.demo.member.repository.MemberRepository;
+import kr.eddi.demo.member.request.MemberPointRequest;
 import kr.eddi.demo.member.service.MemberServiceImpl;
 
 import kr.eddi.demo.member.request.MemberPasswordModifyRequest;
@@ -104,6 +105,13 @@ public class MemberTest {
 
         System.out.println("Success : 비밀번호를 변경 완료 하였습니다. " + Success);
 
+    }
+
+    @Test
+    public void findMemberPoint() {
+        MemberPointRequest pointRequest = new MemberPointRequest(1L);
+
+        System.out.println("memberPoint: " + service.findMemberPoint(pointRequest));
     }
 
 
