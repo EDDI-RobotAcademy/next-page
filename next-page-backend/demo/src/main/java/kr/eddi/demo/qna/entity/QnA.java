@@ -1,6 +1,7 @@
 package kr.eddi.demo.qna.entity;
 
 
+import kr.eddi.demo.member.entity.NextPageMember;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,6 +41,17 @@ public class QnA {
 
     @UpdateTimestamp
     private Date updDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private NextPageMember member;
+
+    public void updateToMember() {
+        this.member.updateQnAList(this);
+    }
+
+
+
 
 
 

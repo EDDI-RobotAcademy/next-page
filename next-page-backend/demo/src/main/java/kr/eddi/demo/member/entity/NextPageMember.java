@@ -4,6 +4,7 @@ import kr.eddi.demo.comment.entity.Comment;
 import kr.eddi.demo.episode_payment.entity.EpisodePayment;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.payment.entity.PointPayment;
+import kr.eddi.demo.qna.entity.QnA;
 import kr.eddi.demo.security.entity.Authentication;
 import kr.eddi.demo.security.entity.BasicAuthentication;
 import lombok.*;
@@ -55,6 +56,9 @@ public class NextPageMember {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<EpisodePayment> episodePayments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    private List<QnA> QnAList = new ArrayList<>();
 
 
     public NextPageMember(String email, String nickName) {
@@ -121,6 +125,10 @@ public class NextPageMember {
     // 소설 에피소드 구매가 완료되면 EpisodePayment 객체를 구매 내역 리스트에 추가
     public void updateEpisodePayments(EpisodePayment episodePayment) {
         this.episodePayments.add(episodePayment);
+    }
+
+    public void updateQnAList(QnA qnA) {
+        this.QnAList.add(qnA);
     }
 
     public void payPoint(Long episodePrice) { this.point -= episodePrice; }
