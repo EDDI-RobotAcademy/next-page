@@ -13,3 +13,10 @@ class EpisodeRequest {
 
   EpisodeRequest(this.page, this.size, this.novelId);
 }
+
+class PurchasedEpisodeRequest{
+  int memberId;
+  int novelId;
+
+  PurchasedEpisodeRequest(this.novelId, this.memberId);
+}

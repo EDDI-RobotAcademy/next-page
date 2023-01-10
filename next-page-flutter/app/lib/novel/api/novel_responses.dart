@@ -102,3 +102,23 @@ class EpisodeResponse {
         uploadedDate: json["uploadedDate"]);
   }
 }
+
+class PurchasedEpisodeListResponse {
+  int id;
+  String paymentDate;
+  int episodeId;
+
+  PurchasedEpisodeListResponse({
+    required this.id,
+    required this.paymentDate,
+    required this.episodeId
+  });
+
+  factory PurchasedEpisodeListResponse.fromJson(Map<String, dynamic> json){
+    return PurchasedEpisodeListResponse(
+        id: json["id"],
+        paymentDate: json["paymentDate"],
+        episodeId: json["episodeId"]);
+  }
+
+}
