@@ -1,8 +1,6 @@
 <template>
   <div>
-   <HeadlineMenuForm/>
-
-<br><br><br><br>
+    <br><br>
     <div id='btn'>
       <v-btn class='white--text' id='btnRegisterPage' style="font-size: 18px"
              :to="{ name: 'QnA-Register-View' }">QnA 등록
@@ -19,10 +17,10 @@
       <table>
         <tr>
 
-            <th align="center" width="100" height="50" style="color: #6699FF" >No</th>
-            <th align="center" width="180" height="50" style="color: #6699FF">카테고리</th>
-            <th align="center" width="640" height="50" style="color: #6699FF">제목</th>
-            <th align="center" width="240" height="50" style="color: #6699FF">등록일자</th>
+          <th align="center" width="100" height="50" style="color: #6699FF">No</th>
+          <th align="center" width="180" height="50" style="color: #6699FF">카테고리</th>
+          <th align="center" width="640" height="50" style="color: #6699FF">제목</th>
+          <th align="center" width="240" height="50" style="color: #6699FF">등록일자</th>
         </tr>
 
         <tr v-if="!qnas || (Array.isArray(qnas) && qnas.length === 0)">
@@ -48,7 +46,7 @@
             <router-link :to="{ name: 'QnA-Read-View',
                               params: { qnaNo: qna.qnaNo.toString() }}">
 
-            {{ qna.title }}
+              {{ qna.title }}
             </router-link>
           </td>
           <td align="center">
@@ -56,12 +54,11 @@
           </td>
 
 
-
         </tr>
 
       </table>
 
-      <br><br>
+      <br><br><br><br><br>
 
       <ul>
 
@@ -76,8 +73,6 @@
       <br><br><br>
     </v-container>
 
-    <footer-menu-form/>
-
 
   </div>
 
@@ -86,11 +81,9 @@
 <script>
 
 
-import HeadlineMenuForm from "@/component/header/HeadlineMenuForm";
-import FooterMenuForm from "@/component/footer/FooterMenuForm";
 export default {
   name: "QnAList",
-  components: {FooterMenuForm, HeadlineMenuForm },
+  components: {},
   props: {
     qnas: {
       type: Array
@@ -115,7 +108,7 @@ export default {
 
 <style scoped>
 
-table{
+table {
 
   border-collapse: separate;
   border-spacing: 0 25px;
@@ -124,7 +117,8 @@ table{
 
 #btnRegisterPage {
   background: #6699FF;
-  width: 160px; height: 50px;
+  width: 160px;
+  height: 50px;
 
 }
 
@@ -147,47 +141,53 @@ a {
 }
 
 a:link {
-  color : black;
-}
-a:visited {
-  color : black;
-}
-a:hover {
-  color : #6699FF;
-}
-a:active {
-  color : red;
+  color: black;
 }
 
-th{
+a:visited {
+  color: black;
+}
+
+a:hover {
+  color: #6699FF;
+}
+
+a:active {
+  color: red;
+}
+
+th {
   font-size: 20px;
 }
 
 ul {
-  text-align:center;
+  text-align: center;
 }
+
 ul li {
-  display:inline;
-  vertical-align:middle;
+  display: inline;
+  vertical-align: middle;
 }
+
 ul li a {
-	/*FF2*/
-  display:inline-block;
-  vertical-align:top;
-  padding:15px;
-  margin-right:15px;
-  width:15px !important;
-  color:#6699FF;
+  /*FF2*/
+  display: inline-block;
+  vertical-align: top;
+  padding: 15px;
+  margin-right: 15px;
+  width: 15px !important;
+  color: #6699FF;
 
-  border:1px solid #fff;
-  text-align:center;
-  text-decoration:none;
-  width /**/:26px;	/*IE 5.5*/
+  border: 1px solid #fff;
+  text-align: center;
+  text-decoration: none;
+  width /**/: 26px; /*IE 5.5*/
 
 }
+
 ul li a:hover, ul li a:focus {
-  color:#fff;
-  border:1px solid  #6699FF;
+  color: #fff;
+  border: 1px solid #6699FF;
   background-color: #6699FF;
 }
 
