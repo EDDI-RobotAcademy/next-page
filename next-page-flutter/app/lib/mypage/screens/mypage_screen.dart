@@ -1,6 +1,7 @@
 
 import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:app/mypage/screens/my_info_modify_screen.dart';
+import 'package:app/mypage/screens/qna_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -76,91 +77,107 @@ class _MypageScreenState extends State<MypageScreen> {
                 SizedBox(height: size.height * 0.03,),
                 Card(
                   child: ListTile(
-                    title: Text("로그인이 필요합니다."),
-                    trailing: ElevatedButton(
-                        onPressed: () async {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => SignInScreen(fromWhere: fromMy, novel: "none", routeIndex: 99,)));
+                      title: Text("로그인이 필요합니다."),
+                      trailing: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) =>
+                                    SignInScreen(fromWhere: fromMy,
+                                      novel: "none",
+                                      routeIndex: 99,)));
                           },
-                        child: Text('로그인'))),
+                          child: Text('로그인'))),
                 ),
               ],
             ));
       } else {
         // 로그인 상태일 때 마이페이지
-        stack.add(
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: ListView(
-                children: [
-                  Text(nickname + "님", style: TextStyle(fontSize: 20)),
-                  SizedBox(height: size.height * 0.01,),
-                  Card(
-                    child: ListTile(
-                      title: Text("보유 포인트: $currentPoint p"),
-                      trailing: ElevatedButton(
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PointChargeScreen(fromWhere: fromMy,))),
-                          child: Text('충전하기'))),
-                  ),
-                  Card(
+          stack.add(
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: ListView(
+                  children: [
+                    Text(nickname + "님", style: TextStyle(fontSize: 20)),
+                    SizedBox(height: size.height * 0.01,),
+                    Card(
                       child: ListTile(
-                        title: Text("회원 정보 변경"),
-                        trailing: Icon(Icons.arrow_forward_ios_rounded),
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MyInfoModifyScreen())),
-                      )
-                  ),
-                  const Card(
+                          title: Text("보유 포인트: $currentPoint p"),
+                          trailing: ElevatedButton(
+                              onPressed: () =>
+                                  Navigator.push(
+                                      context, MaterialPageRoute(builder: (
+                                      context) =>
+                                      PointChargeScreen(fromWhere: fromMy,))),
+                              child: Text('충전하기'))),
+                    ),
+                    Card(
+                        child: ListTile(
+                          title: Text("회원 정보 변경"),
+                          trailing: Icon(Icons.arrow_forward_ios_rounded),
+                          onTap: () =>
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => MyInfoModifyScreen())),
+                        )
+                    ),
+                    const Card(
+                        child: ListTile(
+                          title: Text("소설 구매 내역"),
+                          trailing: Icon(Icons.arrow_forward_ios_rounded),
+                          // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 소설 구매 내역 페이지)),
+                        )
+                    ),
+                    const Card(
                       child: ListTile(
-                        title: Text("소설 구매 내역"),
+                        title: Text("댓글 내역"),
                         trailing: Icon(Icons.arrow_forward_ios_rounded),
-                        // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 소설 구매 내역 페이지)),
-                      )
-                  ),
-                  const Card(
-                    child: ListTile(
-                      title: Text("댓글 내역"),
-                      trailing: Icon(Icons.arrow_forward_ios_rounded),
-                      // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 댓글 내역 페이지)),
+                        // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 댓글 내역 페이지)),
+                      ),
                     ),
-                  ),
-                  Card(
-                    child: ListTile(
-                        title: Text("로그아웃"),
+                    Card(
+                      child: ListTile(
+                        title: Text("나의 QnA"),
                         trailing: Icon(Icons.arrow_forward_ios_rounded),
-                        onTap: () {
-                          _showAlertDialog(context,
-                              AlertDialog(
-                                title: Text('알림'),
-                                content: Text('로그아웃 하시겠습니까?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text('아니오'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      var prefs = await SharedPreferences
-                                          .getInstance();
-                                      prefs.clear();
-                                      setState(() {
-                                        _loginState = false;
-                                      });
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('네'),
-                                  ),
-                                ],
-                              ));
-                        }
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QnaScreen())),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-        );
+                    Card(
+                      child: ListTile(
+                          title: Text("로그아웃"),
+                          trailing: Icon(Icons.arrow_forward_ios_rounded),
+                          onTap: () {
+                            _showAlertDialog(context,
+                                AlertDialog(
+                                  title: Text('알림'),
+                                  content: Text('로그아웃 하시겠습니까?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('아니오'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        var prefs = await SharedPreferences
+                                            .getInstance();
+                                        prefs.clear();
+                                        setState(() {
+                                          _loginState = false;
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('네'),
+                                    ),
+                                  ],
+                                ));
+                          }
+                      ),
+                    ),
+                  ],
+                ),
+              )
+          );
       }
-      }
+    }
 
     return Scaffold(
         appBar: AppBar(
