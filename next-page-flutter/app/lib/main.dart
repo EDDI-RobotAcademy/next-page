@@ -2,7 +2,7 @@ import 'package:app/utility/providers/category_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
+import 'package:get/get.dart';
 
 import 'widgets/custom_bottom_appbar.dart';
 import 'member/screens/sign_in_screen.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (BuildContext context) => UserDataProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => CategoryProvider()),
         ],
-        child: MaterialApp(
+        child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
                 appBarTheme: const AppBarTheme(
