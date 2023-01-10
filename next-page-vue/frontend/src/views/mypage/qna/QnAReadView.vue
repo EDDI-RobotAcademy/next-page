@@ -54,7 +54,7 @@ export default {
 
     async onDelete() {
       await this.requestDeleteBoardToSpring(this.qnaNo);
-      await this.$router.push({name: 'QnA-List-View'})
+      await this.$router.push({name: 'my-page-navi'})
     }
   },
   created() {

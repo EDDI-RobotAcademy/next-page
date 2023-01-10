@@ -23,7 +23,7 @@ export default {
     async onSubmit (payload) {
       await this.requestCreateBoardContentsToSpring(payload)
       await this.$router.push({
-        name: 'QnA-List-View'
+        name: 'my-page-navi'
       })
     }
   }
