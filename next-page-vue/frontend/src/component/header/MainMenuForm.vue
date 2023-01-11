@@ -1,8 +1,8 @@
 <template>
   <div class="menu" style="margin-bottom: 30px">
-    <div class="home_logo" style="font-family: 'Zen Dots', cursive; float: left; margin-right: 100px;">
+    <div class="home_logo" style="font-family: 'Noto Sans Tangsa', sans-serif; float: left; margin-right: 100px; font-size: 50px">
       <router-link to="/" class="link_logo">   
-        NEXT-PAGE
+        NEXT PAGE
       </router-link>
     </div>
     <div class="search">
@@ -30,7 +30,7 @@ export default {
 
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css2?family=Zen+Dots&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Tangsa:wght@700&display=swap');
 
 a {
   text-decoration: none;

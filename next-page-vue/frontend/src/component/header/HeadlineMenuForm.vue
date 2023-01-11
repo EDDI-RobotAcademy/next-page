@@ -1,24 +1,25 @@
 <template>
   <div class="header">
     <div class="header_menu">
-      <v-toolbar flat style="font-family: 'Noto Sans KR', sans-serif" height="40">
+      <v-toolbar flat style=" font-family: 'Nanum Gothic', sans-serif; " height="60">
         <router-link to="/">
-          <v-btn color="#black" text plain :ripple="false">
+
+          <v-btn color="" text plain  :ripple="false">
             웹툰/만화
           </v-btn>
+
         </router-link>&nbsp;
         <router-link to="/">
-          <v-btn color="black" text plain :ripple="false">
+          <v-btn color="" text plain :ripple="false">
             웹소설
           </v-btn>
         </router-link>&nbsp;
         <router-link to="/">
-          <v-btn color="black" text plain :ripple="false">
+          <v-btn color="" text plain :ripple="false">
             도서
           </v-btn>
         </router-link>
         <!-- 여기까지는 로그인 유무와 상관없이 보이는 메뉴들 -->
-
 
         <v-spacer></v-spacer>
 
@@ -27,24 +28,24 @@
         <template v-if="this.$store.state.signInValue">
 
           <router-link to="/point">
-            <v-btn color="black" text plain :ripple="false">
+            <v-btn color="" text plain >
               포인트 충전
             </v-btn>
           </router-link>&nbsp;
           <router-link to="/">
-            <v-btn color="black" text plain :ripple="false">
+            <v-btn color="" text plain >
               구입내역
             </v-btn>
           </router-link>
-          <router-link to="/mypage-navi">
-            <v-btn color="black" text plain :ripple="false">
+          <router-link to="/my-page-navi">
+            <v-btn color="" text plain >
               마이페이지
             </v-btn>
           </router-link>&nbsp;&nbsp;
 
           <v-dialog v-model="logoutDialog" persisten max-width="400">
             <template v-slot:activator="{on}">
-            <v-btn color="black" text plain :ripple="false" v-on="on" >
+            <v-btn color="black" text plain v-on="on" >
               로그아웃
             </v-btn>
         </template>
@@ -58,10 +59,10 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="grey darken-2" text plain @click="cancelBtn" :ripple="false">
+              <v-btn color="grey darken-2" text plain @click="cancelBtn" >
                 취소
               </v-btn>
-              <v-btn color="red" text plain @click="logoutBtn" :ripple="false">
+              <v-btn color="red" text plain @click="logoutBtn" >
                 로그아웃
               </v-btn>
             </v-card-actions>
@@ -87,6 +88,7 @@
 
 
       </v-toolbar>
+
 
     </div>
   </div>
@@ -134,7 +136,9 @@ export default {
 
 <style scoped>
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@800&display=swap');
+
+
 
 a {
   text-decoration: none;
@@ -155,5 +159,6 @@ a {
 .header_line {
   border-bottom: 1px solid #f0f0f0;
 }
+
 
 </style>
