@@ -1,4 +1,5 @@
 
+import 'package:app/member/api/spring_member_api.dart';
 import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:app/mypage/screens/my_info_modify_screen.dart';
 import 'package:app/mypage/screens/qna_screen.dart';
@@ -20,6 +21,7 @@ class _MypageScreenState extends State<MypageScreen> {
   final int fromMy = 4;
   late String nickname;
   late int currentPoint;
+  late int memberId;
 
   @override
   void initState() {
@@ -39,9 +41,10 @@ class _MypageScreenState extends State<MypageScreen> {
     if (userToken != null) {
       setState(() {
         _loginState = true;
+        memberId = prefs.getInt('userId')!;
         nickname = prefs.getString('nickname')!;
-        currentPoint = prefs.getInt('point')!;
       });
+      currentPoint = await SpringMemberApi().lookUpUserPoint(memberId);
     } else {
       setState(() {
         _loginState = false;
