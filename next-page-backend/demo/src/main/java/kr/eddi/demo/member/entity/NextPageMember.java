@@ -127,9 +127,15 @@ public class NextPageMember {
         this.episodePayments.add(episodePayment);
     }
 
+
+    /**
+     * 해당 에피소드의 가격만큼 회원의 포인트를 차감합니다.
+     *
+     * @param episodePrice 사용될 포인트
+     */
+    public void payPoint(Long episodePrice) { this.point -= episodePrice; }
+    
     public void updateQnAList(QnA qnA) {
         this.QnAList.add(qnA);
     }
-
-    public void payPoint(Long episodePrice) { this.point -= episodePrice; }
 }
