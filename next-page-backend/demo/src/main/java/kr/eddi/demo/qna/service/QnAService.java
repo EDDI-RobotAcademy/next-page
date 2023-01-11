@@ -8,7 +8,7 @@ import java.util.List;
 public interface QnAService {
 
 
-    public void write(QnARequest qnaRequest);
+    public Boolean write(QnARequest qnaRequest);
 
     public List<QnA> list();
 
