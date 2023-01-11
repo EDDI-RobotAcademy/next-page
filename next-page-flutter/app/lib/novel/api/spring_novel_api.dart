@@ -114,6 +114,28 @@ class SpringNovelApi {
     }else {
       throw ("error");
     }
+  }
 
+  Future<bool?> purchaseEpisode (PurchaseEpisodeRequest request) async {
+    var data = { 'memberId': request.memberId, 'novelId': request.novelId, 'episodeId': request.episodeId };
+    var body = json.encode(data);
+
+    debugPrint(request.memberId.toString());
+    debugPrint(request.novelId.toString());
+    debugPrint(request.episodeId.toString());
+    debugPrint(body);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/episode-payment/buy-episode'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("에피소드 구매 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("error");
+    }
   }
 }
