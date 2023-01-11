@@ -24,7 +24,9 @@ public interface MemberService {
 
     Boolean modifyPassword(MemberPasswordModifyRequest request);
 
-    Long findMemberPoint(MemberPointRequest memberPointRequest);
+//    Long findMemberPoint(MemberPointRequest memberPointRequest);
+
+    Long findMemberPoint(Long memberId);
 
 
 }
