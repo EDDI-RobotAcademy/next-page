@@ -282,10 +282,15 @@ class _EpisodeListState extends State<EpisodeList> {
         : _showAlertDialog(
         context,
         CustomPurchaseDialog(
+          routeIndex: widget.routeIndex,
+          memberId: _memberId,
+          novelId: widget.novel.id,
           novelTitle: widget.title,
-          purchasePoint: widget.novel.purchasePoint.toString(),
-          point: _currentPoint.toString(),
-          episode: episode['episodeNumber'].toString(),
+          purchasePoint: widget.novel.purchasePoint,
+          point: _currentPoint,
+          episode: episode,
+          author: widget.novel.author,
+          publisher: widget.novel.publisher,
         ));
   }
 }
