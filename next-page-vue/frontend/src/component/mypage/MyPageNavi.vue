@@ -36,7 +36,7 @@
 
 
         <v-tab style="margin-bottom: 30px; width: 200px; color: black; font-size: 17px; height: 80px ">
-          MY 정보수정
+          MY 정보보기
         </v-tab>
 
 
