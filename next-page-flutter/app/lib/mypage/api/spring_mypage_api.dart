@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/mypage/api/requests.dart';
+import 'package:app/mypage/api/responses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,6 +28,43 @@ class SpringMyPageApi {
     } else {
       debugPrint("통신 실패");
       return false;
+    }
+  }
+
+  Future<List<QnA>?> getMyQnaList (int memberId) async {
+
+    var response = await http.get(
+      Uri.http(httpUri, '/qna/my-qna-list/$memberId'),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("getMyQnaList 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+      debugPrint(jsonData.toString());
+
+      List<QnA> myQnaList = jsonData.map((dataJson) => QnA.fromJson(dataJson)).toList();
+
+      return myQnaList;
+
+    } else {
+      throw Exception("getMyQnaList 통신 실패");
+    }
+  }
+
+  Future<void> deleteQna(int qnaNo) async {
+
+    var response = await http.delete(
+      Uri.http(httpUri, '/qna/$qnaNo'),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("deleteQna 통신 확인");
+    } else {
+      debugPrint("deleteQna 통신 실패");
     }
   }
 }
