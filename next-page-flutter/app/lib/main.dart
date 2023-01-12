@@ -1,4 +1,5 @@
 import 'package:app/utility/providers/category_provider.dart';
+import 'package:app/utility/providers/qna_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (BuildContext context) => CategoryProvider()),
+          ChangeNotifierProvider(create: (BuildContext context) => QnaProvider()),
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

@@ -3,6 +3,7 @@ package kr.eddi.demo.qna.controller;
 
 import kr.eddi.demo.qna.entity.QnA;
 import kr.eddi.demo.qna.request.QnARequest;
+import kr.eddi.demo.qna.response.QnaResponse;
 import kr.eddi.demo.qna.service.QnAService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,12 @@ public class QnAController {
         service.modify(qna);
 
         return qna;
+    }
+
+    @GetMapping("/my-qna-list/{memberId}")
+    public List<QnaResponse> getMyQnaList (@PathVariable("memberId")Long memberId) {
+        log.info("getMyQnaList()" + memberId);
+        return service.getQnaListByMemberId(memberId);
     }
 
 

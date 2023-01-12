@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
+import '../../utility/providers/qna_provider.dart';
 import '../widgets/my_qna_list_view.dart';
 import '../widgets/qna_register_form.dart';
 
 class QnaScreen extends StatefulWidget {
-  const QnaScreen({Key? key}) : super(key: key);
+  const QnaScreen({Key? key, required this.memberId}) : super(key: key);
+  final int memberId;
 
   @override
   State<QnaScreen> createState() => _QnaScreenState();
@@ -16,11 +19,14 @@ class _QnaScreenState extends State<QnaScreen>
   with TickerProviderStateMixin {
 
   late TabController controller;
+  late QnaProvider _qnaProvider;
 
   @override
   void initState() {
     super.initState();
     controller = TabController(vsync: this, length: 2);
+    _qnaProvider = Provider.of<QnaProvider>(context, listen: false);
+    _qnaProvider.requestMyQnaList(widget.memberId);
   }
 
   @override
@@ -66,8 +72,8 @@ class _QnaScreenState extends State<QnaScreen>
       body: TabBarView(
         controller: controller,
         children: <Widget>[
-          QnaRegisterForm(),
-          MyQnaListView(),
+          QnaRegisterForm(memberId: widget.memberId,),
+          MyQnaListView(memberId: widget.memberId),
         ],
       ),
     );
