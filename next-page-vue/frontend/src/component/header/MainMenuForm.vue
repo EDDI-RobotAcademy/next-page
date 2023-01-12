@@ -1,8 +1,8 @@
 <template>
   <div class="menu" style="margin-bottom: 30px">
     <div class="home_logo" style="font-family: 'Noto Sans Tangsa', sans-serif; float: left; margin-right: 100px; font-size: 50px">
-      <router-link to="/" class="link_logo">   
-        NEXT PAGE
+      <router-link to="/" class="link_logo">
+        NEXT-PAGE
       </router-link>
     </div>
     <div class="search">
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  
+
 </template>
 
 <script>
@@ -45,7 +45,7 @@ a {
 
 .home_logo {
   font-size: 35px;
-  
+
 }
 
 .link_logo {
