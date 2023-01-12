@@ -1,18 +1,20 @@
 import 'package:app/app_theme.dart';
 import 'package:app/mypage/api/requests.dart';
 import 'package:app/mypage/api/spring_mypage_api.dart';
+import 'package:app/mypage/screens/qna_screen.dart';
 import 'package:app/mypage/widgets/board_text_field.dart';
 import 'package:app/mypage/widgets/category_drop_down.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../member/widgets/alerts/custom_result_alert.dart';
+import '../../utility/page_navigate.dart';
 import '../../utility/providers/category_provider.dart';
 
 class QnaRegisterForm extends StatefulWidget {
-  const QnaRegisterForm({Key? key}) : super(key: key);
+  const QnaRegisterForm({Key? key, required this.memberId}) : super(key: key);
+  final int memberId;
 
   @override
   State<QnaRegisterForm> createState() => QnaRegisterFormState();
@@ -20,7 +22,6 @@ class QnaRegisterForm extends StatefulWidget {
 
 class QnaRegisterFormState extends State<QnaRegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  late int memberId;
   late String title;
   late String content;
   bool registerResult = false;
@@ -31,10 +32,8 @@ class QnaRegisterFormState extends State<QnaRegisterForm> {
   late TextEditingController contentController = TextEditingController();
   late CategoryProvider _categoryProvider;
 
-
   @override
   void initState() {
-    _asyncMethod();
     _categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
     titleController.addListener(() {
       title = titleController.text;
@@ -43,11 +42,6 @@ class QnaRegisterFormState extends State<QnaRegisterForm> {
       content = contentController.text;
     });
     super.initState();
-  }
-
-  _asyncMethod() async {
-    var prefs = await SharedPreferences.getInstance();
-    memberId = prefs.getInt('userId')!;
   }
 
   @override
@@ -82,23 +76,40 @@ class QnaRegisterFormState extends State<QnaRegisterForm> {
                       var qnaCategory = _categoryProvider.category;
                       if(_formKey.currentState!.validate()) {
                         if(qnaCategory.isEmpty) {
-                          showResultDialog(context, '알림', '카테고리를 선택해주세요!');
+                          showAlertDialog(context,
+                              CustomResultAlert(title: '알림', alertMsg: '카테고리를 선택해주세요!'));
                         } else {
-                          debugPrint('memberId: ' + memberId.toString());
+                          debugPrint('memberId: ' + widget.memberId.toString());
                           debugPrint('category: ' + qnaCategory);
 
-                          registerResult = await SpringMyPageApi().
-                          qnaRegister(QnaRegisterRequest(memberId, title, qnaCategory, content));
+                          registerResult = await SpringMyPageApi().qnaRegister(
+                                                    QnaRegisterRequest(widget.memberId, title, qnaCategory, content));
                           if(registerResult == true) {
+                            //provider의 카테고리 값을 비웁니다.
                             _categoryProvider.categoryReset();
-                            showResultDialog(context, '알림', 'QnA가 등록되었습니다!');
-                            clearInput();
+                            showAlertDialog(context,
+                               AlertDialog(
+                                   shape: const RoundedRectangleBorder(
+                                       borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                                   title: Text('알림'),
+                                   content: Text('QnA 등록이 완료되었습니다.'),
+                                   actions: <Widget>[
+                                     TextButton(
+                                         onPressed: () {
+                                           popPopPush(context, QnaScreen(memberId: widget.memberId));
+                                          },
+                                         child: const Text('확인')
+                                     )
+                                   ]
+                               ));
                           } else {
-                            showResultDialog(context, '알림', 'QnA 등록에 실패했습니다.\n다시 시도해주세요.');
+                            showAlertDialog(context,
+                                CustomResultAlert(title: '알림', alertMsg: 'QnA 등록에 실패했습니다.\n다시 시도해주세요.'));
                           }
                         }
                       } else {
-                        showResultDialog(context, '알림', '제목과 문의내용을 모두 입력해주세요!');
+                        showAlertDialog(context,
+                            CustomResultAlert(title: '알림', alertMsg: '제목과 문의내용을 모두 입력해주세요!'));
                       }
                   },
                     child: Text('QnA 등록하기'))
@@ -110,16 +121,10 @@ class QnaRegisterFormState extends State<QnaRegisterForm> {
     );
   }
 
-  void clearInput() {
-    titleController.clear();
-    contentController.clear();
-  }
-
-  void showResultDialog(BuildContext context, String title, String alertMsg) {
+  void showAlertDialog(BuildContext context, Widget alert) {
     showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            CustomResultAlert(title: title, alertMsg: alertMsg));
+        builder: (BuildContext context) => alert);
   }
 
 }
