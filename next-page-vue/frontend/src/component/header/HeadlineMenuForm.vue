@@ -32,9 +32,9 @@
               포인트 충전
             </v-btn>
           </router-link>&nbsp;
-          <router-link to="/">
+          <router-link to="/information-register">
             <v-btn color="" text plain >
-              구입내역
+              소설 업로드
             </v-btn>
           </router-link>
           <router-link to="/my-page-navi">
