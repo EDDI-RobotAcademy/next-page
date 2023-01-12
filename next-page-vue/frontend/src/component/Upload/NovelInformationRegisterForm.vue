@@ -128,7 +128,7 @@ export default {
           .then(res => {
             if (res.data) {
               alert("등록 완료되었습니다!")
-              this.$router.push('/information-list')
+              this.$router.push('/home')
             }
           })
           .catch(res => {
