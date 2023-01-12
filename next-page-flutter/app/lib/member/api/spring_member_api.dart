@@ -156,14 +156,36 @@ class SpringMemberApi {
   }
 
 
-  Future<int> lookUpUserPoint(MemberPointRequest request) async {
-    var data = { 'memberId': request.memberId };
+  // Future<int> lookUpUserPoint(MemberPointRequest request) async {
+  //   var data = { 'memberId': request.memberId };
+  //   var body = json.encode(data);
+  //
+  //   debugPrint(body);
+  //
+  //   var response = await http.post(
+  //     Uri.http(httpUri, '/member/find-point'),
+  //     headers: {"Content-Type": "application/json"},
+  //     body: body,
+  //   );
+  //
+  //   if (response.statusCode == 200) {
+  //     debugPrint("통신 확인");
+  //     int userPoint = jsonDecode(utf8.decode(response.bodyBytes));
+  //
+  //     return userPoint;
+  //   } else {
+  //     throw Exception("통신 실패");
+  //   }
+  // }
+
+  Future<int> lookUpUserPoint(int memberId) async {
+    var data = { 'memberId': memberId };
     var body = json.encode(data);
 
     debugPrint(body);
 
     var response = await http.post(
-      Uri.http(httpUri, '/member/find-point'),
+      Uri.http(httpUri, '/member/find-point/$memberId'),
       headers: {"Content-Type": "application/json"},
       body: body,
     );

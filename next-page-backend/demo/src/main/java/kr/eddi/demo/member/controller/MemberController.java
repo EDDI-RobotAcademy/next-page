@@ -87,11 +87,18 @@ public class MemberController {
 
     }
 
-    @PostMapping("/find-point")
-    public Long findUserPoint (@RequestBody MemberPointRequest request) {
-        log.info("findUserPoint"  + request);
+//    @PostMapping("/find-point")
+//    public Long findUserPoint (@RequestBody MemberPointRequest request) {
+//        log.info("findUserPoint"  + request);
+//
+//        return service.findMemberPoint(request);
+//    }
 
-        return service.findMemberPoint(request);
+    @PostMapping("/find-point/{memberId}")
+    public Long findUserPoint (@PathVariable("memberId") Long memberId) {
+        log.info("findUserPoint"  + memberId);
+
+        return service.findMemberPoint(memberId);
     }
 
 

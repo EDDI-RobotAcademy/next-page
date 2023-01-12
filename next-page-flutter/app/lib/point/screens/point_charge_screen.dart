@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 
-import 'package:app/member/api/requests.dart';
 import 'package:app/member/api/spring_member_api.dart';
 import 'package:app/point/api/request_forms.dart';
 import 'package:app/point/api/spring_point_api.dart';
@@ -116,7 +115,7 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
           if (valid) {
             debugPrint("포인트 충전 완료!");
             // 포인트 충전 후 유저 포인트 데이터 spring 서버에 요청
-            int chargedPoint = await SpringMemberApi().lookUpUserPoint(MemberPointRequest(memberId));
+            int chargedPoint = await SpringMemberApi().lookUpUserPoint(memberId);
             var prefs =  await SharedPreferences.getInstance();
             prefs.setInt('point', chargedPoint);
             setState(() {
