@@ -14,6 +14,8 @@ import QnAReadView from "@/views/mypage/qna/QnAReadView";
 import QnAModifyView from "@/views/mypage/qna/QnAModifyView";
 
 import NovelListView from "@/views/Upload/NovelListView";
+import MyPageNavi from "@/component/mypage/MyPageNavi";
+import MyPageOutForm from "@/component/mypage/MyPageOutForm";
 
 
 Vue.use(VueRouter)
@@ -72,10 +74,8 @@ const routes = [
     component: NovelListView
   },
 
-
-
   {
-    path: '/QnZ-Register-View',
+    path: '/QnA-Register-View',
     name: 'QnA-Register-View',
     component: QnARegisterView
   },
@@ -106,11 +106,19 @@ const routes = [
     props: {
       default: true
     }
-  }
+  },
 
+  {
+    path: '/my-page-navi',
+    name: 'my-page-navi',
+    component: MyPageNavi
+  },
 
-
-
+  {
+    path: '/my-page-out-form',
+    name: 'my-page-out-form',
+    component: MyPageOutForm
+  },
 
 
 
