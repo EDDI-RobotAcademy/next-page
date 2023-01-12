@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: customTitleAppbar(context, 'NEXT PAGE'),
+      appBar: customTitleAppbar(context, 'NEXT PAGE', 0),
       body: Container(
         width: double.infinity,
         color: Colors.white,
