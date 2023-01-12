@@ -30,10 +30,10 @@ public class QnAController {
     }
 
     @PostMapping("/register")
-    public void QnAWrite (@RequestBody QnARequest qnaRequest) { // QnA 작성
+    public Boolean QnAWrite (@RequestBody QnARequest qnaRequest) { // QnA 작성
         log.info("QnARegister()");
 
-        service.write(qnaRequest);
+        return service.write(qnaRequest);
     }
 
     @GetMapping("/{qnaNo}")

@@ -49,9 +49,9 @@ public class NovelEpisode {
     @OneToMany(mappedBy = "novelEpisode", fetch = FetchType.LAZY)
     private List<Comment> commentList = new ArrayList<>();
 
-    @JsonIgnore
+    /*@JsonIgnore
     @OneToMany(mappedBy = "novelEpisode", fetch = FetchType.LAZY)
-    private List<EpisodePayment> episodePayments = new ArrayList<>();
+    private List<EpisodePayment> episodePayments = new ArrayList<>();*/
 
     public NovelEpisode(Long episodeNumber, String episodeTitle, String text, Boolean needToBuy, NovelInformation information) {
         this.episodeNumber = episodeNumber;
@@ -72,8 +72,8 @@ public class NovelEpisode {
         commentList.add(comment);
     }
 
-    public void updateEpisodePayments(EpisodePayment episodePayment) {
+   /* public void updateEpisodePayments(EpisodePayment episodePayment) {
         this.episodePayments.add(episodePayment);
-    }
+    }*/
 
 }

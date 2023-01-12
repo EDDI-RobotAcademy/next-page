@@ -5,7 +5,7 @@ import '../app_theme.dart';
 import '../home/home_screen.dart';
 import '../mypage/screens/mypage_screen.dart';
 import '../novelCategory/screens/novel_screen.dart';
-import '../search_screen.dart';
+import '../search/screen/search_screen.dart';
 import '../storage_screen.dart';
 
 class CustomBottomAppbar extends StatefulWidget {

@@ -1,10 +1,15 @@
 package kr.eddi.demo.episode_payment.controller;
 
+import kr.eddi.demo.episode_payment.entity.EpisodePayment;
 import kr.eddi.demo.episode_payment.requset.BuyEpisodeRequest;
+import kr.eddi.demo.episode_payment.requset.GetEpisodeListRequest;
 import kr.eddi.demo.episode_payment.service.EpisodePaymentService;
+import kr.eddi.demo.novel.entity.NovelInformation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/episode-payment")
@@ -21,5 +26,14 @@ public class EpisodePaymentController {
         log.info("buyEpisode(): " + request);
 
         return service.buyEpisode(request);
+    }
+
+    @PostMapping("/purchased-episode-list")
+    public List<EpisodePayment> getPurchasedEpisodeList(@RequestBody GetEpisodeListRequest request){
+        log.info("getPurchasedEpisodeList()");
+        log.info("memberId: " + request.getMemberId());
+        log.info("novelId: " + request.getNovelId());
+
+        return service.getPurchasedEpisodeList(request);
     }
 }

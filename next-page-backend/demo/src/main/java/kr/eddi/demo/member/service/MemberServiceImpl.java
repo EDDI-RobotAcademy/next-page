@@ -183,9 +183,20 @@ public class MemberServiceImpl implements MemberService {
         return true;
 
     }
+//    @Override
+//    public Long findMemberPoint(MemberPointRequest memberPointRequest) {
+//        Long memberId = memberPointRequest.getMemberId();
+//        Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
+//
+//        if(maybeMember.isPresent()) {
+//            Long memberPoint = maybeMember.get().getPoint();
+//            return memberPoint;
+//        }
+//        throw new RuntimeException("회원 정보 없음");
+//    }
+
     @Override
-    public Long findMemberPoint(MemberPointRequest memberPointRequest) {
-        Long memberId = memberPointRequest.getMemberId();
+    public Long findMemberPoint(Long memberId) {
         Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
 
         if(maybeMember.isPresent()) {

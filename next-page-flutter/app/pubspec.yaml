@@ -41,6 +41,7 @@ dependencies:
   shared_preferences: ^2.0.15
   carousel_slider: ^4.1.1
   url_launcher: ^6.1.7
+  get: ^4.6.5
 
 dev_dependencies:
   mockito: ^5.2.0
@@ -71,8 +72,10 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/
+    - assets/images/
     - assets/images/thumbnail/
     - assets/images/carousel/
+    - assets/images/banner/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
