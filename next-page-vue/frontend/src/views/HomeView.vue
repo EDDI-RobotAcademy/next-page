@@ -13,7 +13,7 @@
     <!-- 메인페이지 컴포넌트 -->
     <div id="main">
       <CarouselsNovel/>
-      <SortNovel/>
+
     </div>
     
     <br><br><br><br><br>
@@ -30,7 +30,6 @@ import CarouselsNovel from '@/component/CarouselsNovel.vue';
 import FooterMenuForm from '@/component/footer/FooterMenuForm.vue';
 import HeadlineMenuForm from '@/component/header/HeadlineMenuForm.vue';
 import MainMenuForm from '@/component/header/MainMenuForm.vue';
-import SortNovel from '@/component/sortNovel/SortNovel.vue';
 
 
 
@@ -42,7 +41,7 @@ export default {
     MainMenuForm,
     FooterMenuForm,
     CarouselsNovel,
-    SortNovel
+
   },
 };
 </script>
