@@ -3,10 +3,8 @@ package kr.eddi.demo.comment.entity;
 
 import kr.eddi.demo.member.entity.NextPageMember;
 import kr.eddi.demo.novel.entity.NovelEpisode;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import kr.eddi.demo.qna.entity.QnA;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -19,7 +17,8 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@ToString
+
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,12 +41,22 @@ public class Comment {
     @JoinColumn(name = "novelEpisode_id")
     private NovelEpisode novelEpisode;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "qna_id")
+    private QnA qna;
+
     public Comment(String comment, NextPageMember member, NovelEpisode episode) {
         this.comment = comment;
         this.member = member;
         this.novelEpisode = episode;
         updateToEpisode();
         updateToMember();
+    }
+    // qna 답변 댓글 작성할 때 생성자
+    public Comment(String comment, NextPageMember member, QnA qna) {
+        this.comment = comment;
+        this.member = member;
+        this.qna = qna;
     }
 
     public void modifyComment (String comment) {

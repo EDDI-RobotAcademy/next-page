@@ -6,6 +6,7 @@ import kr.eddi.demo.member.repository.MemberRepository;
 import kr.eddi.demo.qna.entity.QnA;
 import kr.eddi.demo.qna.repository.QnARepository;
 import kr.eddi.demo.qna.request.QnARequest;
+import kr.eddi.demo.qna.response.QnaResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +30,7 @@ public class QnAServiceImpl implements QnAService {
 
     @Autowired
     MemberRepository memberRepository;
+
 
     @Override
     public Boolean write(QnARequest qnaRequest) {
@@ -52,6 +55,37 @@ public class QnAServiceImpl implements QnAService {
     @Override
     public List<QnA> list() {
         return qnaRepository.findAll(Sort.by(Sort.Direction.DESC, "qnaNo"));
+    }
+
+    @Override
+    public List<QnaResponse> getQnaListByMemberId(Long memberId) {
+        Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
+
+        if(maybeMember.isPresent()) {
+            List<QnA> myQnaList = qnaRepository.findQnaListByMemberId(memberId);
+            List<QnaResponse> qnaResponseList = new ArrayList<>();
+
+            //qna response 객체 생성
+            for(QnA qna : myQnaList) {
+                QnaResponse response = new QnaResponse();
+                        response.setQnaNo(qna.getQnaNo());
+                        response.setTitle(qna.getTitle());
+                        response.setContent(qna.getContent());
+                        response.setCategory(qna.getCategory());
+                        response.setRegDate(qna.getRegDate());
+                        if(qna.getComment() != null) {
+                            response.setHasComment(true);
+                            response.setComment(qna.getComment().getComment());
+                        } else {
+                            response.setHasComment(false);
+                            response.setComment("none");
+                        }
+                        qnaResponseList.add(response);
+
+            }
+            return qnaResponseList;
+        }
+        throw new RuntimeException("해당 멤버가 존재하지 않음.");
     }
 
     @Override
