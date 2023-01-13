@@ -41,7 +41,7 @@
 
 
         <v-tab-item>
-          <MyPageModifyView/>
+          <MyPageReadView/>
         </v-tab-item>
 
 
@@ -79,14 +79,16 @@ import MyPageOutForm from "@/component/mypage/MyPageOutForm";
 import MyPageNoticeForm from "@/component/mypage/MyPageNoticeForm";
 import FooterMenuForm from "@/component/footer/FooterMenuForm";
 import QnAListView from "@/views/mypage/qna/QnAListView";
-import MyPageModifyView from "@/views/mypage/MyPageModifyView";
+import MyPageReadView from "@/views/mypage/MyPageReadView";
+
 
 
 export default {
   name: "MyPageNavi",
 
   components: {
-    MyPageModifyView,
+    MyPageReadView,
+
     QnAListView,
     FooterMenuForm,
     MyPageNoticeForm,
