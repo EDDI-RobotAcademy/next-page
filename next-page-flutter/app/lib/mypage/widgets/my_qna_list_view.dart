@@ -37,7 +37,7 @@ class _MyQnaListViewState extends State<MyQnaListView> {
   }
 
   Widget _buildQnaList(List<QnA>? qnaList, Size size) {
-    if (qnaList == null) {
+    if (qnaList == null || qnaList.isEmpty) {
       return Center(child: Text("작성한 QnA 내역이 존재하지 않습니다."));
     } else {
       return ListView(
