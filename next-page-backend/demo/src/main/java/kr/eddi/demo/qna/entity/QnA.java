@@ -1,24 +1,23 @@
 package kr.eddi.demo.qna.entity;
 
 
+import kr.eddi.demo.comment.entity.Comment;
 import kr.eddi.demo.member.entity.NextPageMember;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.Date;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "comment")
 
 public class QnA {
 
@@ -46,9 +45,14 @@ public class QnA {
     @JoinColumn(name = "member_id")
     private NextPageMember member;
 
+    @OneToOne(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+
     public void updateToMember() {
         this.member.updateQnAList(this);
     }
+
 
 
 

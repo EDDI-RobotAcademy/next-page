@@ -2,14 +2,18 @@ package kr.eddi.demo.qna.request;
 
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Getter
+@ToString
+@RequiredArgsConstructor
 public class QnARequest {
 
-    private Long memberId;
-    private String title;
-    private String category;
-    private String content;
+    final private Long memberId;
+    final private String title;
+    final private String category;
+    final private String content;
 
 
 

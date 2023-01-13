@@ -20,7 +20,7 @@ class _MypageScreenState extends State<MypageScreen> {
   bool _isLoading = true;
   final int fromMy = 4;
   late String nickname;
-  late int currentPoint;
+  late int currentPoint = 0;
   late int memberId;
 
   @override
@@ -141,7 +141,7 @@ class _MypageScreenState extends State<MypageScreen> {
                       child: ListTile(
                         title: Text("나의 QnA"),
                         trailing: Icon(Icons.arrow_forward_ios_rounded),
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QnaScreen())),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QnaScreen(memberId: memberId,))),
                       ),
                     ),
                     Card(
