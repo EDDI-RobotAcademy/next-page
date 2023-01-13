@@ -59,6 +59,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
       toBottomAppBar = 0;
     } if(widget.routeIndex == 1){
       toBottomAppBar =1;
+    } if(widget.routeIndex == 2){
+      toBottomAppBar =2; //검색 페이지 자동완성에서 넘어오는 경우 추가
     }
   }
 

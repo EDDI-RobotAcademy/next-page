@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../point/screens/point_charge_screen.dart';
 import 'all_category_screen.dart';
 import '../../app_theme.dart';
 
@@ -44,6 +46,23 @@ class _NovelScreenState extends State<NovelScreen>
           style: TextStyle(
               color: AppTheme.pointColor, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Get.to(() => PointChargeScreen(fromWhere: 1,));
+                },
+                child: Container(
+                    width: MediaQuery.of(context).size.width * 0.07,
+                    child: Image.asset('assets/images/coin_image_asset.png')),
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.03,
+              )
+            ],
+          )
+        ],
         elevation: 0.5,
         backgroundColor: Colors.white,
         bottom: TabBar(

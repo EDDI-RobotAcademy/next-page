@@ -72,12 +72,12 @@ class SpringNovelApi {
 
   Future<List<dynamic>> getNovelEpisodeList(EpisodeRequest request) async {
     var response = await http.post(Uri.http(httpUri, '/novel/episode-list/${request.novelId}'),
-        headers: {"Content-Type": "application/json"},
-        body: json.encode({
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
         'novelId': request.novelId,
         'size': request.size,
         'page': request.page
-        }),
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -85,6 +85,55 @@ class SpringNovelApi {
       LinkedHashMap<String, dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
 
       return jsonData['content'];
+    } else {
+      throw Exception("error");
+    }
+  }
+
+  Future<List<dynamic>> getPurchasedEpisodeList(PurchasedEpisodeRequest request) async {
+    var response = await http.post(Uri.http(httpUri, '/episode-payment/purchased-episode-list'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
+        'novelId': request.novelId,
+        'memberId': request.memberId,
+      }),
+    );
+
+    if(response.statusCode == 200){
+      debugPrint("구매한 에피소드 리스트 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+      debugPrint(jsonData.toString());
+
+      List<PurchasedEpisodeListResponse> purchasedEpisodeList =
+      jsonData.map((dataJson) => PurchasedEpisodeListResponse.fromJson(dataJson)).toList();
+
+
+      return purchasedEpisodeList;
+    }else {
+      throw ("error");
+    }
+  }
+
+  Future<bool?> purchaseEpisode (PurchaseEpisodeRequest request) async {
+    var data = { 'memberId': request.memberId, 'novelId': request.novelId, 'episodeId': request.episodeId };
+    var body = json.encode(data);
+
+    debugPrint(request.memberId.toString());
+    debugPrint(request.novelId.toString());
+    debugPrint(request.episodeId.toString());
+    debugPrint(body);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/episode-payment/buy-episode'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("에피소드 구매 통신 확인");
+      return json.decode(response.body);
     } else {
       throw Exception("error");
     }

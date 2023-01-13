@@ -107,12 +107,12 @@ public class MemberTest {
 
     }
 
-    @Test
-    public void findMemberPoint() {
-        MemberPointRequest pointRequest = new MemberPointRequest(1L);
-
-        System.out.println("memberPoint: " + service.findMemberPoint(pointRequest));
-    }
+//    @Test
+//    public void findMemberPoint() {
+//        MemberPointRequest pointRequest = new MemberPointRequest(1L);
+//
+//        System.out.println("memberPoint: " + service.findMemberPoint(pointRequest));
+//    }
 
 
 
