@@ -3,6 +3,8 @@ import 'package:app/member/api/spring_member_api.dart';
 import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:app/mypage/screens/my_info_modify_screen.dart';
 import 'package:app/mypage/screens/qna_screen.dart';
+import 'package:app/mypage/screens/tmp_my_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,6 +24,8 @@ class _MypageScreenState extends State<MypageScreen> {
   late String nickname;
   late int currentPoint = 0;
   late int memberId;
+
+  final String adminNickname = 'admin';
 
   @override
   void initState() {
@@ -43,6 +47,7 @@ class _MypageScreenState extends State<MypageScreen> {
         _loginState = true;
         memberId = prefs.getInt('userId')!;
         nickname = prefs.getString('nickname')!;
+
       });
       currentPoint = await SpringMemberApi().lookUpUserPoint(memberId);
     } else {
@@ -50,6 +55,66 @@ class _MypageScreenState extends State<MypageScreen> {
         _loginState = false;
       });
     }
+  }
+
+  Widget _menuCardBasic(String menu, Widget screen) {
+    return Card(
+        child: ListTile(
+          title: Text(menu),
+          trailing: Icon(Icons.arrow_forward_ios_rounded),
+          onTap: () =>
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => screen)),
+        )
+    );
+  }
+
+  Widget _menuCardWithButton(String menu, Widget screen, String btnText) {
+    return Card(
+      child: ListTile(
+          title: Text(menu),
+          trailing: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => screen));
+              },
+              child: Text(btnText))),
+    );
+  }
+
+  Widget _logOutMenuCard() {
+    return Card(
+      child: ListTile(
+          title: Text("로그아웃"),
+          trailing: Icon(Icons.arrow_forward_ios_rounded),
+          onTap: () {
+            _showAlertDialog(context,
+                AlertDialog(
+                  title: Text('알림'),
+                  content: Text('로그아웃 하시겠습니까?'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('아니오'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        var prefs = await SharedPreferences
+                            .getInstance();
+                        prefs.clear();
+                        setState(() {
+                          _loginState = false;
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: const Text('네'),
+                    ),
+                  ],
+                ));
+          }
+      ),
+    );
   }
 
   @override
@@ -75,110 +140,60 @@ class _MypageScreenState extends State<MypageScreen> {
       // 비로그인 상태일 떄 마이페이지
       if (_loginState == false) {
         stack.add(
-            ListView(
+            Column(
               children: [
                 SizedBox(height: size.height * 0.03,),
-                Card(
-                  child: ListTile(
-                      title: Text("로그인이 필요합니다."),
-                      trailing: ElevatedButton(
-                          onPressed: () async {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) =>
-                                    SignInScreen(fromWhere: fromMy,
-                                      novel: "none",
-                                      routeIndex: 99,)));
-                          },
-                          child: Text('로그인'))),
+                _menuCardWithButton(
+                  '로그인이 필요합니다.',
+                  SignInScreen(fromWhere: fromMy, novel: "none", routeIndex: 99,),
+                  '로그인'
                 ),
               ],
             ));
       } else {
-        // 로그인 상태일 때 마이페이지
+        // 관리자 로그인 상태일 때 마이페이지
+        if(nickname == adminNickname) {
+          stack.add(
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(nickname + '님의 MY PAGE', style: TextStyle(fontSize: 20)),
+                  SizedBox(height: size.height * 0.01,),
+                  _menuCardBasic('소설 정보 등록', TmpMyScreen()),
+                  _menuCardBasic('소설 정보 관리', TmpMyScreen()),
+                  _menuCardBasic('에피소드 등록 관리', TmpMyScreen()),
+                  _menuCardBasic('고객 QnA 관리', TmpMyScreen()),
+                  _menuCardBasic('공지사항 관리', TmpMyScreen()),
+                  _logOutMenuCard()
+                ],
+              ),
+            )
+          );
+        } else {
           stack.add(
               Padding(
                 padding: EdgeInsets.all(16.0),
-                child: ListView(
+                child: Column(
                   children: [
-                    Text(nickname + "님", style: TextStyle(fontSize: 20)),
+                    Text(nickname + "님의 마이페이지", style: TextStyle(fontSize: 20)),
                     SizedBox(height: size.height * 0.01,),
-                    Card(
-                      child: ListTile(
-                          title: Text("보유 포인트: $currentPoint p"),
-                          trailing: ElevatedButton(
-                              onPressed: () =>
-                                  Navigator.push(
-                                      context, MaterialPageRoute(builder: (
-                                      context) =>
-                                      PointChargeScreen(fromWhere: fromMy,))),
-                              child: Text('충전하기'))),
-                    ),
-                    Card(
-                        child: ListTile(
-                          title: Text("회원 정보 변경"),
-                          trailing: Icon(Icons.arrow_forward_ios_rounded),
-                          onTap: () =>
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (context) => MyInfoModifyScreen())),
-                        )
-                    ),
-                    const Card(
-                        child: ListTile(
-                          title: Text("소설 구매 내역"),
-                          trailing: Icon(Icons.arrow_forward_ios_rounded),
-                          // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 소설 구매 내역 페이지)),
-                        )
-                    ),
-                    const Card(
-                      child: ListTile(
-                        title: Text("댓글 내역"),
-                        trailing: Icon(Icons.arrow_forward_ios_rounded),
-                        // onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => 댓글 내역 페이지)),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text("나의 QnA"),
-                        trailing: Icon(Icons.arrow_forward_ios_rounded),
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => QnaScreen(memberId: memberId,))),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                          title: Text("로그아웃"),
-                          trailing: Icon(Icons.arrow_forward_ios_rounded),
-                          onTap: () {
-                            _showAlertDialog(context,
-                                AlertDialog(
-                                  title: Text('알림'),
-                                  content: Text('로그아웃 하시겠습니까?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text('아니오'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () async {
-                                        var prefs = await SharedPreferences
-                                            .getInstance();
-                                        prefs.clear();
-                                        setState(() {
-                                          _loginState = false;
-                                        });
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text('네'),
-                                    ),
-                                  ],
-                                ));
-                          }
-                      ),
-                    ),
+                    _menuCardWithButton(
+                        "보유 포인트: $currentPoint p",
+                        PointChargeScreen(fromWhere: fromMy,),
+                        '충전하기'),
+                    _menuCardBasic('회원 정보 변경', MyInfoModifyScreen()),
+                    _menuCardBasic('소설 구매 내역', TmpMyScreen()),
+                    _menuCardBasic('내가 쓴 댓글', TmpMyScreen()),
+                    _menuCardBasic('나의 QnA', QnaScreen(memberId: memberId,)),
+                    _menuCardBasic('공지사항', TmpMyScreen()),
+                    _logOutMenuCard()
                   ],
                 ),
               )
           );
+        }
       }
     }
 
