@@ -51,7 +51,7 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     @Transactional
-    public Boolean informationRegister(List<MultipartFile> imgList, NovelInformationRegisterRequest request) {
+    public Boolean informationRegister(MultipartFile image, NovelInformationRegisterRequest request) {
 
         // request에서 받은 멤버 아이디로 회원 찾고 권한 체크 (이후 권한 부여 시스템 작성 후에 로직 추가 할예정)
         Optional<NextPageMember> maybeMember = memberRepository.findById(request.getMember_id());
@@ -60,6 +60,7 @@ public class NovelServiceImpl implements NovelService {
         }
         NextPageMember member = maybeMember.get();
 
+        log.info("category를 왜 못찾냐 : " +request.getCategory());
 
         // 카테고리 찾기
         Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(request.getCategory());
@@ -68,6 +69,8 @@ public class NovelServiceImpl implements NovelService {
         }
         NovelCategory category = maybeCategory.get();
 
+        log.info("쿼리 검색 결과 "+ category.getCategoryName());
+
 
         // 소설정보 entity 생성
         NovelInformation information = request.toEntity();
@@ -75,25 +78,22 @@ public class NovelServiceImpl implements NovelService {
 
         // 커버이미지 entity 생성
         try {
-            for (MultipartFile multipartFile: imgList) {
-                log.info("requestUploadFilesWithText() - Make file: " + multipartFile.getOriginalFilename());
+                log.info("requestUploadFilesWithText() - Make file: " + image.getOriginalFilename());
 
                 UUID fileRandomName = UUID.randomUUID();
 
-                String fileReName = fileRandomName + multipartFile.getOriginalFilename();
+                String fileReName = fileRandomName +image.getOriginalFilename();
 
                 // 저장 경로 지정 + 파일네임
-                FileOutputStream writer = new FileOutputStream("../../next-page-vue/frontend/src/assets/coverImages/" + fileReName);
                 FileOutputStream writer2 = new FileOutputStream("../../next-page-flutter/app/assets/images/thumbnail/" + fileReName);
                 log.info("디렉토리에 파일 배치 성공!");
 
                 // 파일 저장(저장할 때는 byte 형식으로 저장해야 하므로 파라미터로 받은 multipartFile 파일들의 getBytes() 메소드를 적용하여 저장
-                writer.write(multipartFile.getBytes());
-                writer2.write(multipartFile.getBytes());
+                writer2.write(image.getBytes());
 
                 // 커버이미지 entity에 값 세팅
                 NovelCoverImage coverImage = new NovelCoverImage(
-                        multipartFile.getOriginalFilename(),
+                        image.getOriginalFilename(),
                         fileReName,
                         information
                 );
@@ -102,10 +102,8 @@ public class NovelServiceImpl implements NovelService {
                 // 정보 entity 측에 커버이미지 entity 저장
                 coverImage.updateToInformation();
                 coverImageRepository.save(coverImage);
-                writer.close();
                 writer2.close();
 
-            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -352,5 +350,18 @@ public class NovelServiceImpl implements NovelService {
         return false;
     }
 
+    @Override
+    public NovelEpisode getNovelEpisodeByEpisodeNumber(Long episodeNumber){
+
+        Optional<NovelEpisode> maybeEpisode = episodeRepository.findEpisodeByEpisodeNumber(episodeNumber);
+
+        if(maybeEpisode.isPresent()){
+
+            NovelEpisode episode = maybeEpisode.get();
+
+            return episode;
+        }
+        return null;
+    }
 
 }
