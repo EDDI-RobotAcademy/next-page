@@ -25,7 +25,7 @@ class _LinkBannerBoxState extends State<LinkBannerBox> {
               launchUrl(url, mode: LaunchMode.inAppWebView);
             }
           },
-          child: Image.asset('assets/images/banner/banner2.jpg',
+          child: Image.asset('assets/images/banner/banner3.png',
             fit: BoxFit.fill,),
         ),
       ),
