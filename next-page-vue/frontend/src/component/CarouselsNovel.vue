@@ -3,31 +3,31 @@
     <div class=carousel-wrap>
       <carousel v-bind="options" @initialized="init" @change="changed">
         <router-link to="/angel">
-          <img class="img-size" src="@/assets/carousel/angel.png" />
+          <img class="img-size" src="@/assets/carousel/action.png" />
         </router-link>
         <router-link to="/earth">
-          <img class="img-size" src="@/assets/carousel/earth.png" />
+          <img class="img-size" src="@/assets/carousel/good.png" />
         </router-link>
         <router-link to="/giant">
-          <img class="img-size" src="@/assets/carousel/giant.png" />
+          <img class="img-size" src="@/assets/carousel/page.png" />
         </router-link>
         <router-link to="/monalisa">
-          <img class="img-size" src="@/assets/carousel/monalisa.png" />
+          <img class="img-size" src="@/assets/carousel/study.png" />
         </router-link>
         <router-link to="/21gram">
-          <img class="img-size" src="@/assets/carousel/21gram.png" />
+          <img class="img-size" src="@/assets/carousel/wow.png" />
         </router-link>
         <router-link to="/briefing">
-          <img class="img-size" src="@/assets/carousel/briefing.png" />
+          <img class="img-size" src="@/assets/carousel/good.png" />
         </router-link>
         <router-link to="/heisnot">
-          <img class="img-size" src="@/assets/carousel/heisnot.png" />
+          <img class="img-size" src="@/assets/carousel/action.png" />
         </router-link>
         <router-link to="/jingyo">
-          <img class="img-size" src="@/assets/carousel/jingyo.png" />
+          <img class="img-size" src="@/assets/carousel/wow.png" />
         </router-link>
         <router-link to="/pokya">
-          <img class="img-size" src="@/assets/carousel/pokya.png" />
+          <img class="img-size" src="@/assets/carousel/study.png" />
         </router-link>
       </carousel>
     </div>
