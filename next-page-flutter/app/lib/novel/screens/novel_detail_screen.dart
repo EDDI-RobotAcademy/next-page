@@ -168,7 +168,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                           MainAxisAlignment.center,
                                                           children: [
                                                             Text(
-                                                              _novel.category,
+                                                              _novel.category == '현판'
+                                                                  ? '현대판타지'
+                                                                  :_novel.category,
                                                               style: const TextStyle(
                                                                 color: Colors.white60,
                                                                 fontWeight: FontWeight.bold,

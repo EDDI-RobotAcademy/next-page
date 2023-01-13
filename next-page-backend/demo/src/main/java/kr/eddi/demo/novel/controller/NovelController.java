@@ -35,11 +35,12 @@ public class NovelController {
 
 
     @PostMapping(value = "/information-register",  consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
-    public Boolean informationRegister(@RequestPart(value = "fileList") List<MultipartFile> imgList,
+    public Boolean informationRegister(@RequestPart(value = "file") MultipartFile image,
                                        @RequestPart(value = "info") NovelInformationRegisterForm form) {
 
+        log.info("image: " + image);
         log.info("information form: " + form);
-        return novelService.informationRegister(imgList, form.toRequest());
+        return novelService.informationRegister(image, form.toRequest());
     }
 
     @PostMapping("/information-modify-text/{novel_info_id}")
@@ -92,6 +93,6 @@ public class NovelController {
 
     @GetMapping("/episode/{episode_id}")
     public NovelEpisode getNovelEpisodeDetail(@PathVariable("episode_id") Long episode_id) {
-       return novelService.getNovelEpisodeDetail(episode_id);
+        return novelService.getNovelEpisodeDetail(episode_id);
     }
 }

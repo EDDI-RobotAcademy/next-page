@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface NovelService {
 
-    Boolean informationRegister(List<MultipartFile> imageFile, NovelInformationRegisterRequest request);
+    Boolean informationRegister(MultipartFile image, NovelInformationRegisterRequest request);
 
     Boolean informationModifyWithOutImg(Long novelInfoId, NovelInformationModifyRequest request);
 
@@ -35,4 +35,6 @@ public interface NovelService {
     NovelEpisode getNovelEpisodeDetail(Long episodeId);
 
     public Boolean deleteNovelEpisode(Long episodeId);
+
+    NovelEpisode getNovelEpisodeByEpisodeNumber(Long episodeNumber);
 }
