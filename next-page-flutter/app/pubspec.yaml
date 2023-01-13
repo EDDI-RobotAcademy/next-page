@@ -42,6 +42,8 @@ dependencies:
   carousel_slider: ^4.1.1
   url_launcher: ^6.1.7
   get: ^4.6.5
+  image_picker: ^0.8.6
+  dio: ^4.0.6
 
 dev_dependencies:
   mockito: ^5.2.0

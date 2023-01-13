@@ -53,14 +53,14 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                           widget.novel.title,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: _size.width * 0.041,
+                            fontSize: _size.width * 0.035,
                           ),
                         ),
                         //소설 작가
                         subtitle: Text(
                           widget.novel.author,
                           style: TextStyle(
-                            fontSize: _size.width * 0.035,
+                            fontSize: _size.width * 0.03,
                           ),
                         ),
                       ),
