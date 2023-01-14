@@ -453,7 +453,7 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 child: Text("확인"),
                 onPressed: () {
                   (title.contains('성공')) ?
-                  Get.offAll(CustomBottomAppbar(routeIndex: 0))
+                  Get.offAll(CustomBottomAppbar(routeIndex: 4))
                       :
                   Navigator.pop(context);
                 },
