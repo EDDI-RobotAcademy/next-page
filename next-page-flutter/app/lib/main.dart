@@ -1,4 +1,5 @@
 import 'package:app/utility/providers/category_provider.dart';
+import 'package:app/utility/providers/comment_provider.dart';
 import 'package:app/utility/providers/qna_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (BuildContext context) => CategoryProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => QnaProvider()),
+          ChangeNotifierProvider(create: (BuildContext context) => CommentProvider()),
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

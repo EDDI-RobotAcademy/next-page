@@ -1,11 +1,14 @@
 package kr.eddi.demo.comment.controller;
 
+import kr.eddi.demo.comment.response.CommentResponse;
 import kr.eddi.demo.comment.service.CommentService;
 import kr.eddi.demo.comment.request.CommentModifyRequest;
 import kr.eddi.demo.comment.request.CommentWriteRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -17,11 +20,11 @@ public class CommentController {
     CommentService commentService;
 
 
-    @PostMapping("/write/{novelEpisodeNo}")
-    public void commentWrite(@PathVariable("novelEpisodeNo") Long novelEpisodeNo, @RequestBody CommentWriteRequest commentWriteRequest) {
+    @PostMapping("/write/{novelEpisodeId}")
+    public void commentWrite(@PathVariable("novelEpisodeId") Long novelEpisodeId, @RequestBody CommentWriteRequest commentWriteRequest) {
         log.info("writeComment()");
 
-        commentService.commentWrite(commentWriteRequest, novelEpisodeNo);
+        commentService.commentWrite(commentWriteRequest, novelEpisodeId);
     }
 
     @DeleteMapping("/{commentNo}")
@@ -38,5 +41,9 @@ public class CommentController {
         commentService.commentModify(commentNo, commentModifyRequest);
     }
 
-
+    @GetMapping("/episode/{episodeId}")
+    public List<CommentResponse> getCommentListByEpisodeId(@PathVariable("episodeId") Long episodeId) {
+        log.info("getCommentListByEpisodeId(): " + episodeId);
+        return commentService.getCommentListByEpisodeId(episodeId);
+    }
 }

@@ -1,5 +1,6 @@
 package kr.eddi.demo.comment.service;
 
+import kr.eddi.demo.comment.response.CommentResponse;
 import kr.eddi.demo.comment.entity.Comment;
 import kr.eddi.demo.comment.repository.CommentRepository;
 import kr.eddi.demo.comment.request.CommentModifyRequest;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -30,16 +33,18 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Boolean commentWrite(CommentWriteRequest commentWriteRequest, Long novelEpisodeNo) {
+    public Boolean commentWrite(CommentWriteRequest commentWriteRequest, Long novelEpisodeId) {
 
-        Optional<NovelEpisode> maybeNovelEpisode = novelEpisodeRepository.findById(novelEpisodeNo);
+        Optional<NovelEpisode> maybeNovelEpisode = novelEpisodeRepository.findById(novelEpisodeId);
         if(maybeNovelEpisode.isEmpty()) {
+            log.info("에피소드 없음");
             return false;
         }
         NovelEpisode episode = maybeNovelEpisode.get();
 
         Optional<NextPageMember> maybeNextPageMember = memberRepository.findById(commentWriteRequest.getCommentWriterId());
         if(maybeNextPageMember.isEmpty()) {
+            log.info("멤버 없음");
             return false;
         }
         NextPageMember nextPageMember = maybeNextPageMember.get();
@@ -76,4 +81,25 @@ public class CommentServiceImpl implements CommentService {
         return true;
     }
 
+    @Override
+    @Transactional
+    public List<CommentResponse> getCommentListByEpisodeId(Long episodeId) {
+
+        Optional<NovelEpisode> maybeEpisode = novelEpisodeRepository.findById(episodeId);
+        if(maybeEpisode.isPresent()) {
+            List<Comment> comments = commentRepository.findCommentListByEpisodeId(episodeId);
+            List<CommentResponse> commentResponses = new ArrayList<>();
+
+            for(Comment c : comments) {
+                CommentResponse commentResponse = new CommentResponse(
+                                                        c.getCommentNo(),
+                                                        c.getComment(),
+                                                        c.getMember().getNickName(),
+                                                        c.getCreatedDate());
+                commentResponses.add(commentResponse);
+            }
+            return commentResponses;
+        }
+        throw new RuntimeException("에피소드 없음!");
+    }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../comment/comment_list_screen.dart';
+import '../../utility/providers/comment_provider.dart';
 import 'novel_detail_screen.dart';
 import '../widgets/sliding_appbar.dart';
 
@@ -46,6 +48,8 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
 
   @override
   void initState() {
+    // 해당 에피소드의 댓글 정보 불러오기
+    Provider.of<CommentProvider>(context, listen: false).requestEpisodeCommentList(widget.episodeInfo['id']);
     Future.microtask(() {
       _cdx = MediaQuery.of(context).size.width / 2;
     }).then((value) => setState(() {
@@ -91,7 +95,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
         bottomNavigationBar: AnimatedContainer(
             duration: const Duration(milliseconds: 400),
             height: visible ? size.height * 0.1 : 0.0,
-            child: _buildViewerBottomAppbar()));
+            child: _buildViewerBottomAppbar(context.watch<CommentProvider>().commentCount)));
   }
 
   AppBar _buildViewerAppbar() {
@@ -238,7 +242,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
     );
   }
 
-  BottomAppBar _buildViewerBottomAppbar() {
+  BottomAppBar _buildViewerBottomAppbar(int commentCount) {
     return BottomAppBar(
         color: AppTheme.viewerAppbar,
         child: visible
@@ -292,7 +296,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                         Icons.sms_outlined,
                         size: 20,
                       ),
-                      label: const Text("23")),
+                      label: Text(commentCount.toString())),
                   TextButton.icon(
                       style: ButtonStyle(
                           foregroundColor:
