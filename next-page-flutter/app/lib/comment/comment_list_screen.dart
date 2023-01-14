@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
 import '../novel/screens/novel_detail_screen.dart';
+import '../utility/providers/comment_provider.dart';
 import 'widgets/comment_list_form.dart';
 
 
@@ -27,7 +29,9 @@ class _CommentListScreenState extends State<CommentListScreen> {
       },
       child: Scaffold(
           appBar: _buildCommentScreenAppBar(),
-          body: CommentListForm()
+          body: context.watch<CommentProvider>().episodeCommentList!.isEmpty
+              ? Center(child: Text('아직 댓글이 등록되지 않았습니다.')) // 댓글이 없을 때 화면도 추가해봄.
+              : CommentListForm()
       ),
     );
   }
@@ -82,7 +86,8 @@ class _CommentListScreenState extends State<CommentListScreen> {
                     .of(context)
                     .size
                     .width * 0.01,),
-                Text('(34)',
+                Text(
+                    "(" + context.watch<CommentProvider>().commentCount.toString()+")",
                   style: TextStyle(fontSize: 15),
                 )
               ],
