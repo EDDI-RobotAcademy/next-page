@@ -32,7 +32,8 @@ public class Comment {
     private String comment;
 
     @Column
-    private String createdDate = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+    private String createdDate =
+            LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
 
     @UpdateTimestamp
     private Date updatedDate;
