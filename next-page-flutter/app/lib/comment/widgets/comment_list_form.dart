@@ -14,6 +14,7 @@ class CommentListForm extends StatefulWidget {
 class _CommentListFormState extends State<CommentListForm> {
   int _current = 0;
   bool _onModify = false;
+  bool _hasCommentList = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,13 @@ class _CommentListFormState extends State<CommentListForm> {
       child: Column(
         children: <Widget>[
           SizedBox(height: size.height * 0.02,),
-          Expanded(
+          context.watch<CommentProvider>().episodeCommentList!.isEmpty?
+          const Expanded(
+            child: Center(
+              child: Text('아직 댓글이 등록되지 않았습니다.'),
+            ),
+          )
+              :Expanded(
               child: Consumer<CommentProvider>(
                 builder: (context, comment, child) {
                   return ListView.separated(
@@ -87,7 +94,6 @@ class _CommentListFormState extends State<CommentListForm> {
                                       fontSize: size.width * 0.033
                                   ),),
                               ),
-                              Container()
                             ],
                           ),
                         );

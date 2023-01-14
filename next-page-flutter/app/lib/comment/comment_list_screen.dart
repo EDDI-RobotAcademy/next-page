@@ -29,9 +29,7 @@ class _CommentListScreenState extends State<CommentListScreen> {
       },
       child: Scaffold(
           appBar: _buildCommentScreenAppBar(),
-          body: context.watch<CommentProvider>().episodeCommentList!.isEmpty
-              ? Center(child: Text('아직 댓글이 등록되지 않았습니다.')) // 댓글이 없을 때 화면도 추가해봄.
-              : CommentListForm()
+          body: CommentListForm()
       ),
     );
   }
@@ -87,7 +85,7 @@ class _CommentListScreenState extends State<CommentListScreen> {
                     .size
                     .width * 0.01,),
                 Text(
-                    "(" + context.watch<CommentProvider>().commentCount.toString()+")",
+                  "(" + context.watch<CommentProvider>().commentCount.toString()+")",
                   style: TextStyle(fontSize: 15),
                 )
               ],
