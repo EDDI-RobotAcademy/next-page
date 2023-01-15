@@ -11,15 +11,20 @@ class NovelManagementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customTitleAppbar(context, '소설 관리', 99),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            NovelModifyForm(novel: novel)
-          ],
-        ),
-      )
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: customTitleAppbar(context, '소설 관리', 99),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              NovelModifyForm(novel: novel)
+            ],
+          ),
+        )
+      ),
     );
   }
 }
