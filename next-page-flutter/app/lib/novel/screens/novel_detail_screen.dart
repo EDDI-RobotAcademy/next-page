@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
 
+import '../../admin/screens/novel_management_screen.dart';
 import '../../comment/comment_list_screen.dart';
 import '../../widgets/custom_bottom_appbar.dart';
 import '../../model/tmp_novel_model.dart';
@@ -13,7 +16,9 @@ class NovelDetailScreen extends StatefulWidget {
   final int id;
   final int routeIndex;
 
-  const NovelDetailScreen({Key? key, required this.id, required this.routeIndex}) : super(key: key);
+  const NovelDetailScreen(
+      {Key? key, required this.id, required this.routeIndex})
+      : super(key: key);
 
   @override
   State<NovelDetailScreen> createState() => _NovelDetailScreenState();
@@ -21,7 +26,6 @@ class NovelDetailScreen extends StatefulWidget {
 
 class _NovelDetailScreenState extends State<NovelDetailScreen>
     with TickerProviderStateMixin {
-
   late Future<dynamic> _future;
   dynamic _novel;
   late int toBottomAppBar;
@@ -29,6 +33,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
   final ScrollController _scrollController = ScrollController();
   late TabController _controller;
   bool? _isLike = true;
+
+  String _nickname = '';
 
   final Color _beginColor = Colors.transparent;
   final Color _endColor = Colors.white;
@@ -44,6 +50,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
   @override
   void initState() {
     _future = getNovelInfo();
+    _asyncMethod();
     _controller = TabController(length: 3, vsync: this);
     super.initState();
     _colorAnimationController =
@@ -55,12 +62,24 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     _scrollController.addListener(() {
       print('offset = ${_scrollController.offset}');
     });
-    if(widget.routeIndex == 0){
+    if (widget.routeIndex == 0) {
       toBottomAppBar = 0;
-    } if(widget.routeIndex == 1){
-      toBottomAppBar =1;
-    } if(widget.routeIndex == 2){
-      toBottomAppBar =2; //검색 페이지 자동완성에서 넘어오는 경우 추가
+    }
+    if (widget.routeIndex == 1) {
+      toBottomAppBar = 1;
+    }
+    if (widget.routeIndex == 2) {
+      toBottomAppBar = 2; //검색 페이지 자동완성에서 넘어오는 경우 추가
+    }
+  }
+
+  void _asyncMethod() async {
+    var prefs = await SharedPreferences.getInstance();
+    String? userToken = prefs.getString('userToken');
+    if (userToken != null) {
+      setState(() {
+        _nickname = prefs.getString('nickname')!;
+      });
     }
   }
 
@@ -92,18 +111,15 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     return FutureBuilder(
         future: _future,
         builder: ((context, snapshot) {
-          if (snapshot.connectionState ==
-              ConnectionState.waiting) {
-            return const Center(
-                child: CircularProgressIndicator());
-          } else if (snapshot.connectionState ==
-              ConnectionState.done) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasError) {
               return Center(
                 child: Text(snapshot.error.toString()),
               );
             } else {
-              return  Scaffold(
+              return Scaffold(
                   body: NotificationListener<ScrollNotification>(
                     onNotification: _scrollListener,
                     child: SizedBox(
@@ -124,84 +140,103 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                             image: DecorationImage(
                                               //흐릿한 썸네일을 배경으로 깐다
                                               image: AssetImage(
-                                                'assets/images/thumbnail/${_novel.thumbnail}'),
+                                                  'assets/images/thumbnail/${_novel.thumbnail}'),
                                               fit: BoxFit.cover,
                                             )),
                                         child: Column(
                                           children: [
                                             ClipRRect(
                                               child: BackdropFilter(
-                                                filter:
-                                                ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 10, sigmaY: 10),
                                                 child: Container(
                                                   alignment: Alignment.center,
-                                                  color: Colors.white.withOpacity(0.1),
+                                                  color:
+                                                  Colors.white.withOpacity(0.1),
                                                   child: Container(
                                                     child: Column(
                                                       children: <Widget>[
                                                         //흐릿한 썸네일 배경위에 썸네일 이미지
                                                         SizedBox(
-                                                          height: size.height * 0.05,
+                                                          height:
+                                                          size.height * 0.05,
                                                         ),
                                                         Container(
-                                                          padding: const EdgeInsets.fromLTRB(
+                                                          padding: const EdgeInsets
+                                                              .fromLTRB(
                                                               0, 45, 0, 10),
                                                           height: 300,
                                                           child: Image.asset(
-                                                              'assets/images/thumbnail/${_novel.thumbnail}'
-                                                          ),
+                                                              'assets/images/thumbnail/${_novel.thumbnail}'),
                                                         ),
                                                         //소설 제목
                                                         Container(
-                                                          padding: const EdgeInsets.all(7),
+                                                          padding:
+                                                          const EdgeInsets.all(
+                                                              7),
                                                           child: Text(
                                                             _novel.title,
                                                             style: const TextStyle(
                                                                 color: Colors.white,
-                                                                fontWeight: FontWeight.bold,
+                                                                fontWeight:
+                                                                FontWeight.bold,
                                                                 fontSize: 18),
                                                           ),
                                                         ),
                                                         // 장르 + 작가
                                                         Row(
                                                           mainAxisAlignment:
-                                                          MainAxisAlignment.center,
+                                                          MainAxisAlignment
+                                                              .center,
                                                           children: [
                                                             Text(
-                                                              _novel.category == '현판'
+                                                              _novel.category ==
+                                                                  '현판'
                                                                   ? '현대판타지'
-                                                                  :_novel.category,
-                                                              style: const TextStyle(
-                                                                color: Colors.white60,
-                                                                fontWeight: FontWeight.bold,
+                                                                  : _novel.category,
+                                                              style:
+                                                              const TextStyle(
+                                                                color:
+                                                                Colors.white60,
+                                                                fontWeight:
+                                                                FontWeight.bold,
                                                               ),
                                                             ),
                                                             SizedBox(
-                                                              width: size.width * 0.01,
+                                                              width:
+                                                              size.width * 0.01,
                                                             ),
                                                             const Text(
                                                               '•',
                                                               style: TextStyle(
-                                                                  color: Colors.white60),
+                                                                  color: Colors
+                                                                      .white60),
                                                             ),
                                                             SizedBox(
-                                                              width: size.width * 0.01,
+                                                              width:
+                                                              size.width * 0.01,
                                                             ),
                                                             Text(
                                                               _novel.author,
-                                                              style: const TextStyle(
-                                                                color: Colors.white60,
-                                                                fontWeight: FontWeight.bold,
+                                                              style:
+                                                              const TextStyle(
+                                                                color:
+                                                                Colors.white60,
+                                                                fontWeight:
+                                                                FontWeight.bold,
                                                               ),
                                                             )
                                                           ],
                                                         ),
                                                         Padding(
-                                                          padding: const EdgeInsets.all(8.0),
+                                                          padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                           child: Container(
                                                             child: Row(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment.center,
+                                                              MainAxisAlignment
+                                                                  .center,
                                                               children: [
                                                                 //소설 조회수
                                                                 Wrap(
@@ -209,89 +244,105 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                     Icon(
                                                                       Icons
                                                                           .remove_red_eye_outlined,
-                                                                      color: Colors.white,
+                                                                      color: Colors
+                                                                          .white,
                                                                       size: 17,
                                                                     ),
                                                                     Text(
                                                                       '175만',
                                                                       style: TextStyle(
-                                                                          color:
-                                                                          Colors.white),
+                                                                          color: Colors
+                                                                              .white),
                                                                     )
                                                                   ],
                                                                 ),
                                                                 SizedBox(
-                                                                  width: size.width * 0.01,
+                                                                  width:
+                                                                  size.width *
+                                                                      0.01,
                                                                 ),
                                                                 const Text(
                                                                   '•',
                                                                   style: TextStyle(
-                                                                      color: Colors.white),
+                                                                      color: Colors
+                                                                          .white),
                                                                 ),
                                                                 SizedBox(
-                                                                  width: size.width * 0.01,
+                                                                  width:
+                                                                  size.width *
+                                                                      0.01,
                                                                 ),
                                                                 //소설 별점
                                                                 Wrap(
                                                                   children: [
                                                                     const Icon(
                                                                       Icons.star,
-                                                                      color: Colors.white,
+                                                                      color: Colors
+                                                                          .white,
                                                                       size: 17,
                                                                     ),
                                                                     Text(
                                                                       TmpNovelModel
-                                                                          .novelList[0].rating
+                                                                          .novelList[
+                                                                      0]
+                                                                          .rating
                                                                           .toString(),
                                                                       style: const TextStyle(
-                                                                          color:
-                                                                          Colors.white),
+                                                                          color: Colors
+                                                                              .white),
                                                                     )
                                                                   ],
                                                                 ),
                                                                 SizedBox(
-                                                                  width: size.width * 0.01,
+                                                                  width:
+                                                                  size.width *
+                                                                      0.01,
                                                                 ),
                                                                 const Text(
                                                                   '•',
                                                                   style: TextStyle(
-                                                                      color: Colors.white),
+                                                                      color: Colors
+                                                                          .white),
                                                                 ),
                                                                 SizedBox(
-                                                                  width: size.width * 0.01,
+                                                                  width:
+                                                                  size.width *
+                                                                      0.01,
                                                                 ),
                                                                 //소설 댓글
                                                                 Wrap(
                                                                   children: [
-                                                                    ElevatedButton.icon(
-                                                                      style: ButtonStyle(
-                                                                        padding:
-                                                                        MaterialStateProperty
-                                                                            .all(EdgeInsets
-                                                                            .zero),
+                                                                    ElevatedButton
+                                                                        .icon(
+                                                                      style:
+                                                                      ButtonStyle(
+                                                                        padding: MaterialStateProperty.all(
+                                                                            EdgeInsets
+                                                                                .zero),
                                                                         backgroundColor:
-                                                                        MaterialStateProperty
-                                                                            .all(Colors
-                                                                            .transparent),
+                                                                        MaterialStateProperty.all(
+                                                                            Colors.transparent),
                                                                         elevation:
-                                                                        MaterialStateProperty
-                                                                            .all(0.0),
+                                                                        MaterialStateProperty.all(
+                                                                            0.0),
                                                                       ),
                                                                       icon: const Icon(
-                                                                          Icons.sms_outlined),
+                                                                          Icons
+                                                                              .sms_outlined),
                                                                       label:
-                                                                      const Text('345'),
-                                                                      onPressed: () {
-                                                                        Navigator.push(
+                                                                      const Text(
+                                                                          '345'),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator
+                                                                            .push(
                                                                           context,
                                                                           MaterialPageRoute(
-                                                                              builder:
-                                                                                  (context) =>
+                                                                              builder: (context) =>
                                                                                   CommentListScreen(
                                                                                     id: widget.id,
                                                                                     appBarTitle: _novel.title,
-                                                                                    fromWhere:
-                                                                                    0,
+                                                                                    fromWhere: 0,
                                                                                     routeIndex: widget.routeIndex,
                                                                                   )),
                                                                         );
@@ -304,7 +355,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                           ),
                                                         ),
                                                         SizedBox(
-                                                          height: size.height * 0.01,
+                                                          height:
+                                                          size.height * 0.01,
                                                         )
                                                       ],
                                                     ),
@@ -321,8 +373,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                     height: size.height * 0.07,
                                     decoration: const BoxDecoration(
                                         border: Border(
-                                            bottom:
-                                            BorderSide(width: 1, color: Colors.grey))),
+                                            bottom: BorderSide(
+                                                width: 1, color: Colors.grey))),
                                     child: TabBar(
                                       controller: _controller,
                                       unselectedLabelColor: Colors.black,
@@ -364,15 +416,15 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 routeIndex: widget.routeIndex,
                                 novel: _novel,
                               ),
-                              NovelIntroduction(
-                                  introduction: _novel.introduction),
+                              NovelIntroduction(introduction: _novel.introduction),
                               const NovelNotice()
                             ],
                           ),
                         ),
                         //앱바
                         SizedBox(
-                          height: statusBarHeight + kToolbarHeight, // 상단바 + AppBar 높이
+                          height: statusBarHeight + kToolbarHeight,
+                          // 상단바 + AppBar 높이
                           child: AnimatedBuilder(
                             animation: _colorAnimationController,
                             builder: (context, build) => AppBar(
@@ -385,7 +437,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                         context,
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
-                                            CustomBottomAppbar(routeIndex: toBottomAppBar,)),
+                                                CustomBottomAppbar(
+                                                  routeIndex: toBottomAppBar,
+                                                )),
                                             (route) => false);
                                   },
                                   icon: const Icon(
@@ -394,6 +448,16 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                   ),
                                   color: _iconColorTween.value),
                               actions: [
+                                _nickname == 'admin'
+                                    ? IconButton(
+                                    onPressed: () {
+                                      Get.to(()=>NovelManagementScreen());
+                                    },
+                                    icon: Icon(
+                                      Icons.settings_outlined,
+                                      color: Colors.grey[700],
+                                    ))
+                                    : Container(),
                                 _isLike == true
                                     ? IconButton(
                                     onPressed: () {
@@ -429,16 +493,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                     ),
                   ));
             }
-          } else{
+          } else {
             return const Text("망");
           }
         }));
-
-
-
-
-
-
-
   }
 }
