@@ -417,7 +417,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 routeIndex: widget.routeIndex,
                                 novel: _novel,
                               ),
-                              NovelIntroduction(introduction: _novel.introduction),
+                              NovelIntroduction(novel: _novel),
                               const NovelNotice()
                             ],
                           ),
