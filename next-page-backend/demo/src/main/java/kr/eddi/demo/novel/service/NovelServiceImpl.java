@@ -283,6 +283,9 @@ public class NovelServiceImpl implements NovelService {
             tmpNovelInfo.put("openToPublic", novelInfo.getOpenToPublic());
             tmpNovelInfo.put("createdDate", novelInfo.getCreatedDate());
             tmpNovelInfo.put("thumbnail", novelInfo.getCoverImage().getReName());
+            tmpNovelInfo.put("viewCount", novelInfo.getViewCount());
+            tmpNovelInfo.put("starRating", novelInfo.getStarRating());
+            tmpNovelInfo.put("commentCount", novelInfo.getCommentCount());
 
 
 
@@ -357,6 +360,18 @@ public class NovelServiceImpl implements NovelService {
             return episode;
         }
         return null;
+    }
+
+    @Override
+    public  void viewCountUp(Long novelId){
+        Optional<NovelInformation> maybeInformation = informationRepository.findById(novelId);
+
+        NovelInformation novel = maybeInformation.get();
+
+        novel.updateViewCount();
+
+        informationRepository.save(novel);
+
     }
 
 }

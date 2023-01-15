@@ -37,4 +37,6 @@ public interface NovelService {
     public Boolean deleteNovelEpisode(Long episodeId);
 
     NovelEpisode getNovelEpisodeByEpisodeNumber(Long episodeNumber);
+
+    void viewCountUp(Long novelId);
 }
