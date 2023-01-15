@@ -138,4 +138,16 @@ class SpringNovelApi {
       throw Exception("error");
     }
   }
+
+  Future<void> requestViewCountUp(int novelId) async{
+    var response = await http.get(
+      Uri.http(httpUri, '/novel/view-count-up/$novelId'),
+      headers: {"Content-Type": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      debugPrint("통신 확인");
+    } else {
+      throw Exception("error");
+    }
+  }
 }
