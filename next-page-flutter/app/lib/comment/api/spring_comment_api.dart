@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/comment/api/comment_reponses.dart';
+import 'package:app/comment/api/comment_requests.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -27,4 +28,60 @@ class SpringCommentApi {
     }
     throw Exception("댓글 리스트 통신 실패");
   }
+
+  Future<bool> writeComment(int episodeId, CommentWriteRequest request) async {
+    var data = { 'commentWriterId' : request.memberId, 'comment' : request.comment };
+    var body = json.encode(data);
+    print("write comment: " + body);
+
+    var response = await http.post(
+      Uri.http( httpUri, '/comment/write/$episodeId'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if(response.statusCode == 200) {
+      debugPrint("댓글 작성 통신 확인");
+      return true;
+    } else {
+      debugPrint("댓글 작성 통신 실패");
+      return false;
+    }
+  }
+
+  Future<bool> modifyComment(int episodeId, String comment) async {
+    var data = { 'comment' : comment };
+    var body = json.encode(data);
+    print("modify comment: " + body);
+
+    var response = await http.put(
+      Uri.http( httpUri, '/comment/modify/$episodeId'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if(response.statusCode == 200) {
+      debugPrint("댓글 수정 통신 확인");
+      return true;
+    } else {
+      debugPrint("댓글 수정 통신 실패");
+      return false;
+    }
+  }
+
+  Future<bool> deleteComment(int episodeId) async {
+    var response = await http.delete(
+      Uri.http( httpUri, '/comment/delete/$episodeId'),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if(response.statusCode == 200) {
+      debugPrint("통신 확인");
+      return true;
+    } else {
+      debugPrint("통신 실패");
+      return false;
+    }
+  }
+
 }

@@ -8,12 +8,13 @@ import 'widgets/comment_list_form.dart';
 
 
 class CommentListScreen extends StatefulWidget {
-  final int id;
+  final int id; // novel info id
   final String appBarTitle;
   final int fromWhere;
   final int routeIndex;
+  final int episodeId;
 
-  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere, required this.id, required this.routeIndex}) : super(key: key);
+  const CommentListScreen({Key? key, required this.appBarTitle, required this.fromWhere, required this.id, required this.routeIndex, required this.episodeId}) : super(key: key);
 
   @override
   State<CommentListScreen> createState() => _CommentListScreenState();
@@ -29,7 +30,7 @@ class _CommentListScreenState extends State<CommentListScreen> {
       },
       child: Scaffold(
           appBar: _buildCommentScreenAppBar(),
-          body: CommentListForm()
+          body: CommentListForm(episodeId: widget.episodeId,)
       ),
     );
   }

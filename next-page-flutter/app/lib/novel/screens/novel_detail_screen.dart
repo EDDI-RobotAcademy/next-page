@@ -13,7 +13,7 @@ import '../widgets/novel_introduction.dart';
 import '../widgets/novel_notice.dart';
 
 class NovelDetailScreen extends StatefulWidget {
-  final int id;
+  final int id; // novel의 id
   final int routeIndex;
 
   const NovelDetailScreen(
@@ -344,6 +344,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                                     appBarTitle: _novel.title,
                                                                                     fromWhere: 0,
                                                                                     routeIndex: widget.routeIndex,
+                                                                                    episodeId: 9999, // 임의값 추가
                                                                                   )),
                                                                         );
                                                                       },
@@ -454,8 +455,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                       Get.to(()=>NovelManagementScreen());
                                     },
                                     icon: Icon(
-                                      Icons.settings_outlined,
-                                      color: Colors.grey[700],
+                                      Icons.settings,
+                                      color: Colors.black,
                                     ))
                                     : Container(),
                                 _isLike == true
