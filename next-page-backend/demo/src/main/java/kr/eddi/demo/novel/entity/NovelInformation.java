@@ -39,6 +39,18 @@ public class NovelInformation {
     @Column
     private Long purchasePoint; // 유료 구매시의 포인트
 
+    @Column(nullable = false)
+    private Long viewCount; //조회수
+
+    @Column(nullable = false)
+    private Double starRating; //별점
+
+    @Column(nullable = false)
+    private Long starRatingCount; //별점주기 횟수
+
+    @Column(nullable = false)
+    private Long commentCount; //댓글수
+
     @Column
     private Boolean openToPublic; // 공개여부
 
@@ -70,6 +82,10 @@ public class NovelInformation {
         this.author = author;
         this.openToPublic = openToPublic;
         this.purchasePoint = purchasePoint;
+        this.viewCount = 0L;
+        this.starRating =0.0;
+        this.starRatingCount = 0L;
+        this.commentCount = 0L;
     }
 
     public void modify(NovelInformationModifyRequest request) {
