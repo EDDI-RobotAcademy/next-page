@@ -81,7 +81,7 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 _showCategoryOverlay(categoryActionSheet),
               ],
             ),
-            NovelTitleTextField(titleText: '',),
+            NovelTitleTextField(titleText: title,),
             _customDividedSpace(size),
             Row(
               children: [
@@ -92,7 +92,7 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 SizedBox(
                   width: size.width * 0.13,
                 ),
-                NovelPriceTextField(priceText: '',),
+                NovelPriceTextField(priceText: price,),
                 SizedBox(
                   width: size.width * 0.02,
                 ),
@@ -100,11 +100,11 @@ class NovelUploadFormState extends State<NovelUploadForm> {
               ],
             ),
             _customDividedSpace(size),
-            NovelAuthorTextField(authorText: '',),
+            NovelAuthorTextField(authorText: author,),
             _customDividedSpace(size),
-            NovelPublisherTextField(publisherText: '',),
+            NovelPublisherTextField(publisherText: publisher,),
             _customDividedSpace(size),
-            NovelIntroTextField(introText: '',),
+            NovelIntroTextField(introText: intro,),
             SizedBox(
               height: size.height * 0.08,
             ),
