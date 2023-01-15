@@ -452,9 +452,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 _nickname == 'admin'
                                     ? IconButton(
                                     onPressed: () {
-                                      Get.to(()=>NovelManagementScreen());
+                                      Get.to(()=>NovelManagementScreen(novel: _novel,));
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.settings,
                                       color: Colors.black,
                                     ))
