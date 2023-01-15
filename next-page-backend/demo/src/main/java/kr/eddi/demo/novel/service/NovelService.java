@@ -18,7 +18,7 @@ public interface NovelService {
 
     Boolean informationModifyWithOutImg(Long novelInfoId, NovelInformationModifyRequest request);
 
-    Boolean informationModifyWithImg(Long novelInfoId, List<MultipartFile> imgList, NovelInformationModifyRequest request);
+    Boolean informationModifyWithImg(Long novelInfoId, MultipartFile image, NovelInformationModifyRequest request);
 
     void createCategory(Long id, String name);
 

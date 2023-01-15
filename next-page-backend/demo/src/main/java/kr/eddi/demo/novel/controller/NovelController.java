@@ -51,12 +51,12 @@ public class NovelController {
 
     @PostMapping(value = "/information-modify-with-file/{novel_info_id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public Boolean informationModifyWithFile(@PathVariable("novel_info_id") Long novel_info_id,
-                                             @RequestPart(value = "fileList") List<MultipartFile> imgList,
+                                             @RequestPart(value = "file") MultipartFile image,
                                              @RequestPart(value = "info") NovelInformationModifyForm form) {
 
         log.info("information modify form: " + form);
 
-        return novelService.informationModifyWithImg(novel_info_id, imgList, form.toRequest());
+        return novelService.informationModifyWithImg(novel_info_id, image, form.toRequest());
     }
 
 
