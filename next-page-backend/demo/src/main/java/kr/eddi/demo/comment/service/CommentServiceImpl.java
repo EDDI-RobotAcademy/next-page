@@ -9,6 +9,8 @@ import kr.eddi.demo.member.entity.NextPageMember;
 import kr.eddi.demo.member.repository.MemberRepository;
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
+import kr.eddi.demo.qna.entity.QnA;
+import kr.eddi.demo.qna.repository.QnARepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +55,8 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = new Comment(commentWriteRequest.getComment(), nextPageMember, episode);
 
         commentRepository.save(comment);
+        //novel information 댓글 카운트 추가
+       episode.getInformation().updateCommentCount();
 
         return true;
     }

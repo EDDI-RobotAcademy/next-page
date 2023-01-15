@@ -131,4 +131,10 @@ public class NovelInformation {
     public void updateEpisode(NovelEpisode episode) {
         this.episodeList.add(episode);
     }
+
+    // 댓글 작성 시 댓글 수를 업데이트합니다.
+    public void updateCommentCount() {
+        this.commentCount += 1;
+    }
+
 }
