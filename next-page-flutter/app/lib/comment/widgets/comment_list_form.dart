@@ -1,11 +1,17 @@
+import 'package:app/comment/api/spring_comment_api.dart';
+import 'package:app/widgets/cupertino_result_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utility/providers/comment_provider.dart';
 import 'comment_text_form.dart';
 
 class CommentListForm extends StatefulWidget {
-  const CommentListForm({Key? key}) : super(key: key);
+  const CommentListForm({Key? key, required this.episodeId}) : super(key: key);
+  final int episodeId;
 
   @override
   State<CommentListForm> createState() => _CommentListFormState();
@@ -15,6 +21,23 @@ class _CommentListFormState extends State<CommentListForm> {
   int _current = 0;
   bool _onModify = false;
   bool _hasCommentList = false;
+  int memberId = 0; //댓글 수정 요청에 필요한 memberId 값
+  String nickname = ''; //로그인한 사용자와 댓글 작성자가 같은지 판단하기 위한 닉네임 값
+
+  @override
+  void initState() {
+    _asyncMethod();
+    super.initState();
+  }
+
+  void _asyncMethod() async {
+    var prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      memberId = prefs.getInt('userId')!;
+      nickname = prefs.getString('nickname')!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +80,7 @@ class _CommentListFormState extends State<CommentListForm> {
                                         fontSize: size.width * 0.0315
                                     ),),
                                     Spacer(flex: 1),
-                                    (true)?
+                                    nickname == comment.episodeCommentList![index].nickName ?
                                     Row(
                                       children: [
                                         TextButton(onPressed: (){
@@ -71,8 +94,10 @@ class _CommentListFormState extends State<CommentListForm> {
                                                 color: Colors.grey,
                                                 fontSize: size.width * 0.033
                                             ))),
-                                        TextButton(onPressed: (){
+                                        TextButton(onPressed: () async {
                                           print("삭제요청");
+                                          _showDeleteDialog(title: '알림', content: '댓글을 삭제하시겠습니까?',
+                                              commentNo: comment.episodeCommentList![index].commentNo);
                                         },
                                             child: Text(
                                                 "삭제",
@@ -82,7 +107,7 @@ class _CommentListFormState extends State<CommentListForm> {
                                         )
                                       ],
                                     )
-                                        :Text("") // 원래 있던 코드인데 dead code로 인식됨.
+                                        : Text("")
                                   ],
                                 ),
                               ),
@@ -109,11 +134,43 @@ class _CommentListFormState extends State<CommentListForm> {
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 2.0),
-            child: CommentTextForm(),
+            child: CommentTextForm(episodeId: widget.episodeId,),
             // Second child is button
           ),
         ],
       ),
     );
+  }
+
+  void _showDeleteDialog({String? title, String? content, required int commentNo}) {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(title!),
+            content: Text(content!),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text("네"),
+                onPressed: () async {
+                  var deleteResult = await SpringCommentApi().deleteComment(commentNo);
+                  context.read<CommentProvider>().requestEpisodeCommentList(widget.episodeId);
+                  Navigator.pop(context);
+                  if(!deleteResult) {
+                    cupertinoResultAlert(context, '알림', '현재 통신이 원활하지 않습니다.');
+                  }
+                },
+              ),
+              CupertinoDialogAction(
+                isDefaultAction: false,
+                child: Text("아니오"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 }

@@ -8,7 +8,7 @@ import '../widgets/sliding_appbar.dart';
 
 class ScrollNovelViewerScreen extends StatefulWidget {
   final String appBarTitle;
-  final int id;
+  final int id; // novel info id
   final int routeIndex;
   final String text;
   final String episodeTitle;
@@ -289,6 +289,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                                     fromWhere:
                                         widget.episodeInfo['episodeNumber'],
                                     routeIndex: widget.routeIndex,
+                                episodeId: widget.episodeInfo['id'],
                                   )),
                         );
                       },
