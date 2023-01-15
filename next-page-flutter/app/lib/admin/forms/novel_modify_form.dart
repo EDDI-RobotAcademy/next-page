@@ -1,11 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 
-import '../../app_theme.dart';
 import '../../widgets/custom_bottom_appbar.dart';
 import '../api/spring_admin_api.dart';
 import '../api/upload_requests.dart';
@@ -14,17 +12,20 @@ import '../widgets/novel_intro_text_field.dart';
 import '../widgets/novel_price_text_field.dart';
 import '../widgets/novel_publisher_text_field.dart';
 import '../widgets/novel_title_text_field.dart';
+import 'package:image_picker/image_picker.dart';
 
-class NovelUploadForm extends StatefulWidget {
-  const NovelUploadForm({Key? key}) : super(key: key);
+class NovelModifyForm extends StatefulWidget {
+  final dynamic novel;
+
+  const NovelModifyForm({Key? key, this.novel}) : super(key: key);
 
   @override
-  State<NovelUploadForm> createState() => NovelUploadFormState();
+  State<NovelModifyForm> createState() => NovelModifyFormState();
 }
 
-class NovelUploadFormState extends State<NovelUploadForm> {
-  XFile? _image;
+class NovelModifyFormState extends State<NovelModifyForm> {
   final picker = ImagePicker();
+  XFile? _image;
   String _category = "판타지";
   final String _openToPublicTxt = '공개';
   bool _openToPublic = true;
@@ -34,25 +35,17 @@ class NovelUploadFormState extends State<NovelUploadForm> {
   String publisher = '';
   String title = '';
   final _formKey = GlobalKey<FormState>();
-  late int _memberId;
-  List<XFile> images = [];
 
   @override
   void initState() {
-    Future.delayed(Duration.zero, () async {
-      _asyncMethod();
-    });
+    _openToPublic = widget.novel.openToPublic;
+    _category = widget.novel.category;
+    title = widget.novel.title;
+    price = widget.novel.purchasePoint.toString();
+    author = widget.novel.author;
+    publisher = widget.novel.publisher;
+    intro = widget.novel.introduction;
     super.initState();
-  }
-
-  void _asyncMethod() async {
-    var prefs = await SharedPreferences.getInstance();
-    String? userToken = prefs.getString('userToken');
-    if (userToken != null) {
-      setState(() {
-        _memberId = prefs.getInt('userId')!;
-      });
-    } else {}
   }
 
   @override
@@ -65,10 +58,22 @@ class NovelUploadFormState extends State<NovelUploadForm> {
         key: _formKey,
         child: Column(
           children: [
-            SizedBox(
-              height: size.height * 0.04,
-            ),
-            showImage(),
+            Container(
+                height: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: InkWell(
+                  onTap: () {
+                    getImage(ImageSource.gallery);
+                  },
+                  child: _image != null
+                      ? Image.file(
+                          File(_image!.path),
+                          fit: BoxFit.fill,
+                        )
+                      : Image.asset(
+                          'assets/images/thumbnail/${widget.novel.thumbnail}'),
+                )),
+            Center(),
             SizedBox(
               height: size.height * 0.04,
             ),
@@ -81,7 +86,10 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 _showCategoryOverlay(categoryActionSheet),
               ],
             ),
-            NovelTitleTextField(titleText: '',),
+            _titleText(size, '제목'),
+            NovelTitleTextField(
+              titleText: widget.novel.title,
+            ),
             _customDividedSpace(size),
             Row(
               children: [
@@ -92,7 +100,9 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 SizedBox(
                   width: size.width * 0.13,
                 ),
-                NovelPriceTextField(priceText: '',),
+                NovelPriceTextField(
+                  priceText: widget.novel.purchasePoint.toString(),
+                ),
                 SizedBox(
                   width: size.width * 0.02,
                 ),
@@ -100,11 +110,20 @@ class NovelUploadFormState extends State<NovelUploadForm> {
               ],
             ),
             _customDividedSpace(size),
-            NovelAuthorTextField(authorText: '',),
+            _titleText(size, '작가명'),
+            NovelAuthorTextField(
+              authorText: widget.novel.author,
+            ),
             _customDividedSpace(size),
-            NovelPublisherTextField(publisherText: '',),
+            _titleText(size, '출판사'),
+            NovelPublisherTextField(
+              publisherText: widget.novel.publisher,
+            ),
             _customDividedSpace(size),
-            NovelIntroTextField(introText: '',),
+            _titleText(size, '작품소개'),
+            NovelIntroTextField(
+              introText: widget.novel.introduction,
+            ),
             SizedBox(
               height: size.height * 0.08,
             ),
@@ -116,12 +135,18 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 ),
                 child: TextButton(
                     onPressed: () async {
-                      print(author);
+                      print(/*'썸네일: ${_image!.path},*/
+                          '공개여부: $_openToPublic, 장르: $_category,  제목: $title,  가격: $price,  작가명: $author, 출판사명: $publisher, 작품소개: $intro');
                       _formKey.currentState?.save();
                       bool priceValid = RegExp(r"^[0-9]*$").hasMatch(price);
-                      _image == null
+                      _image == null &&
+                              title == widget.novel.title &&
+                              price == widget.novel.purchasePoint.toString() &&
+                              author == widget.novel.author &&
+                              publisher == widget.novel.publisher &&
+                              intro == widget.novel.introduction
                           ? _showResultDialog(
-                              title: "등록 실패", content: "썸네일 이미지를 등록해주세요.")
+                              title: '변경 사항 없음', content: '변경 사항을 작성해주세요')
                           : title == ''
                               ? _showResultDialog(
                                   title: "등록 실패", content: "소설의 제목을 입력해주세요.")
@@ -145,29 +170,63 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                                                   ? _showResultDialog(
                                                       title: "등록 실패",
                                                       content: "작품 소개를 입력해주세요.")
-                                                  : await SpringAdminApi()
-                                                      .uploadNovelInformation(
-                                                          _image!,
-                                                          NovelUploadRequest(
-                                                              title,
-                                                              _category,
-                                                              _openToPublic,
-                                                              author,
-                                                              int.parse(price),
-                                                              publisher,
-                                                              intro,
-                                                              _memberId))
-                                                      .then((value) {
-                                                        value?
-                                                      _showResultDialog(title: '업로드 성공', content: '소설 등록에 성공했습니다.')
-                                                    :_showResultDialog(title: '업로드 실패', content: '통신 상태를 확인해주세요.');
-                                                      });
-                      //print('썸네일: ${_image!.path},  공개여부: $_openToPublic, 장르: $_category,  제목: $title,  가격: $price,  작가명: $author, 출판사명: $publisher, 작품소개: $intro');
+                                                  : _image == null
+                                                      ? await SpringAdminApi()
+                                                          .modifyNovelInformationWithoutImage(
+                                                              widget.novel.id,
+                                                              NovelModifyRequest(
+                                                                  title,
+                                                                  _category,
+                                                                  _openToPublic,
+                                                                  author,
+                                                                  int.parse(
+                                                                      price),
+                                                                  publisher,
+                                                                  intro))
+                                                          .then((value) {
+                                                          value
+                                                              ? _showResultDialog(
+                                                                  title:
+                                                                      '수정 성공',
+                                                                  content:
+                                                                      '소설 정보 수정에 성공했습니다.')
+                                                              : _showResultDialog(
+                                                                  title:
+                                                                      '수정 실패',
+                                                                  content:
+                                                                      '통신 상태를 확인해주세요.');
+                                                        })
+                                                      : await SpringAdminApi()
+                                                          .modifyNovelInformationWithImage(
+                                                              _image!,
+                                                              widget.novel.id,
+                                                              NovelModifyRequest(
+                                                                  title,
+                                                                  _category,
+                                                                  _openToPublic,
+                                                                  author,
+                                                                  int.parse(
+                                                                      price),
+                                                                  publisher,
+                                                                  intro))
+                                                          .then((value) {
+                                                          value
+                                                              ? _showResultDialog(
+                                                                  title:
+                                                                      '수정 성공',
+                                                                  content:
+                                                                      '소설 정보 수정에 성공했습니다.')
+                                                              : _showResultDialog(
+                                                                  title:
+                                                                      '수정 실패',
+                                                                  content:
+                                                                      '통신 상태를 확인해주세요.');
+                                                        });
                     },
                     child: const Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: Text(
-                        '등록하기',
+                        '수정하기',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.bold),
                       ),
@@ -187,39 +246,6 @@ class NovelUploadFormState extends State<NovelUploadForm> {
     setState(() {
       _image = image; // 가져온 이미지를 _image에 저장
     });
-  }
-
-  Widget showImage() {
-    return Center(
-      child: Container(
-          height: MediaQuery.of(context).size.width,
-          width: MediaQuery.of(context).size.width * 0.6,
-          color: AppTheme.chalk,
-          child: _image == null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(),
-                          borderRadius: BorderRadius.circular(29)),
-                      child: IconButton(
-                          onPressed: () {
-                            getImage(ImageSource.gallery);
-                          },
-                          icon: Icon(Icons.camera_alt_outlined)),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.01,
-                    ),
-                    Text('썸네일을 등록해주세요')
-                  ],
-                )
-              : Image.file(
-                  File(_image!.path),
-                  fit: BoxFit.fill,
-                )),
-    );
   }
 
   //카테고리 드롭다운 구성
@@ -433,14 +459,32 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 isDefaultAction: true,
                 child: Text("확인"),
                 onPressed: () {
-                  (title.contains('성공'))?
-                      Get.offAll(const CustomBottomAppbar(routeIndex: 4))
-                  :
-                  Navigator.pop(context);
+                  (title.contains('성공'))
+                      ? Get.offAll(const CustomBottomAppbar(routeIndex: 0))
+                      : Navigator.pop(context);
                 },
               )
             ],
           );
         });
+  }
+
+  Widget _titleText(Size size, String txt) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: size.width * 0.15,
+        ),
+        Padding(
+          padding: EdgeInsets.only(bottom: size.height * 0.005),
+          child: Text(
+            txt,
+            style: TextStyle(
+                fontSize: size.width * 0.05, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
   }
 }
