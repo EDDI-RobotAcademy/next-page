@@ -56,17 +56,29 @@ public class CommentServiceImpl implements CommentService {
 
         commentRepository.save(comment);
         //novel information 댓글 카운트 추가
-       episode.getInformation().updateCommentCount();
+       episode.getInformation().addCommentCount();
 
         return true;
     }
 
-
-
     @Override
+    @Transactional
     public Boolean commentDelete(Long commentNo) {
-        commentRepository.deleteById(commentNo);
-        return true;
+        Optional<Comment> maybeComment = commentRepository.findById(commentNo);
+
+        if(maybeComment.isPresent()) {
+            commentRepository.deleteById(commentNo);
+            NovelEpisode maybeNovelEpisode = maybeComment.get().getNovelEpisode();
+            // 에피소드 댓글일 경우 해당 소설의 commentCount 값 빼기
+            if(maybeNovelEpisode != null) {
+                log.info("에피소드 댓글 삭제");
+                maybeComment.get().getNovelEpisode().getInformation().minusCommentCount();
+                return true;
+            }
+            log.info("qna 답변 삭제");
+            return true;
+        }
+        throw new RuntimeException("해당 코멘트 없음!");
     }
 
     @Override
