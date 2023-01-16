@@ -1,4 +1,6 @@
 
+import 'package:app/notice/screens/notice_management_screen.dart';
+import 'package:app/widgets/custom_title_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -166,7 +168,7 @@ class _MypageScreenState extends State<MypageScreen> {
                     _menuCardBasic('소설 정보 관리', TmpMyScreen()),
                     _menuCardBasic('에피소드 등록 관리', TmpMyScreen()),
                     _menuCardBasic('고객 QnA 관리', TmpMyScreen()),
-                    _menuCardBasic('공지사항 관리', TmpMyScreen()),
+                    _menuCardBasic('공지사항 관리', NoticeManagementScreen()),
                     _logOutMenuCard()
                   ],
                 ),
@@ -199,10 +201,7 @@ class _MypageScreenState extends State<MypageScreen> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: Text("MY"),
-        ),
+        appBar: customTitleAppbar(context, 'MY', 99),
         body: Stack(
             children: stack
         )
