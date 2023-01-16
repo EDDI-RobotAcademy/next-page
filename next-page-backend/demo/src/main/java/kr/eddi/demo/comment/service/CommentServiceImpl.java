@@ -33,6 +33,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     NovelEpisodeRepository novelEpisodeRepository;
 
+    @Autowired
+    QnARepository qnaRepository;
+
     @Override
     @Transactional
     public Boolean commentWrite(CommentWriteRequest commentWriteRequest, Long novelEpisodeId) {
@@ -59,6 +62,31 @@ public class CommentServiceImpl implements CommentService {
        episode.getInformation().addCommentCount();
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean qnaCommentWrite(CommentWriteRequest commentWriteRequest, Long QnaNo) {
+        Optional<QnA> maybeQnA = qnaRepository.findById(QnaNo);
+        if(maybeQnA.isPresent()) {
+            QnA qna = maybeQnA.get();
+
+            Optional<NextPageMember> maybeNextPageMember = memberRepository.findById(commentWriteRequest.getCommentWriterId());
+            if(maybeNextPageMember.isPresent()) {
+                NextPageMember nextPageMember = maybeNextPageMember.get();
+
+                //코멘트 엔티티 생성
+                Comment comment = new Comment(commentWriteRequest.getComment(), nextPageMember, qna);
+                //qna comment 세팅
+                qna.setComment(comment);
+
+                commentRepository.save(comment);
+                return true;
+            }
+            throw new RuntimeException("member 없음");
+        }
+        throw new RuntimeException("qna 없음");
+
     }
 
     @Override
