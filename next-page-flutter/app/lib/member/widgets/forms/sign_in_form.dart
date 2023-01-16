@@ -61,29 +61,31 @@ class _SignInFormState extends State <SignInForm>{
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
+
     return Form(
         key: _formKey,
         child: Container(
-            height: size.height,
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(18.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("로그인", style: largeTextStyleMain),
+               Container(child: Image.asset('assets/images/logo/logo2.png'),
+                 height: 180,
+               ),
+
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: size.height * 0.1),
-                    EmailTextField(controller: emailController),
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.04),
+                    EmailTextField(controller: emailController,),
+                    SizedBox(height: size.height * 0.06),
                     PasswordTextField(controller: passwordController, label: '비밀번호'),
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.05),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Color(0xff6699FF),
@@ -120,6 +122,7 @@ class _SignInFormState extends State <SignInForm>{
                             showResultDialog(context, "알림", "유효한 값을 모두 입력해주세요!");
                           }
                         }, child: Text("로그인", style: smallTextStyleWhite)),
+                    SizedBox(height: size.height * 0.03),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -135,6 +138,10 @@ class _SignInFormState extends State <SignInForm>{
             )
         )
     );
+
+
+
+
   }
   void showResultDialog(BuildContext context, String title, String alertMsg) {
     showDialog(
