@@ -47,6 +47,9 @@ class NovelResponse {
   String createdDate;
   String category;
   String thumbnail;
+  int viewCount;
+  double starRating;
+  int commentCount;
 
   NovelResponse(
       {required this.id,
@@ -58,7 +61,10 @@ class NovelResponse {
         required this.openToPublic,
         required this.createdDate,
         required this.category,
-        required this.thumbnail});
+        required this.thumbnail,
+        required this.viewCount,
+        required this.starRating,
+        required this.commentCount});
 
   factory NovelResponse.fromJson(Map<String, dynamic> json) {
     return NovelResponse(
@@ -71,7 +77,10 @@ class NovelResponse {
         openToPublic: json["openToPublic"],
         createdDate: json["createdDate"],
         category: json["category"],
-        thumbnail: json["thumbnail"]);
+        thumbnail: json["thumbnail"],
+        viewCount: json["viewCount"],
+        starRating: json["starRating"],
+        commentCount: json["commentCount"]);
   }
 }
 
@@ -83,14 +92,13 @@ class EpisodeResponse {
   bool needToBuy;
   String uploadedDate;
 
-
-  EpisodeResponse({
-    required this.id,
-    required this.episodeNumber,
-    required this.episodeTitle,
-    required this.text,
-    required this.needToBuy,
-    required this.uploadedDate});
+  EpisodeResponse(
+      {required this.id,
+        required this.episodeNumber,
+        required this.episodeTitle,
+        required this.text,
+        required this.needToBuy,
+        required this.uploadedDate});
 
   factory EpisodeResponse.fromJson(Map<String, dynamic> json) {
     return EpisodeResponse(
@@ -108,17 +116,13 @@ class PurchasedEpisodeListResponse {
   String paymentDate;
   int episodeId;
 
-  PurchasedEpisodeListResponse({
-    required this.id,
-    required this.paymentDate,
-    required this.episodeId
-  });
+  PurchasedEpisodeListResponse(
+      {required this.id, required this.paymentDate, required this.episodeId});
 
-  factory PurchasedEpisodeListResponse.fromJson(Map<String, dynamic> json){
+  factory PurchasedEpisodeListResponse.fromJson(Map<String, dynamic> json) {
     return PurchasedEpisodeListResponse(
         id: json["id"],
         paymentDate: json["paymentDate"],
         episodeId: json["episodeId"]);
   }
-
 }

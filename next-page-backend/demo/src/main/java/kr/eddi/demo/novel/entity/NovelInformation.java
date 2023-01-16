@@ -137,4 +137,8 @@ public class NovelInformation {
         this.commentCount += 1;
     }
 
+    public void updateViewCount(){
+        this.viewCount += 1;
+    }
+
 }

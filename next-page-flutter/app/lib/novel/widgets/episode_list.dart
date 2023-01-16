@@ -37,6 +37,7 @@ class _EpisodeListState extends State<EpisodeList> {
   List<dynamic>? _purchasedEpisodeList = [];
   late int _currentPoint;
   late int _memberId;
+  late String _nickname;
   bool _isPurchased = false;
 
   @override
@@ -81,6 +82,7 @@ class _EpisodeListState extends State<EpisodeList> {
         _loginState = true;
         _currentPoint = prefs.getInt('point')!;
         _memberId = prefs.getInt('userId')!;
+        _nickname = prefs.getString('nickname')!;
       });
     } else {
       setState(() {
@@ -135,7 +137,18 @@ class _EpisodeListState extends State<EpisodeList> {
             (_loginState)
             //유료에피소드의 경우
                 ? (episode['needToBuy'])
-                ? (_isPurchased)
+                ?_nickname == 'admin'?
+            Get.to(ScrollNovelViewerScreen(
+                episodeInfo: episode,
+                author: widget.novel.author,
+                episodeTitle: episode['episodeTitle'],
+                text: episode['text'],
+                id: widget.id,
+                appBarTitle: widget.title,
+                routeIndex: widget.routeIndex,
+                publisher: widget.novel.publisher,
+                purchasePoint: widget.novel.purchasePoint))
+                : (_isPurchased)
             //구매했을 경우
                 ? _payEpisodeResponse(episode)
             //구매하지 않았을 경우

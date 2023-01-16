@@ -36,7 +36,7 @@ public class NovelTestCase {
         service.createCategory(1L, "판타지");
         service.createCategory(2L, "무협");
         service.createCategory(3L, "로맨스");
-        service.createCategory(4L, "현대판타지");
+        service.createCategory(4L, "현판");
         service.createCategory(5L, "BL");
     }
 
@@ -53,16 +53,35 @@ public class NovelTestCase {
 
     @Test
     void episodeRegisterAtService() {
-        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(5L, 6L, "몸을 만들자(4)", """
-                 근육 조선 6화
+        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(
+                5L, 15L, "폭풍이 끝나다",
+                """
+                 근육 조선 15화
                  내용이당
-                """, false);
+                 
+                 
+                 홍
+                 홍
+                 
+                 
+                 홍
+                 
+                 
+                 홍
+                 
+                 헝
+                 
+                 항
+                 
+                 항
+                 
+                """, true);
         Boolean isOk = service.episodeRegister(request);
         System.out.println("isOk?: " + isOk);
     }
     @Test
     void deleteEpisode(){
-        Boolean isDelete = service.deleteNovelEpisode(8L);
+        Boolean isDelete = service.deleteNovelEpisode(14L);
         System.out.println("isDelete: " + isDelete);
     }
 
@@ -111,6 +130,12 @@ public class NovelTestCase {
         episode = maybeEpisode.get();
 
         System.out.println("getEpisodeDetail: " + episode);
+
+    }
+
+    @Test
+    void updateViewCount(){
+        service.viewCountUp(5L);
 
     }
 }

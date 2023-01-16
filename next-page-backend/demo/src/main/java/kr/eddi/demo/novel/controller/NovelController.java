@@ -103,4 +103,11 @@ public class NovelController {
 
         return novelService.getNovelEpisodeDetail(episode_id);
     }
+
+    @GetMapping("/view-count-up/{novel_info_id}")
+    public void viewCountUp(@PathVariable("novel_info_id") Long novel_info_id) {
+        log.info("viewCountUp()");
+
+        novelService.viewCountUp(novel_info_id);
+    }
 }

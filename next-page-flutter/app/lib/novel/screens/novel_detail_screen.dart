@@ -1,502 +1,153 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:ui';
+import 'dart:collection';
+import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
-import '../../admin/screens/novel_management_screen.dart';
-import '../../comment/comment_list_screen.dart';
-import '../../widgets/custom_bottom_appbar.dart';
-import '../../model/tmp_novel_model.dart';
-import '../api/spring_novel_api.dart';
-import '../widgets/episode_list.dart';
-import '../widgets/novel_introduction.dart';
-import '../widgets/novel_notice.dart';
+import '../../http_uri.dart';
+import 'novel_requests.dart';
+import 'novel_responses.dart';
 
-class NovelDetailScreen extends StatefulWidget {
-  final int id; // novel의 id
-  final int routeIndex;
+class SpringNovelApi {
 
-  const NovelDetailScreen(
-      {Key? key, required this.id, required this.routeIndex})
-      : super(key: key);
+  Future<List<NovelListResponse>?> allNovelList() async {
+    var response = await http.get(Uri.http(httpUri, '/novel/all-novel-list'),
+        headers: {"Content-Type": "application/json"});
 
-  @override
-  State<NovelDetailScreen> createState() => _NovelDetailScreenState();
-}
+    if (response.statusCode == 200) {
+      debugPrint("소설 리스트 통신 확인");
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
 
-class _NovelDetailScreenState extends State<NovelDetailScreen>
-    with TickerProviderStateMixin {
-  late Future<dynamic> _future;
-  dynamic _novel;
-  late int toBottomAppBar;
+      debugPrint(jsonData.toString());
 
-  final ScrollController _scrollController = ScrollController();
-  late TabController _controller;
-  bool? _isLike = true;
+      List<NovelListResponse> novelList =
+      jsonData.map((dataJson) => NovelListResponse.fromJson(dataJson)).toList();
 
-  String _nickname = '';
 
-  final Color _beginColor = Colors.transparent;
-  final Color _endColor = Colors.white;
-
-  final Color _beginIconColor = Colors.grey;
-  final Color _endIconColor = Colors.black;
-
-  final double _animationSpeed = 130;
-
-  late AnimationController _colorAnimationController;
-  late Animation _colorTween, _iconColorTween;
-
-  @override
-  void initState() {
-    _future = getNovelInfo();
-    _asyncMethod();
-    _controller = TabController(length: 3, vsync: this);
-    super.initState();
-    _colorAnimationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 0));
-    _colorTween = ColorTween(begin: _beginColor, end: _endColor)
-        .animate(_colorAnimationController);
-    _iconColorTween = ColorTween(begin: _beginIconColor, end: _endIconColor)
-        .animate(_colorAnimationController);
-    _scrollController.addListener(() {
-      print('offset = ${_scrollController.offset}');
-    });
-    if (widget.routeIndex == 0) {
-      toBottomAppBar = 0;
-    }
-    if (widget.routeIndex == 1) {
-      toBottomAppBar = 1;
-    }
-    if (widget.routeIndex == 2) {
-      toBottomAppBar = 2; //검색 페이지 자동완성에서 넘어오는 경우 추가
+      return novelList;
+    } else {
+      throw Exception("error");
     }
   }
 
-  void _asyncMethod() async {
-    var prefs = await SharedPreferences.getInstance();
-    String? userToken = prefs.getString('userToken');
-    if (userToken != null) {
-      setState(() {
-        _nickname = prefs.getString('nickname')!;
-      });
+  Future<NovelResponse> getNovelInfo(int novelId) async {
+    var response = await http.get(Uri.http(httpUri, '/novel/information-detail/$novelId'),
+        headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      debugPrint("소설 상세보기 통신 확인");
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      debugPrint(jsonData.toString());
+
+      NovelResponse novel = NovelResponse.fromJson(jsonData);
+
+      return novel;
+    } else {
+      throw Exception("error");
     }
   }
 
-  Future getNovelInfo() async {
-    await SpringNovelApi().getNovelInfo(widget.id).then((novel) {
-      setState(() {
-        _novel = novel;
-      });
-    });
-  }
+  /*Future<List<NovelListResponse>?> getUploaderNovelList(NovelRequest request) async {
+    var response = await http.post(
+      Uri.http(httpUri, '/novel/${request.memberId}/information-list'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
+        'memberId': request.memberId,
+        'size': request.size,
+        'page': request.page
+      }),
+    );
+    if (response.statusCode == 200) {
+      debugPrint("통신 확인");
 
-  bool _scrollListener(ScrollNotification scrollInfo) {
-    if (scrollInfo.metrics.axis == Axis.vertical) {
-      _colorAnimationController
-          .animateTo(scrollInfo.metrics.pixels / _animationSpeed);
-      return true;
-    } else if (_scrollController.offset >= 340) {
-      _colorAnimationController
-          .animateTo(scrollInfo.metrics.pixels / _animationSpeed);
-      return true;
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      debugPrint(jsonData.toString());
+
+      return json.decode(response.body);
+    } else {
+      throw ("error");
     }
-    return false;
+  }*/
+
+  Future<List<dynamic>> getNovelEpisodeList(EpisodeRequest request) async {
+    var response = await http.post(Uri.http(httpUri, '/novel/episode-list/${request.novelId}'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
+        'novelId': request.novelId,
+        'size': request.size,
+        'page': request.page
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("소설 에피소드 리스트 통신 확인");
+      LinkedHashMap<String, dynamic> jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      return jsonData['content'];
+    } else {
+      throw Exception("error");
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final double statusBarHeight = MediaQuery.of(context).padding.top;
-    Size size = MediaQuery.of(context).size;
-    return FutureBuilder(
-        future: _future,
-        builder: ((context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.hasError) {
-              return Center(
-                child: Text(snapshot.error.toString()),
-              );
-            } else {
-              return Scaffold(
-                  body: NotificationListener<ScrollNotification>(
-                    onNotification: _scrollListener,
-                    child: SizedBox(
-                      height: double.infinity,
-                      child: Stack(children: [
-                        NestedScrollView(
-                          scrollDirection: Axis.vertical,
-                          controller: _scrollController,
-                          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                            SliverToBoxAdapter(
-                              child: Column(
-                                children: <Widget>[
-                                  Stack(
-                                    children: <Widget>[
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              //흐릿한 썸네일을 배경으로 깐다
-                                              image: AssetImage(
-                                                  'assets/images/thumbnail/${_novel.thumbnail}'),
-                                              fit: BoxFit.cover,
-                                            )),
-                                        child: Column(
-                                          children: [
-                                            ClipRRect(
-                                              child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaX: 10, sigmaY: 10),
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  color:
-                                                  Colors.white.withOpacity(0.1),
-                                                  child: Container(
-                                                    child: Column(
-                                                      children: <Widget>[
-                                                        //흐릿한 썸네일 배경위에 썸네일 이미지
-                                                        SizedBox(
-                                                          height:
-                                                          size.height * 0.05,
-                                                        ),
-                                                        Container(
-                                                          padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                              0, 45, 0, 10),
-                                                          height: 300,
-                                                          child: Image.asset(
-                                                              'assets/images/thumbnail/${_novel.thumbnail}'),
-                                                        ),
-                                                        //소설 제목
-                                                        Container(
-                                                          padding:
-                                                          const EdgeInsets.all(
-                                                              7),
-                                                          child: Text(
-                                                            _novel.title,
-                                                            style: const TextStyle(
-                                                                color: Colors.white,
-                                                                fontWeight:
-                                                                FontWeight.bold,
-                                                                fontSize: 18),
-                                                          ),
-                                                        ),
-                                                        // 장르 + 작가
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                          children: [
-                                                            Text(
-                                                              _novel.category ==
-                                                                  '현판'
-                                                                  ? '현대판타지'
-                                                                  : _novel.category,
-                                                              style:
-                                                              const TextStyle(
-                                                                color:
-                                                                Colors.white60,
-                                                                fontWeight:
-                                                                FontWeight.bold,
-                                                              ),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                              size.width * 0.01,
-                                                            ),
-                                                            const Text(
-                                                              '•',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white60),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                              size.width * 0.01,
-                                                            ),
-                                                            Text(
-                                                              _novel.author,
-                                                              style:
-                                                              const TextStyle(
-                                                                color:
-                                                                Colors.white60,
-                                                                fontWeight:
-                                                                FontWeight.bold,
-                                                              ),
-                                                            )
-                                                          ],
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                          child: Container(
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                              children: [
-                                                                //소설 조회수
-                                                                Wrap(
-                                                                  children: const [
-                                                                    Icon(
-                                                                      Icons
-                                                                          .remove_red_eye_outlined,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      size: 17,
-                                                                    ),
-                                                                    Text(
-                                                                      '175만',
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .white),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                SizedBox(
-                                                                  width:
-                                                                  size.width *
-                                                                      0.01,
-                                                                ),
-                                                                const Text(
-                                                                  '•',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                                SizedBox(
-                                                                  width:
-                                                                  size.width *
-                                                                      0.01,
-                                                                ),
-                                                                //소설 별점
-                                                                Wrap(
-                                                                  children: [
-                                                                    const Icon(
-                                                                      Icons.star,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      size: 17,
-                                                                    ),
-                                                                    Text(
-                                                                      TmpNovelModel
-                                                                          .novelList[
-                                                                      0]
-                                                                          .rating
-                                                                          .toString(),
-                                                                      style: const TextStyle(
-                                                                          color: Colors
-                                                                              .white),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                SizedBox(
-                                                                  width:
-                                                                  size.width *
-                                                                      0.01,
-                                                                ),
-                                                                const Text(
-                                                                  '•',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                                SizedBox(
-                                                                  width:
-                                                                  size.width *
-                                                                      0.01,
-                                                                ),
-                                                                //소설 댓글
-                                                                Wrap(
-                                                                  children: [
-                                                                    ElevatedButton
-                                                                        .icon(
-                                                                      style:
-                                                                      ButtonStyle(
-                                                                        padding: MaterialStateProperty.all(
-                                                                            EdgeInsets
-                                                                                .zero),
-                                                                        backgroundColor:
-                                                                        MaterialStateProperty.all(
-                                                                            Colors.transparent),
-                                                                        elevation:
-                                                                        MaterialStateProperty.all(
-                                                                            0.0),
-                                                                      ),
-                                                                      icon: const Icon(
-                                                                          Icons
-                                                                              .sms_outlined),
-                                                                      label:
-                                                                      const Text(
-                                                                          '345'),
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator
-                                                                            .push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (context) =>
-                                                                                  CommentListScreen(
-                                                                                    id: widget.id,
-                                                                                    appBarTitle: _novel.title,
-                                                                                    fromWhere: 0,
-                                                                                    routeIndex: widget.routeIndex,
-                                                                                    episodeId: 9999, // 임의값 추가
-                                                                                  )),
-                                                                        );
-                                                                      },
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height:
-                                                          size.height * 0.01,
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: size.height * 0.07,
-                                    decoration: const BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                width: 1, color: Colors.grey))),
-                                    child: TabBar(
-                                      controller: _controller,
-                                      unselectedLabelColor: Colors.black,
-                                      labelColor: Colors.black,
-                                      tabs: const [
-                                        Tab(
-                                          child: Text(
-                                            '홈',
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                        ),
-                                        Tab(
-                                          child: Text(
-                                            '작품소개',
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                        ),
-                                        Tab(
-                                          child: Text(
-                                            '공지사항',
-                                            style: TextStyle(fontSize: 18),
-                                          ),
-                                        ),
-                                      ],
-                                      indicatorColor: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                          body: TabBarView(
-                            controller: _controller,
-                            children: [
-                              EpisodeList(
-                                id: widget.id,
-                                title: _novel.title,
-                                thumbnail: _novel.thumbnail,
-                                routeIndex: widget.routeIndex,
-                                novel: _novel,
-                              ),
-                              NovelIntroduction(introduction: _novel.introduction),
-                              const NovelNotice()
-                            ],
-                          ),
-                        ),
-                        //앱바
-                        SizedBox(
-                          height: statusBarHeight + kToolbarHeight,
-                          // 상단바 + AppBar 높이
-                          child: AnimatedBuilder(
-                            animation: _colorAnimationController,
-                            builder: (context, build) => AppBar(
-                              elevation: 0,
-                              backgroundColor: _colorTween.value,
-                              leading: IconButton(
-                                // 좌측 액션 버튼
-                                  onPressed: () {
-                                    Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                CustomBottomAppbar(
-                                                  routeIndex: toBottomAppBar,
-                                                )),
-                                            (route) => false);
-                                  },
-                                  icon: const Icon(
-                                    Icons.arrow_back_ios_new_outlined,
-                                    size: 25,
-                                  ),
-                                  color: _iconColorTween.value),
-                              actions: [
-                                _nickname == 'admin'
-                                    ? IconButton(
-                                    onPressed: () {
-                                      Get.to(()=>NovelManagementScreen(novel: _novel,));
-                                    },
-                                    icon: const Icon(
-                                      Icons.settings,
-                                      color: Colors.black,
-                                    ))
-                                    : Container(),
-                                _isLike == true
-                                    ? IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _isLike = false;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.favorite,
-                                      color: Colors.redAccent,
-                                    ))
-                                    : IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _isLike = true;
-                                      });
-                                    },
-                                    icon: const Icon(
-                                      Icons.favorite_outline,
-                                      color: Colors.grey,
-                                      size: 30,
-                                    )),
-                                IconButton(
-                                  // 우측 액션 버튼
-                                    onPressed: () {},
-                                    icon: Icon(Icons.more_vert,
-                                        size: 30, color: _iconColorTween.value))
-                              ],
-                            ),
-                          ),
-                        )
-                      ]),
-                    ),
-                  ));
-            }
-          } else {
-            return const Text("망");
-          }
-        }));
+  Future<List<dynamic>> getPurchasedEpisodeList(PurchasedEpisodeRequest request) async {
+    var response = await http.post(Uri.http(httpUri, '/episode-payment/purchased-episode-list'),
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
+        'novelId': request.novelId,
+        'memberId': request.memberId,
+      }),
+    );
+
+    if(response.statusCode == 200){
+      debugPrint("구매한 에피소드 리스트 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+      debugPrint(jsonData.toString());
+
+      List<PurchasedEpisodeListResponse> purchasedEpisodeList =
+      jsonData.map((dataJson) => PurchasedEpisodeListResponse.fromJson(dataJson)).toList();
+
+
+      return purchasedEpisodeList;
+    }else {
+      throw ("error");
+    }
+  }
+
+  Future<bool?> purchaseEpisode (PurchaseEpisodeRequest request) async {
+    var data = { 'memberId': request.memberId, 'novelId': request.novelId, 'episodeId': request.episodeId };
+    var body = json.encode(data);
+
+    debugPrint(request.memberId.toString());
+    debugPrint(request.novelId.toString());
+    debugPrint(request.episodeId.toString());
+    debugPrint(body);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/episode-payment/buy-episode'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint("에피소드 구매 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("error");
+    }
+  }
+
+  Future<void> requestViewCountUp(int novelId) async{
+    var response = await http.get(
+      Uri.http(httpUri, '/novel/view-count-up/$novelId'),
+      headers: {"Content-Type": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      debugPrint("통신 확인");
+    } else {
+      throw Exception("error");
+    }
   }
 }
