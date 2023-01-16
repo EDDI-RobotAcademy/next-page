@@ -132,10 +132,12 @@ public class NovelInformation {
         this.episodeList.add(episode);
     }
 
-    // 댓글 작성 시 댓글 수를 업데이트합니다.
-    public void updateCommentCount() {
+    // 댓글 작성 시 전체 댓글 수에서 +1
+    public void addCommentCount() {
         this.commentCount += 1;
     }
+    // 댓글 삭제 시 전체 댓글 수에서 -1
+    public void minusCommentCount() { this.commentCount -=1; }
 
     public void updateViewCount(){
         this.viewCount += 1;
