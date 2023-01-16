@@ -127,7 +127,7 @@ class _SignInFormState extends State <SignInForm>{
                           SizedBox(height: size.height * 0.03, child: VerticalDivider(thickness: 1)),// 세로 구분선
                           NavigationButton(buttonText: "비밀번호 찾기", route: "/find-password",),
                           SizedBox(height: size.height * 0.03, child: VerticalDivider(thickness: 1)),// 세로 구분선
-                          NavigationButton(buttonText: "회원 가입", route: "/sign-up",)
+                          NavigationButton(buttonText: "회원 가입", route: "/member-join",) // meber_join_screen 연결
                         ])
                   ],
                 )
