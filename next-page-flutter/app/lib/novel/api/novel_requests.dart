@@ -20,6 +20,7 @@ class PurchasedEpisodeRequest{
 
   PurchasedEpisodeRequest(this.novelId, this.memberId);
 }
+
 class PurchaseEpisodeRequest{
   int memberId;
   int novelId;
