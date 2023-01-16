@@ -76,25 +76,25 @@ class NovelIntroduction extends StatelessWidget {
                     padding: EdgeInsets.only(left: _size.width * 0.04),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '웹소설',
-                          style: TextStyle(fontSize: _size.width * 0.04),
-                        ),
-                        Text(
-                          novel.publisher,
-                          style: TextStyle(fontSize: _size.width * 0.04),
-                        ),
-                        Text(
-                          novel.category,
-                          style: TextStyle(fontSize: _size.width * 0.04),
-                        ),
-                        Text(
-                          '${novel.purchasePoint}포인트/회차 당',
-                          style: TextStyle(fontSize: _size.width * 0.04),
-                        ),
-                      ],
-                    ),
+                        children: [
+                          Text(
+                            '웹소설',
+                            style: TextStyle(fontSize: _size.width * 0.04),
+                          ),
+                          Text(
+                            novel.publisher,
+                            style: TextStyle(fontSize: _size.width * 0.04),
+                          ),
+                          Text(
+                            novel.category,
+                            style: TextStyle(fontSize: _size.width * 0.04),
+                          ),
+                          Text(
+                            '${novel.purchasePoint}포인트/회차 당',
+                            style: TextStyle(fontSize: _size.width * 0.04),
+                          ),
+                        ],
+                      ),
                   ),
                 ],
               ),
@@ -132,13 +132,13 @@ class NovelIntroduction extends StatelessWidget {
                     padding: EdgeInsets.only(left: _size.width * 0.04),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          novel.author,
-                          style: TextStyle(fontSize: _size.width * 0.04),
-                        ),
-                      ],
-                    ),
+                        children: [
+                          Text(
+                            novel.author,
+                            style: TextStyle(fontSize: _size.width * 0.04),
+                          ),
+                        ],
+                      ),
                   ),
                 ],
               ),

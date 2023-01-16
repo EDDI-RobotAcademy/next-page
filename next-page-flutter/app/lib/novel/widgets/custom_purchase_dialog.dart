@@ -92,17 +92,17 @@ class CustomPurchaseDialog extends StatelessWidget {
                             print(_bool);
                             (_bool!)
                                 ?
-                            Get.off(()=> ScrollNovelViewerScreen(
-                              appBarTitle: novelTitle,
-                              id: novelId,
-                              routeIndex: routeIndex,
-                              text: episode['text'],
-                              episodeTitle: episode['episodeTitle'],
-                              author: author,
-                              episodeInfo: episode,
-                              publisher: publisher,
-                              purchasePoint: purchasePoint,
-                            ))
+                                Get.off(()=> ScrollNovelViewerScreen(
+                                  appBarTitle: novelTitle,
+                                  id: novelId,
+                                  routeIndex: routeIndex,
+                                  text: episode['text'],
+                                  episodeTitle: episode['episodeTitle'],
+                                  author: author,
+                                  episodeInfo: episode,
+                                  publisher: publisher,
+                                  purchasePoint: purchasePoint,
+                                ))
                                 :Get.back();
                           })
                               : Get.off(()=> PointChargeScreen(fromWhere: 0,));
