@@ -1,15 +1,17 @@
-import 'package:app/notice/api/notice_requests.dart';
-import 'package:app/notice/notice_upload_form.dart';
-import 'package:app/utility/providers/notice_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test1_project/utility/providers/episode_provider.dart';
 import 'dart:ui';
 
-import '../../admin/screens/novel_management_screen.dart';
+import '../../admin/screens/episode_upload_screen.dart';
+import '../../admin/screens/novel_modify_screen.dart';
 import '../../comment/comment_list_screen.dart';
+import '../../notice/api/notice_requests.dart';
+import '../../notice/notice_upload_form.dart';
+import '../../utility/providers/notice_provider.dart';
 import '../../widgets/custom_bottom_appbar.dart';
 import '../api/spring_novel_api.dart';
 import '../widgets/episode_list.dart';
@@ -30,7 +32,7 @@ class NovelDetailScreen extends StatefulWidget {
 
 class _NovelDetailScreenState extends State<NovelDetailScreen>
     with TickerProviderStateMixin {
-  late Future<dynamic> _future;
+  Future<dynamic>? _future;
   dynamic _novel;
   late int toBottomAppBar;
 
@@ -50,11 +52,14 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
 
   late AnimationController _colorAnimationController;
   late Animation _colorTween, _iconColorTween;
-
+  EpisodeProvider? _episodeProvider;
+  late bool _loginState;
   late NoticeProvider _noticeProvider;
 
   @override
   void initState() {
+    _episodeProvider = Provider.of<EpisodeProvider>(context, listen: false);
+    _episodeProvider!.requestEpisodeList(0, widget.id);
     _future = getNovelInfo();
     _asyncMethod();
     _controller = TabController(length: 3, vsync: this);
@@ -85,11 +90,14 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
   void _asyncMethod() async {
     var prefs = await SharedPreferences.getInstance();
     String? userToken = prefs.getString('userToken');
-    if (userToken != null) {
-      setState(() {
-        _nickname = prefs.getString('nickname')!;
-      });
-    }
+    userToken != null
+        ? setState(() {
+      _loginState = true;
+      _nickname = prefs.getString('nickname')!;
+    })
+        : setState(() {
+      _loginState = false;
+    });
   }
 
   Future getNovelInfo() async {
@@ -249,7 +257,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                               children: [
                                                                 //소설 조회수
                                                                 Wrap(
-                                                                  children:[
+                                                                  children: [
                                                                     const Icon(
                                                                       Icons
                                                                           .remove_red_eye_outlined,
@@ -258,7 +266,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                       size: 17,
                                                                     ),
                                                                     Text(
-                                                                      _novel.viewCount.toString(),
+                                                                      _novel
+                                                                          .viewCount
+                                                                          .toString(),
                                                                       style: const TextStyle(
                                                                           color: Colors
                                                                               .white),
@@ -291,7 +301,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                       size: 17,
                                                                     ),
                                                                     Text(
-                                                                      _novel.starRating.toString(),
+                                                                      _novel
+                                                                          .starRating
+                                                                          .toString(),
                                                                       style: const TextStyle(
                                                                           color: Colors
                                                                               .white),
@@ -334,9 +346,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                       icon: const Icon(
                                                                           Icons
                                                                               .sms_outlined),
-                                                                      label:
-                                                                      Text(
-                                                                          _novel.commentCount.toString()),
+                                                                      label: Text(_novel
+                                                                          .commentCount
+                                                                          .toString()),
                                                                       onPressed:
                                                                           () {
                                                                         Navigator
@@ -421,6 +433,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 thumbnail: _novel.thumbnail,
                                 routeIndex: widget.routeIndex,
                                 novel: _novel,
+                                loginState: _loginState,
                               ),
                               NovelIntroduction(novel: _novel),
                               NovelNotice(novelInfoId: widget.id,)
@@ -455,7 +468,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                   color: _iconColorTween.value),
                               actions: [
                                 _nickname == 'admin'
-                                    ? _showNovelManagementOverlay(_novelManagementOverlay())
+                                    ? _showNovelManagementOverlay(
+                                    _novelManagementOverlay())
                                     : Container(),
                                 _isLike == true
                                     ? IconButton(
@@ -497,6 +511,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
           }
         }));
   }
+
   //공개여부 드롭다운 구성
   Widget _novelManagementOverlay() {
     return CupertinoActionSheet(
@@ -504,14 +519,18 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
         CupertinoActionSheetAction(
           isDefaultAction: true,
           onPressed: () {
-            Get.to(() => NovelManagementScreen(novel: _novel));
+            Get.off(() => NovelModifyScreen(novel: _novel));
           },
           child: const Text("작품 정보 수정"),
         ),
         CupertinoActionSheetAction(
           isDefaultAction: true,
           onPressed: () {
-            Navigator.pop(context);
+            Get.off(() => EpisodeUploadScreen(
+              novelId: widget.id,
+              title: _novel.title,
+              thumbnail: _novel.thumbnail,
+            ));
           },
           child: const Text("신규 에피소드 등록"),
         ),

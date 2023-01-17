@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
 import '../../member/screens/sign_in_screen.dart';
+import '../../utility/providers/episode_provider.dart';
 import '../api/novel_requests.dart';
 import '../api/spring_novel_api.dart';
 import '../screens/scroll_novel_viewer_screen.dart';
@@ -16,14 +18,15 @@ class EpisodeList extends StatefulWidget {
   final int id;
   final String title;
   final int routeIndex;
+  final bool loginState;
 
   const EpisodeList(
       {Key? key,
-      required this.thumbnail,
-      required this.id,
-      required this.title,
-      required this.routeIndex,
-      required this.novel})
+        required this.thumbnail,
+        required this.id,
+        required this.title,
+        required this.routeIndex,
+        required this.novel, required this.loginState})
       : super(key: key);
 
   @override
@@ -31,7 +34,7 @@ class EpisodeList extends StatefulWidget {
 }
 
 class _EpisodeListState extends State<EpisodeList> {
-  late Future<dynamic>? _future;
+  Future<dynamic>? _future;
   late bool _loginState;
   List<dynamic>? _episodeList = [];
   List<dynamic>? _purchasedEpisodeList = [];
@@ -39,39 +42,38 @@ class _EpisodeListState extends State<EpisodeList> {
   late int _memberId;
   late String _nickname;
   bool _isPurchased = false;
+  EpisodeProvider? _episodeProvider;
 
   @override
   void initState() {
-    _future = _getEpisodeList();
+    _asyncMethod();
+    _episodeProvider = Provider.of<EpisodeProvider>(context, listen: false);
     Future.delayed(Duration.zero, () async {
-      _asyncMethod();
+      _future = _getPurchasedEpisodeList();
     });
     super.initState();
   }
 
-  Future _getEpisodeList() async {
-    await SpringNovelApi()
-        .getNovelEpisodeList(EpisodeRequest(0, 100, widget.id))
-        .then((episodeList) {
-      setState(() {
-        _episodeList = episodeList;
-      });
-      print(episodeList.toString());
-      /*
+  Future _getPurchasedEpisodeList() async {
+    setState(() {
+      _loginState = widget.loginState;
+      _episodeList = _episodeProvider!.episodeList;
+    });
+    print(_episodeList.toString());
+    /*
       등록된 에피소드가 존재할 경우 and 로그인 상태일 경우
       소설id와 멤버id를 보내 해당 유저가 해당 소설에서 구매한 에피소드 리스트를 가져온다.
       */
-      (_episodeList!.isNotEmpty && _loginState)
-          ? SpringNovelApi()
-              .getPurchasedEpisodeList(
-                  PurchasedEpisodeRequest(widget.novel.id, _memberId))
-              .then((purchasedEpisodeList) {
-              setState(() {
-                _purchasedEpisodeList = purchasedEpisodeList;
-              });
-            })
-          : debugPrint('등록된 에피소드가 없습니다');
-    });
+    (_episodeList!.isNotEmpty && widget.loginState)
+        ? SpringNovelApi()
+        .getPurchasedEpisodeList(
+        PurchasedEpisodeRequest(widget.novel.id, _memberId))
+        .then((purchasedEpisodeList) {
+      setState(() {
+        _purchasedEpisodeList = purchasedEpisodeList;
+      });
+    })
+        : debugPrint('등록된 에피소드가 없습니다');
   }
 
   void _asyncMethod() async {
@@ -106,17 +108,17 @@ class _EpisodeListState extends State<EpisodeList> {
             } else {
               return (_episodeList!.length > 0)
                   ? Container(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: _episodeList!.map((episode) {
-                            return _episodeCardList(episode);
-                          }).toList(),
-                        ),
-                      ),
-                    )
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: _episodeList!.map((episode) {
+                      return _episodeCardList(episode);
+                    }).toList(),
+                  ),
+                ),
+              )
                   : const Center(
-                      child: Text('등록된 에피소드가 없습니다.'),
-                    );
+                child: Text('등록된 에피소드가 없습니다.'),
+              );
             }
           } else {
             return const Text("망");
@@ -135,9 +137,9 @@ class _EpisodeListState extends State<EpisodeList> {
           onTap: () {
             //로그인 상태일 때 에피소드 클릭시
             (_loginState)
-                //유료에피소드의 경우
+            //유료에피소드의 경우
                 ? (episode['needToBuy'])
-            ?_nickname == 'admin'?
+                ?_nickname == 'admin'?
             Get.to(ScrollNovelViewerScreen(
                 episodeInfo: episode,
                 author: widget.novel.author,
@@ -149,27 +151,27 @@ class _EpisodeListState extends State<EpisodeList> {
                 publisher: widget.novel.publisher,
                 purchasePoint: widget.novel.purchasePoint))
                 : (_isPurchased)
-                        //구매했을 경우
-                        ? _payEpisodeResponse(episode)
-                        //구매하지 않았을 경우
-                        : _payEpisodeResponse(episode)
-                    //무료 에피소드를 클릭했을 경우
-                    : Get.to(ScrollNovelViewerScreen(
-                        episodeInfo: episode,
-                        author: widget.novel.author,
-                        episodeTitle: episode['episodeTitle'],
-                        text: episode['text'],
-                        id: widget.id,
-                        appBarTitle: widget.title,
-                        routeIndex: widget.routeIndex,
-                        publisher: widget.novel.publisher,
-                        purchasePoint: widget.novel.purchasePoint))
-                //비로그인 상태일 때 에피소드 클릭시
+            //구매했을 경우
+                ? _payEpisodeResponse(episode)
+            //구매하지 않았을 경우
+                : _payEpisodeResponse(episode)
+            //무료 에피소드를 클릭했을 경우
+                : Get.to(ScrollNovelViewerScreen(
+                episodeInfo: episode,
+                author: widget.novel.author,
+                episodeTitle: episode['episodeTitle'],
+                text: episode['text'],
+                id: widget.id,
+                appBarTitle: widget.title,
+                routeIndex: widget.routeIndex,
+                publisher: widget.novel.publisher,
+                purchasePoint: widget.novel.purchasePoint))
+            //비로그인 상태일 때 에피소드 클릭시
                 : Get.to(SignInScreen(
-                    fromWhere: 5,
-                    novel: widget.novel,
-                    routeIndex: widget.routeIndex,
-                  ));
+              fromWhere: 5,
+              novel: widget.novel,
+              routeIndex: widget.routeIndex,
+            ));
           },
           child: Row(
             children: <Widget>[
@@ -211,20 +213,20 @@ class _EpisodeListState extends State<EpisodeList> {
               ),
               (episode['needToBuy'])
                   ? _payEpisodeTxt(episode)
-                  //무료 에피소드의 경우 에피소드 리스트 하단에 무료 텍스트가 보이도록 한다.
+              //무료 에피소드의 경우 에피소드 리스트 하단에 무료 텍스트가 보이도록 한다.
                   : Row(
-                      children: [
-                        SizedBox(
-                          width: _size.width * 0.04,
-                        ),
-                        Text(
-                          '무료',
-                          style: TextStyle(
-                              color: AppTheme.pointColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )
+                children: [
+                  SizedBox(
+                    width: _size.width * 0.04,
+                  ),
+                  Text(
+                    '무료',
+                    style: TextStyle(
+                        color: AppTheme.pointColor,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              )
             ],
           ),
         ),
@@ -245,28 +247,28 @@ class _EpisodeListState extends State<EpisodeList> {
       }
     }
     return (_isPurchased)
-        //구매한 유료 소설의 경우 리스트 우측에 보기, 구매완료 텍스트가 보이도록 한다.
+    //구매한 유료 소설의 경우 리스트 우측에 보기, 구매완료 텍스트가 보이도록 한다.
         ? Column(
-            children: [
-              Text(
-                '보기',
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text('구매완료'),
-            ],
-          )
-        //구매하지 않은 유료 소설의 경우 다운로드 아이콘이 보이도록 한다.
+      children: [
+        Text(
+          '보기',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Text('구매완료'),
+      ],
+    )
+    //구매하지 않은 유료 소설의 경우 다운로드 아이콘이 보이도록 한다.
         : Row(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.04,
-              ),
-              Icon(
-                Icons.file_download_outlined,
-                color: Colors.grey[600],
-              ),
-            ],
-          );
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 0.04,
+        ),
+        Icon(
+          Icons.file_download_outlined,
+          color: Colors.grey[600],
+        ),
+      ],
+    );
   }
 
   _payEpisodeResponse(dynamic episode) {
@@ -280,30 +282,30 @@ class _EpisodeListState extends State<EpisodeList> {
       }
     }
     return (_isPurchased)
-        //구매한 유료 에피소드를 클릭할 경우 뷰어로 이동
+    //구매한 유료 에피소드를 클릭할 경우 뷰어로 이동
         ? Get.to(() => ScrollNovelViewerScreen(
-            episodeInfo: episode,
-            author: widget.novel.author,
-            episodeTitle: episode['episodeTitle'],
-            text: episode['text'],
-            id: widget.id,
-            appBarTitle: widget.title,
-            routeIndex: widget.routeIndex,
-            publisher: widget.novel.publisher,
-            purchasePoint: widget.novel.purchasePoint))
-        //구매하지 않은 유로 에피소드를 클릭할 경우 구매 dialog로 이동
+        episodeInfo: episode,
+        author: widget.novel.author,
+        episodeTitle: episode['episodeTitle'],
+        text: episode['text'],
+        id: widget.id,
+        appBarTitle: widget.title,
+        routeIndex: widget.routeIndex,
+        publisher: widget.novel.publisher,
+        purchasePoint: widget.novel.purchasePoint))
+    //구매하지 않은 유로 에피소드를 클릭할 경우 구매 dialog로 이동
         : _showAlertDialog(
-            context,
-            CustomPurchaseDialog(
-              routeIndex: widget.routeIndex,
-              memberId: _memberId,
-              novelId: widget.novel.id,
-              novelTitle: widget.title,
-              purchasePoint: widget.novel.purchasePoint,
-              point: _currentPoint,
-              episode: episode,
-              author: widget.novel.author,
-              publisher: widget.novel.publisher,
-            ));
+        context,
+        CustomPurchaseDialog(
+          routeIndex: widget.routeIndex,
+          memberId: _memberId,
+          novelId: widget.novel.id,
+          novelTitle: widget.title,
+          purchasePoint: widget.novel.purchasePoint,
+          point: _currentPoint,
+          episode: episode,
+          author: widget.novel.author,
+          publisher: widget.novel.publisher,
+        ));
   }
 }
