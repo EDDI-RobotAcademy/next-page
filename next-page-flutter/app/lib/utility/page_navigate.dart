@@ -7,3 +7,9 @@ void popPopPush(BuildContext context, Widget screen) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => screen));
 }
+
+void popPopPop(){
+  Get.back();
+  Get.back();
+  Get.back();
+}
