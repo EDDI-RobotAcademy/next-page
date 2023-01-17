@@ -136,12 +136,17 @@ class SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: searchAppbar(_controller, _focusNode),
-        body: Container(
-          width: double.infinity,
-          child: _buildBody(context),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+          appBar: searchAppbar(_controller, _focusNode),
+          body: Container(
+            width: double.infinity,
+            child: _buildBody(context),
+            ),
           ),
-        );
+    );
   }
 }
