@@ -1,6 +1,10 @@
+import 'package:app/notice/api/notice_requests.dart';
+import 'package:app/notice/notice_upload_form.dart';
+import 'package:app/utility/providers/notice_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
 
@@ -47,6 +51,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
   late AnimationController _colorAnimationController;
   late Animation _colorTween, _iconColorTween;
 
+  late NoticeProvider _noticeProvider;
+
   @override
   void initState() {
     _future = getNovelInfo();
@@ -71,6 +77,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     if (widget.routeIndex == 2) {
       toBottomAppBar = 2; //검색 페이지 자동완성에서 넘어오는 경우 추가
     }
+    // 공지 정보를 불러오기 위한 provider
+    _noticeProvider = Provider.of<NoticeProvider>(context, listen: false);
+    _noticeProvider.getNoticeList(NoticeRequest(novelInfoId: widget.id, page: 0, size: 10));
   }
 
   void _asyncMethod() async {
@@ -414,7 +423,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 novel: _novel,
                               ),
                               NovelIntroduction(novel: _novel),
-                              const NovelNotice()
+                              NovelNotice(novelInfoId: widget.id,)
                             ],
                           ),
                         ),
@@ -509,7 +518,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
         CupertinoActionSheetAction(
           isDefaultAction: true,
           onPressed: () {
-            Navigator.pop(context);
+            Get.to(() => NoticeUploadForm(novelInfoId: widget.id));
           },
           child: const Text("작품 공지사항 등록"),
         ),
