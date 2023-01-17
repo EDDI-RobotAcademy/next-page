@@ -1,20 +1,23 @@
-import 'package:app/mypage/screens/tmp_my_screen.dart';
-import 'package:app/notice/api/SpringNoticeApi.dart';
+
+import 'package:app/notice/api/spring_notice_api.dart';
 import 'package:app/notice/api/notice_requests.dart';
+import 'package:app/novel/screens/novel_detail_screen.dart';
+import 'package:app/utility/page_navigate.dart';
 import 'package:app/utility/providers/category_provider.dart';
 import 'package:app/widgets/cupertino_result_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
 import '../mypage/widgets/board_text_field.dart';
 import '../mypage/widgets/category_drop_down.dart';
-import '../widgets/cupertino_navigate_alert.dart';
 import '../widgets/custom_title_appbar.dart';
 
 class NoticeUploadForm extends StatefulWidget {
-  const NoticeUploadForm({Key? key, required this.novelInfoId}) : super(key: key);
+  const NoticeUploadForm({ Key? key, required this.novelInfoId }) : super(key: key);
   final int novelInfoId;
 
   @override
@@ -95,8 +98,24 @@ class _NoticeUploadFormState extends State<NoticeUploadForm> {
                                   novelInfoId: widget.novelInfoId));
                           if(result) {
                             _categoryProvider.categoryReset();
-                            cupertinoNavigateAlert(context, '공지사항 등록 성공!\n등록한 공지를 확인하시겠습니까?',
-                                TmpMyScreen(), NoticeUploadForm(novelInfoId: widget.novelInfoId));
+                            showCupertinoDialog(
+                                context: context,
+                                builder: (context) {
+                                  return CupertinoAlertDialog(
+                                    title: Text('알림'),
+                                    content: Text('공지 등록이 완료되었습니다.'),
+                                    actions: [
+                                      CupertinoDialogAction(
+                                        child: Text('확인'),
+                                        onPressed: () {
+                                          widget.novelInfoId == 0?
+                                          popPopPush(context, NoticeUploadForm(novelInfoId: widget.novelInfoId,))
+                                          : Get.off(()=> NovelDetailScreen(id: widget.novelInfoId, routeIndex: 0));
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
                           } else {
                             cupertinoResultAlert(context, '알림', '통신이 원활하지 않습니다.');
                           }
