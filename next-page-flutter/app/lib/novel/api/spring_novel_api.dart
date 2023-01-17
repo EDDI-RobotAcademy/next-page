@@ -72,12 +72,12 @@ class SpringNovelApi {
 
   Future<List<dynamic>> getNovelEpisodeList(EpisodeRequest request) async {
     var response = await http.post(Uri.http(httpUri, '/novel/episode-list/${request.novelId}'),
-      headers: {"Content-Type": "application/json"},
-      body: json.encode({
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
         'novelId': request.novelId,
         'size': request.size,
         'page': request.page
-      }),
+        }),
     );
 
     if (response.statusCode == 200) {

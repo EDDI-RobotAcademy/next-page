@@ -1,3 +1,7 @@
+
+import 'package:app/notice/screens/notice_management_screen.dart';
+import 'package:app/widgets/custom_title_appbar.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -154,15 +158,23 @@ class _MypageScreenState extends State<MypageScreen> {
         ));
       } else {
         // 관리자 로그인 상태일 때 마이페이지
-        if (nickname == adminNickname) {
-          stack.add(Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(nickname + '님의 MY PAGE', style: TextStyle(fontSize: 20)),
-                SizedBox(
-                  height: size.height * 0.01,
+
+        if(nickname == adminNickname) {
+          stack.add(
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(nickname + '님의 MY PAGE', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: size.height * 0.01,),
+                    _menuCardBasic('소설 정보 등록', NovelUploadScreen()),
+                    _menuCardBasic('소설 정보 관리', TmpMyScreen()),
+                    _menuCardBasic('에피소드 등록 관리', TmpMyScreen()),
+                    _menuCardBasic('고객 QnA 관리', TmpMyScreen()),
+                    _menuCardBasic('공지사항 관리', NoticeManagementScreen()),
+                    _logOutMenuCard()
+                  ],
                 ),
                 _menuCardBasic('소설 정보 등록', NovelUploadScreen()),
                 _menuCardBasic('소설 정보 관리', TmpMyScreen()),
@@ -206,11 +218,11 @@ class _MypageScreenState extends State<MypageScreen> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-            elevation: 0,
-            title: Text("MY"),
-            backgroundColor: Color(0xFF6699FF)),
-        body: Stack(children: stack));
+        appBar: customTitleAppbar(context, 'MY', 99),
+        body: Stack(
+            children: stack
+        )
+    );
   }
 
   void _showAlertDialog(BuildContext context, Widget alert) {

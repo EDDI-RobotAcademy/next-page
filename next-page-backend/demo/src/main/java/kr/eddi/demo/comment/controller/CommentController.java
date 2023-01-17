@@ -27,14 +27,21 @@ public class CommentController {
         commentService.commentWrite(commentWriteRequest, novelEpisodeId);
     }
 
-    @DeleteMapping("/{commentNo}")
+    @PostMapping("/write-for-qna/{qnaId}")
+    public void commentWriteForQna(@PathVariable("qnaId") Long qnaId, @RequestBody CommentWriteRequest commentWriteRequest) {
+        log.info("commentWriteForQna()");
+
+        commentService.commentWrite(commentWriteRequest, qnaId);
+    }
+
+    @DeleteMapping("/delete/{commentNo}")
     public void commentDelete (@PathVariable("commentNo") Long commentNo) {
-        log.info("commentDelete()");
+        log.info("commentDelete()" + commentNo);
 
         commentService.commentDelete(commentNo);
     }
 
-    @PutMapping("/{commentNo}")
+    @PutMapping("/modify/{commentNo}")
     public void commentModify (@PathVariable("commentNo") Long commentNo, @RequestBody CommentModifyRequest commentModifyRequest) {
         log.info("commentModifyRequest()");
 

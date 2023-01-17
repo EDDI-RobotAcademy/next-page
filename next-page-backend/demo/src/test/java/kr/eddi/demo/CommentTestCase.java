@@ -30,8 +30,20 @@ public class CommentTestCase {
 
     @Test
     void commentDeleteTest() {
-        Boolean isOk = commentService.commentDelete(1L);
+        Boolean isOk = commentService.commentDelete(3L);
         System.out.println("isOk: " + isOk);
+    }
+
+    @Test
+    void qnaCommentWriteTest() {
+        CommentWriteRequest request = new CommentWriteRequest(12L, "qna 댓글 작성 테스트33");
+        Boolean result = commentService.qnaCommentWrite(request, 1L);
+        System.out.println("Result: " + result.toString());
+    }
+
+    @Test
+    void getCommentListByEpisodeId() {
+        System.out.println(commentService.getCommentListByEpisodeId(6L).toString());
     }
 
 }
