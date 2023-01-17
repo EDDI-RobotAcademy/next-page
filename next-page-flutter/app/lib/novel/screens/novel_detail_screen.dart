@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -445,14 +446,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                   color: _iconColorTween.value),
                               actions: [
                                 _nickname == 'admin'
-                                    ? IconButton(
-                                    onPressed: () {
-                                      Get.to(()=>NovelManagementScreen(novel: _novel,));
-                                    },
-                                    icon: const Icon(
-                                      Icons.settings,
-                                      color: Colors.black,
-                                    ))
+                                    ? _showNovelManagementOverlay(_novelManagementOverlay())
                                     : Container(),
                                 _isLike == true
                                     ? IconButton(
@@ -493,5 +487,47 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
             return const Text("망");
           }
         }));
+  }
+  //공개여부 드롭다운 구성
+  Widget _novelManagementOverlay() {
+    return CupertinoActionSheet(
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          isDefaultAction: true,
+          onPressed: () {
+            Get.to(() => NovelManagementScreen(novel: _novel));
+          },
+          child: const Text("작품 정보 수정"),
+        ),
+        CupertinoActionSheetAction(
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("신규 에피소드 등록"),
+        ),
+        CupertinoActionSheetAction(
+          isDefaultAction: true,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("작품 공지사항 등록"),
+        ),
+      ],
+    );
+  }
+
+  //공개여부 드롭다운 열기
+  Widget _showNovelManagementOverlay(dynamic novelManagementActionSheet) {
+    return IconButton(
+        onPressed: () {
+          showCupertinoModalPopup(
+              context: context,
+              builder: (context) => novelManagementActionSheet);
+        },
+        icon: const Icon(
+          Icons.settings,
+          color: Colors.black,
+        ));
   }
 }
