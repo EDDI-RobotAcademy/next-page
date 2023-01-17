@@ -102,4 +102,30 @@ class SpringAdminApi {
       return false;
     }
   }
+
+  Future<bool> uploadEpisode(EpisodeUploadRequest request) async {
+    var data = {
+      'information_id': request.informationId,
+      'episodeNumber': request.episodeNumber,
+      'episodeTitle': request.episodeTitle,
+      'text': request.text,
+      'needToBuy': request.needToBuy,
+    };
+    var body = json.encode(data);
+    print("upload episode: $body");
+
+    var response = await http.post(
+      Uri.http(httpUri, '/novel/episode-register/'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      print("에피소드 업로드 통신 확인");
+      return true;
+    } else {
+      print("에피소드 업로드 통신 실패");
+      return false;
+    }
+  }
 }

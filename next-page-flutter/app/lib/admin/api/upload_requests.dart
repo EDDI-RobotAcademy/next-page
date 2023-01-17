@@ -24,3 +24,14 @@ class NovelModifyRequest {
   NovelModifyRequest(this.title, this.category, this.openToPublic, this.author,
       this.purchasePoint, this.publisher, this.introduction);
 }
+
+class EpisodeUploadRequest {
+  int informationId;
+  int episodeNumber;
+  String episodeTitle;
+  String text;
+  bool needToBuy;
+
+  EpisodeUploadRequest(this.informationId, this.episodeNumber,
+      this.episodeTitle, this.text, this.needToBuy);
+}
