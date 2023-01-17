@@ -1,6 +1,7 @@
 import 'package:app/member/screens/member_join_screen.dart';
 import 'package:app/utility/providers/category_provider.dart';
 import 'package:app/utility/providers/comment_provider.dart';
+import 'package:app/utility/providers/notice_provider.dart';
 import 'package:app/utility/providers/qna_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (BuildContext context) => CategoryProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => QnaProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => CommentProvider()),
+          ChangeNotifierProvider(create: (BuildContext context) => NoticeProvider()),
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

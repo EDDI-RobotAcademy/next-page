@@ -1,3 +1,5 @@
+
+import 'package:app/notice/screens/common_notice_list_screen.dart';
 import 'package:app/notice/screens/notice_management_screen.dart';
 import 'package:app/widgets/custom_title_appbar.dart';
 
@@ -157,26 +159,21 @@ class _MypageScreenState extends State<MypageScreen> {
         ));
       } else {
         // 관리자 로그인 상태일 때 마이페이지
-
-        if (nickname == adminNickname) {
+        if(nickname == adminNickname) {
           stack.add(
-            Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(nickname + '님의 MY PAGE', style: TextStyle(fontSize: 20)),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  _menuCardBasic('소설 정보 등록', NovelUploadScreen()),
-                  _menuCardBasic('소설 정보 관리', TmpMyScreen()),
-                  _menuCardBasic('에피소드 등록 관리', TmpMyScreen()),
-                  _menuCardBasic('고객 QnA 관리', TmpMyScreen()),
-                  _menuCardBasic('공지사항 관리', NoticeManagementScreen()),
-                  _logOutMenuCard()
-                ],
-              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(nickname + '님의 MY PAGE', style: TextStyle(fontSize: 20)),
+                    SizedBox(height: size.height * 0.01,),
+                    _menuCardBasic('소설 정보 등록', NovelUploadScreen()),
+                    _menuCardBasic('고객 QnA 관리', TmpMyScreen()),
+                    _menuCardBasic('일반 공지사항 관리', NoticeManagementScreen(nickname: nickname,)),
+                    _logOutMenuCard()
+                  ],
+                ),
             ),
           );
         } else {
@@ -197,12 +194,8 @@ class _MypageScreenState extends State<MypageScreen> {
                 _menuCardBasic('회원 정보 변경', MyInfoModifyScreen()),
                 _menuCardBasic('소설 구매 내역', TmpMyScreen()),
                 _menuCardBasic('내가 쓴 댓글', TmpMyScreen()),
-                _menuCardBasic(
-                    '나의 QnA',
-                    QnaScreen(
-                      memberId: memberId,
-                    )),
-                _menuCardBasic('공지사항', TmpMyScreen()),
+                _menuCardBasic('나의 QnA', QnaScreen( memberId: memberId,)),
+                _menuCardBasic('공지사항', CommonNoticeListScreen(nickname: nickname)),
                 _logOutMenuCard()
               ],
             ),
