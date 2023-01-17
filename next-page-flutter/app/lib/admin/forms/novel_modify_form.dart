@@ -44,7 +44,9 @@ class NovelModifyFormState extends State<NovelModifyForm> {
     price = widget.novel.purchasePoint.toString();
     author = widget.novel.author;
     publisher = widget.novel.publisher;
-    intro = widget.novel.introduction;
+    intro = widget.novel.introduction.replaceAll('<br>', '''
+    
+    ''');
     super.initState();
   }
 
@@ -67,11 +69,11 @@ class NovelModifyFormState extends State<NovelModifyForm> {
                   },
                   child: _image != null
                       ? Image.file(
-                    File(_image!.path),
-                    fit: BoxFit.fill,
-                  )
+                          File(_image!.path),
+                          fit: BoxFit.fill,
+                        )
                       : Image.asset(
-                      'assets/images/thumbnail/${widget.novel.thumbnail}'),
+                          'assets/images/thumbnail/${widget.novel.thumbnail}'),
                 )),
             Center(),
             SizedBox(
@@ -140,88 +142,88 @@ class NovelModifyFormState extends State<NovelModifyForm> {
                       _formKey.currentState?.save();
                       bool priceValid = RegExp(r"^[0-9]*$").hasMatch(price);
                       _image == null &&
-                          title == widget.novel.title &&
-                          price == widget.novel.purchasePoint.toString() &&
-                          author == widget.novel.author &&
-                          publisher == widget.novel.publisher &&
-                          intro == widget.novel.introduction
+                              title == widget.novel.title &&
+                              price == widget.novel.purchasePoint.toString() &&
+                              author == widget.novel.author &&
+                              publisher == widget.novel.publisher &&
+                              intro == widget.novel.introduction
                           ? _showResultDialog(
-                          title: '변경 사항 없음', content: '변경 사항을 작성해주세요')
+                              title: '변경 사항 없음', content: '변경 사항을 작성해주세요')
                           : title == ''
-                          ? _showResultDialog(
-                          title: "등록 실패", content: "소설의 제목을 입력해주세요.")
-                          : price == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "회차당 구매가격을 입력해주세요.")
-                          : priceValid == false
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "구매가격애는 숫자만 입력 가능합니다.")
-                          : author == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "작가명을 입력해주세요.")
-                          : publisher == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "출판사명을 입력해주세요.")
-                          : intro == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "작품 소개를 입력해주세요.")
-                          : _image == null
-                          ? await SpringAdminApi()
-                          .modifyNovelInformationWithoutImage(
-                          widget.novel.id,
-                          NovelModifyRequest(
-                              title,
-                              _category,
-                              _openToPublic,
-                              author,
-                              int.parse(
-                                  price),
-                              publisher,
-                              intro))
-                          .then((value) {
-                        value
-                            ? _showResultDialog(
-                            title:
-                            '수정 성공',
-                            content:
-                            '소설 정보 수정에 성공했습니다.')
-                            : _showResultDialog(
-                            title:
-                            '수정 실패',
-                            content:
-                            '통신 상태를 확인해주세요.');
-                      })
-                          : await SpringAdminApi()
-                          .modifyNovelInformationWithImage(
-                          _image!,
-                          widget.novel.id,
-                          NovelModifyRequest(
-                              title,
-                              _category,
-                              _openToPublic,
-                              author,
-                              int.parse(
-                                  price),
-                              publisher,
-                              intro))
-                          .then((value) {
-                        value
-                            ? _showResultDialog(
-                            title:
-                            '수정 성공',
-                            content:
-                            '소설 정보 수정에 성공했습니다.')
-                            : _showResultDialog(
-                            title:
-                            '수정 실패',
-                            content:
-                            '통신 상태를 확인해주세요.');
-                      });
+                              ? _showResultDialog(
+                                  title: "등록 실패", content: "소설의 제목을 입력해주세요.")
+                              : price == ''
+                                  ? _showResultDialog(
+                                      title: "등록 실패",
+                                      content: "회차당 구매가격을 입력해주세요.")
+                                  : priceValid == false
+                                      ? _showResultDialog(
+                                          title: "등록 실패",
+                                          content: "구매가격애는 숫자만 입력 가능합니다.")
+                                      : author == ''
+                                          ? _showResultDialog(
+                                              title: "등록 실패",
+                                              content: "작가명을 입력해주세요.")
+                                          : publisher == ''
+                                              ? _showResultDialog(
+                                                  title: "등록 실패",
+                                                  content: "출판사명을 입력해주세요.")
+                                              : intro == ''
+                                                  ? _showResultDialog(
+                                                      title: "등록 실패",
+                                                      content: "작품 소개를 입력해주세요.")
+                                                  : _image == null
+                                                      ? await SpringAdminApi()
+                                                          .modifyNovelInformationWithoutImage(
+                                                              widget.novel.id,
+                                                              NovelModifyRequest(
+                                                                  title,
+                                                                  _category,
+                                                                  _openToPublic,
+                                                                  author,
+                                                                  int.parse(
+                                                                      price),
+                                                                  publisher,
+                                                                  intro))
+                                                          .then((value) {
+                                                          value
+                                                              ? _showResultDialog(
+                                                                  title:
+                                                                      '수정 성공',
+                                                                  content:
+                                                                      '소설 정보 수정에 성공했습니다.')
+                                                              : _showResultDialog(
+                                                                  title:
+                                                                      '수정 실패',
+                                                                  content:
+                                                                      '통신 상태를 확인해주세요.');
+                                                        })
+                                                      : await SpringAdminApi()
+                                                          .modifyNovelInformationWithImage(
+                                                              _image!,
+                                                              widget.novel.id,
+                                                              NovelModifyRequest(
+                                                                  title,
+                                                                  _category,
+                                                                  _openToPublic,
+                                                                  author,
+                                                                  int.parse(
+                                                                      price),
+                                                                  publisher,
+                                                                  intro))
+                                                          .then((value) {
+                                                          value
+                                                              ? _showResultDialog(
+                                                                  title:
+                                                                      '수정 성공',
+                                                                  content:
+                                                                      '소설 정보 수정에 성공했습니다.')
+                                                              : _showResultDialog(
+                                                                  title:
+                                                                      '수정 실패',
+                                                                  content:
+                                                                      '통신 상태를 확인해주세요.');
+                                                        });
                     },
                     child: const Padding(
                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
