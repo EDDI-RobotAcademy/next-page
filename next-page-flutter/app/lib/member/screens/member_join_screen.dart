@@ -3,6 +3,8 @@ import 'package:app/member/screens/sign_up_screen.dart';
 import 'package:app/widgets/custom_bottom_appbar.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_title_appbar.dart';
+
 class MemberJoinScreen extends StatefulWidget {
   const MemberJoinScreen({Key? key}) : super(key: key);
 
@@ -23,11 +25,7 @@ class _MemberJoinScreenState extends State<MemberJoinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text('회원 약관 동의',
-                style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.05)),
-            backgroundColor: Color(0xFF6699FF)),
+        appBar: customTitleAppbar(context,"회원약관동의",99),
         body: Center(
           child: Column(
             children: [
