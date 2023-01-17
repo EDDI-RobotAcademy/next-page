@@ -1,6 +1,7 @@
 
 import 'package:app/notice/screens/notice_management_screen.dart';
 import 'package:app/widgets/custom_title_appbar.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,7 +51,6 @@ class _MypageScreenState extends State<MypageScreen> {
         _loginState = true;
         memberId = prefs.getInt('userId')!;
         nickname = prefs.getString('nickname')!;
-
       });
       currentPoint = await SpringMemberApi().lookUpUserPoint(memberId);
     } else {
@@ -63,13 +63,11 @@ class _MypageScreenState extends State<MypageScreen> {
   Widget _menuCardBasic(String menu, Widget screen) {
     return Card(
         child: ListTile(
-          title: Text(menu),
-          trailing: Icon(Icons.arrow_forward_ios_rounded),
-          onTap: () =>
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => screen)),
-        )
-    );
+      title: Text(menu),
+      trailing: Icon(Icons.arrow_forward_ios_rounded),
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => screen)),
+    ));
   }
 
   Widget _menuCardWithButton(String menu, Widget screen, String btnText) {
@@ -79,9 +77,12 @@ class _MypageScreenState extends State<MypageScreen> {
           trailing: ElevatedButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => screen));
+                    context, MaterialPageRoute(builder: (context) => screen));
               },
+              style: TextButton.styleFrom(
+                primary: Colors.white,
+                backgroundColor: Colors.blueAccent,
+              ),
               child: Text(btnText))),
     );
   }
@@ -92,7 +93,8 @@ class _MypageScreenState extends State<MypageScreen> {
           title: Text("로그아웃"),
           trailing: Icon(Icons.arrow_forward_ios_rounded),
           onTap: () {
-            _showAlertDialog(context,
+            _showAlertDialog(
+                context,
                 AlertDialog(
                   title: Text('알림'),
                   content: Text('로그아웃 하시겠습니까?'),
@@ -103,8 +105,7 @@ class _MypageScreenState extends State<MypageScreen> {
                     ),
                     TextButton(
                       onPressed: () async {
-                        var prefs = await SharedPreferences
-                            .getInstance();
+                        var prefs = await SharedPreferences.getInstance();
                         prefs.clear();
                         setState(() {
                           _loginState = false;
@@ -115,8 +116,7 @@ class _MypageScreenState extends State<MypageScreen> {
                     ),
                   ],
                 ));
-          }
-      ),
+          }),
     );
   }
 
@@ -126,35 +126,39 @@ class _MypageScreenState extends State<MypageScreen> {
     // stack에 메뉴를 나타내는 위젯 리스트를 쌓아서 보여줍니다.
     final List<Widget> stack = <Widget>[];
     // 로딩 화면
-    if(_isLoading) {
-      stack.add(
-          Stack(
-            children: const <Widget>[
-              Opacity(
-                opacity: 0.3,
-                child: ModalBarrier(dismissible: false, color: Colors.grey),
-              ),
-              Center(
-                child: CircularProgressIndicator(),
-              ),
-            ],
-          ));
+    if (_isLoading) {
+      stack.add(Stack(
+        children: const <Widget>[
+          Opacity(
+            opacity: 0.3,
+            child: ModalBarrier(dismissible: false, color: Colors.grey),
+          ),
+          Center(
+            child: CircularProgressIndicator(),
+          ),
+        ],
+      ));
     } else {
       // 비로그인 상태일 떄 마이페이지
       if (_loginState == false) {
-        stack.add(
-            Column(
-              children: [
-                SizedBox(height: size.height * 0.03,),
-                _menuCardWithButton(
-                    '로그인이 필요합니다.',
-                    SignInScreen(fromWhere: fromMy, novel: "none", routeIndex: 99,),
-                    '로그인'
+        stack.add(Column(
+          children: [
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+            _menuCardWithButton(
+                '로그인이 필요합니다.',
+                SignInScreen(
+                  fromWhere: fromMy,
+                  novel: "none",
+                  routeIndex: 99,
                 ),
-              ],
-            ));
+                '로그인'),
+          ],
+        ));
       } else {
         // 관리자 로그인 상태일 때 마이페이지
+
         if(nickname == adminNickname) {
           stack.add(
               Padding(
@@ -172,30 +176,43 @@ class _MypageScreenState extends State<MypageScreen> {
                     _logOutMenuCard()
                   ],
                 ),
-              )
-          );
+                _menuCardBasic('소설 정보 등록', NovelUploadScreen()),
+                _menuCardBasic('소설 정보 관리', TmpMyScreen()),
+                _menuCardBasic('에피소드 등록 관리', TmpMyScreen()),
+                _menuCardBasic('고객 QnA 관리', TmpMyScreen()),
+                _menuCardBasic('공지사항 관리', TmpMyScreen()),
+                _logOutMenuCard()
+              ],
+            ),
+          ));
         } else {
-          stack.add(
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Text(nickname + "님의 마이페이지", style: TextStyle(fontSize: 20)),
-                    SizedBox(height: size.height * 0.01,),
-                    _menuCardWithButton(
-                        "보유 포인트: $currentPoint p",
-                        PointChargeScreen(fromWhere: fromMy,),
-                        '충전하기'),
-                    _menuCardBasic('회원 정보 변경', MyInfoModifyScreen()),
-                    _menuCardBasic('소설 구매 내역', TmpMyScreen()),
-                    _menuCardBasic('내가 쓴 댓글', TmpMyScreen()),
-                    _menuCardBasic('나의 QnA', QnaScreen(memberId: memberId,)),
-                    _menuCardBasic('공지사항', TmpMyScreen()),
-                    _logOutMenuCard()
-                  ],
+          stack.add(Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Text(nickname + "님의 마이페이지", style: TextStyle(fontSize: 20)),
+                SizedBox(
+                  height: size.height * 0.01,
                 ),
-              )
-          );
+                _menuCardWithButton(
+                    "보유 포인트: $currentPoint p",
+                    PointChargeScreen(
+                      fromWhere: fromMy,
+                    ),
+                    '충전하기'),
+                _menuCardBasic('회원 정보 변경', MyInfoModifyScreen()),
+                _menuCardBasic('소설 구매 내역', TmpMyScreen()),
+                _menuCardBasic('내가 쓴 댓글', TmpMyScreen()),
+                _menuCardBasic(
+                    '나의 QnA',
+                    QnaScreen(
+                      memberId: memberId,
+                    )),
+                _menuCardBasic('공지사항', TmpMyScreen()),
+                _logOutMenuCard()
+              ],
+            ),
+          ));
         }
       }
     }
@@ -207,9 +224,8 @@ class _MypageScreenState extends State<MypageScreen> {
         )
     );
   }
+
   void _showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => alert);
+    showDialog(context: context, builder: (BuildContext context) => alert);
   }
 }

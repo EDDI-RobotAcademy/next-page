@@ -1,3 +1,4 @@
+import 'package:app/member/screens/member_join_screen.dart';
 import 'package:app/utility/providers/category_provider.dart';
 import 'package:app/utility/providers/comment_provider.dart';
 import 'package:app/utility/providers/qna_provider.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
             routes: {
               "/sign-in": (context) => const SignInScreen(fromWhere: 0, novel: "none", routeIndex: 99,),
               "/sign-up": (context) => const SignUpScreen(),
+              "/member-join" : (context) => const MemberJoinScreen(),
             }
         )
     );
