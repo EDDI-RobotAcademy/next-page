@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/custom_bottom_appbar.dart';
+import '../../widgets/custom_title_appbar.dart';
 import 'nickname_modify_screen.dart';
 
 class MyInfoModifyScreen extends StatefulWidget {
@@ -36,26 +37,18 @@ class _MyInfoModifyScreenState extends State<MyInfoModifyScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-          elevation: 0,
-          title: Text("회원 정보 변경"),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          CustomBottomAppbar(routeIndex: myIdx,)),
-                      (route) => false);
-            },
-          ),
-      ),
+      appBar: customTitleAppbar(context,"회원정보변경",99), // 앱바 변경
       body: Padding(
           padding: EdgeInsets.all(0.0),
-          child: Card(
                   child: Column(
                     children: [
+                      Container(
+                        child: Image.asset('assets/images/logo/logo2.png'),
+                        height: 180,
+                        width: 500,
+                      ),
+                      SizedBox(height: 10),
+
                       ListTile(
                         title: Text("로그인 계정 정보"),
                         subtitle: Text(email),
@@ -117,7 +110,6 @@ class _MyInfoModifyScreenState extends State<MyInfoModifyScreen> {
                     ],
                   )
           )
-      )
     );
   }
 
