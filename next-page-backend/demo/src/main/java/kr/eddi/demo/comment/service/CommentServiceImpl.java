@@ -36,6 +36,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     QnARepository qnaRepository;
 
+    @Autowired
+    NovelInformationRepository novelInformationRepository;
+
     @Override
     @Transactional
     public Boolean commentWrite(CommentWriteRequest commentWriteRequest, Long novelEpisodeId) {
@@ -145,5 +148,23 @@ public class CommentServiceImpl implements CommentService {
             return commentResponses;
         }
         throw new RuntimeException("에피소드 없음!");
+    }
+
+    @Override
+    @Transactional
+    public List<CommentResponse> getCommentListByNovelId(Long novelInfoId) {
+        Optional<NovelInformation> maybeNovel = novelInformationRepository.findById(novelInfoId);
+
+        if(maybeNovel.isPresent()) {
+            List<NovelEpisode> episodesList = maybeNovel.get().getEpisodeList();
+            List<CommentResponse> commentResponseList = new ArrayList<>();
+
+            for(NovelEpisode epi : episodesList) {
+               commentResponseList.addAll(getCommentListByEpisodeId(epi.getId()));
+            }
+
+            return commentResponseList;
+
+        } throw new RuntimeException("소설 정보 없음!");
     }
 }
