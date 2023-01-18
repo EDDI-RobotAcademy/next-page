@@ -114,6 +114,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    public Boolean qnaCommentDelete(Long qnaNo) {
+        Optional<QnA> maybeQna = qnaRepository.findById(qnaNo);
+        if(maybeQna.isPresent()) {
+            commentRepository.deleteById(maybeQna.get().getComment().getCommentNo());
+            return true;
+        }
+        throw new RuntimeException("qna 없음!");
+    }
+
+    @Override
+    @Transactional
     public Boolean commentModify(Long commentNo, CommentModifyRequest commentModifyRequest) {
         Optional<Comment> maybeComment = commentRepository.findById(commentNo);
         if(maybeComment.isEmpty()) {

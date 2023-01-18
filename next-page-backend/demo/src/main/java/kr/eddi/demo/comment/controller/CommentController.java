@@ -41,6 +41,13 @@ public class CommentController {
         commentService.commentDelete(commentNo);
     }
 
+    @DeleteMapping("/delete-qna-comment/{qnaNo}")
+    public void qnaCommentDelete (@PathVariable("qnaNo") Long qnaNo) {
+        log.info("qnaCommentDelete()" + qnaNo);
+
+        commentService.qnaCommentDelete(qnaNo);
+    }
+
     @PutMapping("/modify/{commentNo}")
     public void commentModify (@PathVariable("commentNo") Long commentNo, @RequestBody CommentModifyRequest commentModifyRequest) {
         log.info("commentModifyRequest()");
