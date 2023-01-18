@@ -36,3 +36,9 @@ class AddStarRatingRequest{
 
   AddStarRatingRequest(this.novelId, this.memberId, this.starRating);
 }
+
+class CheckMyStarRatingRequest{
+  int novelId;
+  int memberId;
+  CheckMyStarRatingRequest(this.novelId, this.memberId);
+}
