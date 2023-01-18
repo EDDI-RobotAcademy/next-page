@@ -9,6 +9,6 @@ public interface StarRatingService {
 
     int checkRatingToNovel(CheckRatingRequest request);
 
-    /*Boolean modifyStarRatingToNovel(AddStarRatingRequest request);*/
+    Boolean modifyStarRatingToNovel(AddStarRatingRequest request);
 
 }

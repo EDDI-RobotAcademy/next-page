@@ -35,10 +35,10 @@ public class StarRatingController {
         return service.checkRatingToNovel(request);
     }
 
-    /*@PutMapping("/modify-rating")
+    @PutMapping("/modify-rating")
     public Boolean modifyStarRating (@RequestBody AddStarRatingRequest request) {
         log.info("modifyStarRating()");
 
         return service.modifyStarRatingToNovel(request);
-    }*/
+    }
 }
