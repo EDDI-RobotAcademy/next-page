@@ -28,3 +28,17 @@ class PurchaseEpisodeRequest{
 
   PurchaseEpisodeRequest(this.novelId, this.memberId, this.episodeId);
 }
+
+class AddStarRatingRequest{
+  int novelId;
+  int memberId;
+  int starRating;
+
+  AddStarRatingRequest(this.novelId, this.memberId, this.starRating);
+}
+
+class CheckMyStarRatingRequest{
+  int novelId;
+  int memberId;
+  CheckMyStarRatingRequest(this.novelId, this.memberId);
+}

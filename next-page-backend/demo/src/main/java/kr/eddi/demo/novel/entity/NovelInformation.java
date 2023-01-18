@@ -43,13 +43,13 @@ public class NovelInformation {
     private Long viewCount; //조회수
 
     @Column(nullable = false)
-    private Double starRating; //별점
-
-    @Column(nullable = false)
-    private Long starRatingCount; //별점주기 횟수
-
-    @Column(nullable = false)
     private Long commentCount; //댓글수
+
+    @Column(nullable = false)
+    private int totalStarRating; //별점 총합
+
+    @Column(nullable = true)
+    private int ratingCount; //별점 주기 횟수
 
     @Column
     private Boolean openToPublic; // 공개여부
@@ -83,9 +83,8 @@ public class NovelInformation {
         this.openToPublic = openToPublic;
         this.purchasePoint = purchasePoint;
         this.viewCount = 0L;
-        this.starRating =0.0;
-        this.starRatingCount = 0L;
         this.commentCount = 0L;
+        this.ratingCount = 0;
     }
 
     public void modify(NovelInformationModifyRequest request) {
@@ -139,8 +138,24 @@ public class NovelInformation {
     // 댓글 삭제 시 전체 댓글 수에서 -1
     public void minusCommentCount() { this.commentCount -=1; }
 
+    // 에피소드 열람시 전체 조회수 +1
     public void updateViewCount(){
         this.viewCount += 1;
+    }
+
+    // 별점 주기 시 별점 주기 횟수 +1
+    public void addRatingCount(){
+        this.ratingCount +=1;
+    }
+
+    //별점 주기 시 별점 총합 + 별점 만큼
+    public void addTotalStarRating(int starRating){
+        this.totalStarRating +=starRating;
+    }
+
+    //별점 수정 시 별점 총합 - 기존 별점 만큼
+    public void minusTotalStarRating(int starRating){
+        this.totalStarRating -=starRating;
     }
 
 }
