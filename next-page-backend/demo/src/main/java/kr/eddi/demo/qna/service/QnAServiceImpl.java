@@ -62,7 +62,7 @@ public class QnAServiceImpl implements QnAService {
         Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
 
         if(maybeMember.isPresent()) {
-            List<QnA> myQnaList = qnaRepository.findQnaListByMemberId(memberId);
+            List<QnA> myQnaList = qnaRepository.findQnaListByMemberId(memberId, Sort.by(Sort.Direction.DESC, "qnaNo"));
             List<QnaResponse> qnaResponseList = new ArrayList<>();
 
             //qna response 객체 생성
