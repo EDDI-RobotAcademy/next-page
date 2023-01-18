@@ -3,20 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test1_project/utility/providers/episode_provider.dart';
 import 'dart:ui';
 
 import '../../admin/screens/episode_upload_screen.dart';
 import '../../admin/screens/novel_modify_screen.dart';
 import '../../comment/comment_list_screen.dart';
+import '../../member/screens/sign_in_screen.dart';
 import '../../notice/api/notice_requests.dart';
 import '../../notice/notice_upload_form.dart';
+import '../../utility/providers/episode_provider.dart';
 import '../../utility/providers/notice_provider.dart';
 import '../../widgets/custom_bottom_appbar.dart';
 import '../api/spring_novel_api.dart';
 import '../widgets/episode_list.dart';
 import '../widgets/novel_introduction.dart';
 import '../widgets/novel_notice.dart';
+import '../widgets/star_rating_dialog.dart';
 
 class NovelDetailScreen extends StatefulWidget {
   final int id; // novel의 id
@@ -41,6 +43,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
   bool? _isLike = true;
 
   String _nickname = '';
+  int? _memberId;
 
   final Color _beginColor = Colors.transparent;
   final Color _endColor = Colors.white;
@@ -84,7 +87,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     }
     // 공지 정보를 불러오기 위한 provider
     _noticeProvider = Provider.of<NoticeProvider>(context, listen: false);
-    _noticeProvider.getNoticeList(NoticeRequest(novelInfoId: widget.id, page: 0, size: 10));
+    _noticeProvider.getNoticeList(
+        NoticeRequest(novelInfoId: widget.id, page: 0, size: 10));
   }
 
   void _asyncMethod() async {
@@ -94,6 +98,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
         ? setState(() {
       _loginState = true;
       _nickname = prefs.getString('nickname')!;
+      _memberId = prefs.getInt('userId')!;
     })
         : setState(() {
       _loginState = false;
@@ -255,6 +260,11 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                               MainAxisAlignment
                                                                   .center,
                                                               children: [
+                                                                SizedBox(
+                                                                  width:
+                                                                  size.width *
+                                                                      0.06,
+                                                                ),
                                                                 //소설 조회수
                                                                 Wrap(
                                                                   children: [
@@ -278,96 +288,81 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                 SizedBox(
                                                                   width:
                                                                   size.width *
-                                                                      0.01,
+                                                                      0.02,
                                                                 ),
-                                                                const Text(
-                                                                  '•',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                                SizedBox(
-                                                                  width:
-                                                                  size.width *
-                                                                      0.01,
-                                                                ),
-                                                                //소설 별점
-                                                                Wrap(
-                                                                  children: [
-                                                                    const Icon(
-                                                                      Icons.star,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      size: 17,
-                                                                    ),
-                                                                    Text(
-                                                                      _novel
-                                                                          .starRating
-                                                                          .toString(),
+                                                                ElevatedButton
+                                                                    .icon(
+                                                                  style:
+                                                                  ButtonStyle(
+                                                                    padding: MaterialStateProperty.all(
+                                                                        EdgeInsets
+                                                                            .zero),
+                                                                    backgroundColor:
+                                                                    MaterialStateProperty.all(
+                                                                        Colors.transparent),
+                                                                    elevation:
+                                                                    MaterialStateProperty.all(
+                                                                        0.0),
+                                                                  ),
+                                                                  icon: const Icon(
+                                                                    Icons.star,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    size: 17,
+                                                                  ),
+                                                                  label: Text(_novel
+                                                                      .starRating
+                                                                      .toString(),
                                                                       style: const TextStyle(
                                                                           color: Colors
-                                                                              .white),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                                SizedBox(
-                                                                  width:
-                                                                  size.width *
-                                                                      0.01,
-                                                                ),
-                                                                const Text(
-                                                                  '•',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                                SizedBox(
-                                                                  width:
-                                                                  size.width *
-                                                                      0.01,
+                                                                              .white)),
+                                                                  onPressed:
+                                                                      () {
+                                                                    _loginState == false?
+                                                                    Get.to(() => SignInScreen(fromWhere: 5, novel: _novel, routeIndex: widget.routeIndex))
+                                                                        :_nickname == 'admin'?
+                                                                    _showRestrictionDialog(title: '평가 불가', content: '관리자는 작품에 별점 주기가 불가합니다.')
+                                                                        :_showStarRatingDialog();
+                                                                  },
                                                                 ),
                                                                 //소설 댓글
-                                                                Wrap(
-                                                                  children: [
-                                                                    ElevatedButton
-                                                                        .icon(
-                                                                      style:
-                                                                      ButtonStyle(
-                                                                        padding: MaterialStateProperty.all(
-                                                                            EdgeInsets
-                                                                                .zero),
-                                                                        backgroundColor:
-                                                                        MaterialStateProperty.all(
-                                                                            Colors.transparent),
-                                                                        elevation:
-                                                                        MaterialStateProperty.all(
-                                                                            0.0),
-                                                                      ),
-                                                                      icon: const Icon(
-                                                                          Icons
-                                                                              .sms_outlined),
-                                                                      label: Text(_novel
-                                                                          .commentCount
-                                                                          .toString()),
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator
-                                                                            .push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: (context) =>
-                                                                                  CommentListScreen(
-                                                                                    id: widget.id,
-                                                                                    appBarTitle: _novel.title,
-                                                                                    fromWhere: 0,
-                                                                                    routeIndex: widget.routeIndex,
-                                                                                    episodeId: 9999, // 임의값 추가
-                                                                                  )),
-                                                                        );
-                                                                      },
-                                                                    )
-                                                                  ],
-                                                                ),
+                                                                ElevatedButton
+                                                                    .icon(
+                                                                  style:
+                                                                  ButtonStyle(
+                                                                    padding: MaterialStateProperty.all(
+                                                                        EdgeInsets
+                                                                            .zero),
+                                                                    backgroundColor:
+                                                                    MaterialStateProperty.all(
+                                                                        Colors.transparent),
+                                                                    elevation:
+                                                                    MaterialStateProperty.all(
+                                                                        0.0),
+                                                                  ),
+                                                                  icon: const Icon(
+                                                                      Icons
+                                                                          .sms_outlined),
+                                                                  label: Text(_novel
+                                                                      .commentCount
+                                                                      .toString()),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              CommentListScreen(
+                                                                                id: widget.id,
+                                                                                appBarTitle: _novel.title,
+                                                                                fromWhere: 0,
+                                                                                routeIndex: widget.routeIndex,
+                                                                                episodeId: 9999, // 임의값 추가
+                                                                              )),
+                                                                    );
+                                                                  },
+                                                                )
                                                               ],
                                                             ),
                                                           ),
@@ -436,7 +431,9 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 loginState: _loginState,
                               ),
                               NovelIntroduction(novel: _novel),
-                              NovelNotice(novelInfoId: widget.id,)
+                              NovelNotice(
+                                novelInfoId: widget.id,
+                              )
                             ],
                           ),
                         ),
@@ -557,5 +554,33 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
           Icons.settings,
           color: Colors.black,
         ));
+  }
+
+  void _showStarRatingDialog() {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return StarRatingDialog(memberId: _memberId!, novelId: widget.id, routeIndex:widget.routeIndex);
+        });
+  }
+
+  void _showRestrictionDialog({String? title, String? content}) {
+    showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(title!),
+            content: Text(content!),
+            actions: [
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text("확인"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 }
