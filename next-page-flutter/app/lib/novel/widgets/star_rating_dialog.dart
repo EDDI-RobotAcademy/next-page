@@ -119,17 +119,17 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
                 .requestModifyStarRating(
                 AddStarRatingRequest(widget.novelId, widget.memberId, _result))
                 .then((value) {
-             /* value ?
+              value ?
               _successResult('별점 수정 성공')
-                  : _failResult('별점 수정 실패');*/
+                  : _failResult('별점 수정 실패');
             })
                 : SpringNovelApi()
                 .requestAddStarRating(AddStarRatingRequest(
                 widget.novelId, widget.memberId, _result!))
                 .then((value) {
-              /*value ?
+              value ?
               _successResult('별점 주기 성공')
-                  : _failResult('별점 주기 실패');*/
+                  : _failResult('별점 주기 실패');
             });
           },
         ),
@@ -137,7 +137,7 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
     );
   }
 
-  /*void _successResult(String toastMsg) {
+  void _successResult(String toastMsg) {
     Get.back();
     Fluttertoast.showToast(
         msg: toastMsg,
@@ -154,6 +154,6 @@ class _StarRatingDialogState extends State<StarRatingDialog> {
         toastLength: Toast.LENGTH_SHORT,
         timeInSecForIosWeb: 1
     );
-  }*/
+  }
 }
 
