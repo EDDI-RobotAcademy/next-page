@@ -20,4 +20,5 @@ public class QnaResponse {
     Date regDate;
     Boolean hasComment;
     String comment;
+    String commentRegDate;
 }
