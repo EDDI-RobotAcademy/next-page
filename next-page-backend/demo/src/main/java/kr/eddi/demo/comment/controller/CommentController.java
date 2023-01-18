@@ -31,7 +31,7 @@ public class CommentController {
     public void commentWriteForQna(@PathVariable("qnaId") Long qnaId, @RequestBody CommentWriteRequest commentWriteRequest) {
         log.info("commentWriteForQna()");
 
-        commentService.commentWrite(commentWriteRequest, qnaId);
+        commentService.qnaCommentWrite(commentWriteRequest, qnaId);
     }
 
     @DeleteMapping("/delete/{commentNo}")
