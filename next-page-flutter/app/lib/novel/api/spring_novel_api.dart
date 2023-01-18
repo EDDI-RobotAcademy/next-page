@@ -150,4 +150,21 @@ class SpringNovelApi {
       throw Exception("error");
     }
   }
+
+  Future<bool> requestAddStarRating(AddStarRatingRequest request) async{
+    var data = { 'novelId': request.novelId, 'memberId': request.memberId, 'starRating': request.starRating };
+    var body = json.encode(data);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/rating/add-rating'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      debugPrint("별점 주기 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("error");
+    }
+  }
 }
