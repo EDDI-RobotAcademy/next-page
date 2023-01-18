@@ -7,8 +7,8 @@ public interface StarRatingService {
 
     Boolean addStarRatingToNovel(AddStarRatingRequest request);
 
-    /*int checkRatingToNovel(CheckRatingRequest request);
+    int checkRatingToNovel(CheckRatingRequest request);
 
-    Boolean modifyStarRatingToNovel(AddStarRatingRequest request);*/
+    /*Boolean modifyStarRatingToNovel(AddStarRatingRequest request);*/
 
 }

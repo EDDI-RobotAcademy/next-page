@@ -25,7 +25,7 @@ public class StarRatingController {
         return service.addStarRatingToNovel(request);
     }
 
-    /*//소설에 내가 별점을 준 기록이 있는지 체크하는 기능
+    //소설에 내가 별점을 준 기록이 있는지 체크하는 기능
     @PostMapping("/check-my-rating")
     public int checkMyStarRating(@RequestBody CheckRatingRequest request) {
         log.info("checkMyStarRating()");
@@ -35,7 +35,7 @@ public class StarRatingController {
         return service.checkRatingToNovel(request);
     }
 
-    @PutMapping("/modify-rating")
+    /*@PutMapping("/modify-rating")
     public Boolean modifyStarRating (@RequestBody AddStarRatingRequest request) {
         log.info("modifyStarRating()");
 
