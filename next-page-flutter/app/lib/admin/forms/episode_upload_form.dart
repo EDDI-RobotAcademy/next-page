@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:test1_project/admin/api/spring_admin_api.dart';
-import 'package:test1_project/admin/api/upload_requests.dart';
-import 'package:test1_project/admin/widgets/episode_content_text_field.dart';
-import 'package:test1_project/admin/widgets/episode_title_text_field.dart';
-import 'package:test1_project/utility/providers/episode_provider.dart';
 import '../../app_theme.dart';
 import '../../utility/page_navigate.dart';
+import '../../utility/providers/episode_provider.dart';
+import '../api/spring_admin_api.dart';
+import '../api/upload_requests.dart';
+import '../widgets/episode_content_text_field.dart';
+import '../widgets/episode_title_text_field.dart';
 import '../widgets/novel_price_text_field.dart';
 
 class EpisodeUploadForm extends StatefulWidget {
@@ -18,9 +18,9 @@ class EpisodeUploadForm extends StatefulWidget {
 
   const EpisodeUploadForm(
       {Key? key,
-      required this.title,
-      required this.thumbnail,
-      required this.novelId})
+        required this.title,
+        required this.thumbnail,
+        required this.novelId})
       : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class EpisodeUploadForm extends StatefulWidget {
 
 class EpisodeUploadFormState extends State<EpisodeUploadForm> {
   EpisodeProvider? _episodeProvider;
-  final String _charged = '유료';
+  String _charged = '유료';
   bool _isFree = true;
   String episodeTitle = '';
   String episodeNumber = '';
@@ -48,154 +48,154 @@ class EpisodeUploadFormState extends State<EpisodeUploadForm> {
     Size _size = MediaQuery.of(context).size;
     return SingleChildScrollView(
         child: Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          _episodeProvider!.latestEpisode != null
-              ? Container(
-                  padding: EdgeInsets.only(top: _size.height * 0.02),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(19),
-                        bottomLeft: Radius.circular(19)),
-                    child: Card(
-                      color: AppTheme.chalk,
-                      child: InkWell(
-                        child: Row(
-                          children: <Widget>[
-                            //에피소드 리스트 내의 작은 소설 썸네일
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.13,
-                              height: MediaQuery.of(context).size.height * 0.08,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/thumbnail/${widget.thumbnail}'),
-                                      fit: BoxFit.cover)),
-                            ),
-                            Container(
-                              width: _size.width * 0.5,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    //소설 제목과 에피소드 화
-                                    Text(
-                                      '${widget.title} ${_episodeProvider!.latestEpisode['episodeNumber'].toString()}화',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 17),
-                                    ),
-                                    //에피소드의 업로드 일자
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 5),
-                                      child: Text(_episodeProvider!
-                                          .latestEpisode['uploadedDate']),
-                                    )
-                                  ],
-                                ),
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _episodeProvider!.latestEpisode != null
+                  ? Container(
+                padding: EdgeInsets.only(top: _size.height * 0.02),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(19),
+                      bottomLeft: Radius.circular(19)),
+                  child: Card(
+                    color: AppTheme.chalk,
+                    child: InkWell(
+                      child: Row(
+                        children: <Widget>[
+                          //에피소드 리스트 내의 작은 소설 썸네일
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.13,
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/thumbnail/${widget.thumbnail}'),
+                                    fit: BoxFit.cover)),
+                          ),
+                          Container(
+                            width: _size.width * 0.5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  //소설 제목과 에피소드 화
+                                  Text(
+                                    '${widget.title} ${_episodeProvider!.latestEpisode['episodeNumber'].toString()}화',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17),
+                                  ),
+                                  //에피소드의 업로드 일자
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(_episodeProvider!
+                                        .latestEpisode['uploadedDate']),
+                                  )
+                                ],
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                )
-              : Center(
+                ),
+              )
+                  : Center(
                   child: Container(
                       padding: EdgeInsets.only(top: _size.height * 0.03),
                       child: Text('등록된 에피소드가 없습니다.'))),
-          SizedBox(
-            height: _size.height * 0.04,
-          ),
-          EpisodeTitleTextField(titleText: episodeTitle),
-          _customDividedSpace(_size),
-          Row(
-            children: [
               SizedBox(
-                width: _size.width * 0.1,
+                height: _size.height * 0.04,
               ),
-              _showOpenFreeOrNotOverlay(openFreeOrNotActionSheet),
+              EpisodeTitleTextField(titleText: episodeTitle),
+              _customDividedSpace(_size),
+              Row(
+                children: [
+                  SizedBox(
+                    width: _size.width * 0.1,
+                  ),
+                  _showOpenFreeOrNotOverlay(openFreeOrNotActionSheet),
+                  SizedBox(
+                    width: _size.width * 0.001,
+                  ),
+                  Text('에피소드'),
+                  SizedBox(
+                    width: _size.width * 0.02,
+                  ),
+                  NovelPriceTextField(
+                    priceText: episodeNumber,
+                  ),
+                  SizedBox(
+                    width: _size.width * 0.02,
+                  ),
+                  Text('화'),
+                ],
+              ),
+              _customDividedSpace(_size),
+              EpisodeContentTextField(content: content),
               SizedBox(
-                width: _size.width * 0.001,
+                height: _size.height * 0.03,
               ),
-              Text('에피소드'),
+              Container(
+                height: _size.height * 0.05,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.5),
+                  borderRadius: BorderRadius.circular(22),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    _formKey.currentState?.save();
+                    print(
+                        '에피소드: $episodeTitle, 구매필요여부: $_isFree,  에피소드: $episodeNumber화,  가격: $content');
+                    bool episodeNumberValid =
+                    RegExp(r"^[0-9]*$").hasMatch(episodeNumber);
+                    episodeTitle == ''
+                        ? _showResultDialog(
+                        title: "등록 실패", content: "에피소드 제목을 입력해주세요.")
+                        : episodeNumber == ''
+                        ? _showResultDialog(
+                        title: "등록 실패", content: "에피소드 회차를 입력해주세요.")
+                        : episodeNumberValid == false
+                        ? _showResultDialog(
+                        title: "등록 실패", content: "회차에는 숫자만 입력 가능합니다.")
+                        : content == ''
+                        ? _showResultDialog(
+                        title: "등록 실패", content: "에피소드 본문을 입력해주세요.")
+                        : SpringAdminApi()
+                        .uploadEpisode(EpisodeUploadRequest(
+                        widget.novelId,
+                        int.parse(episodeNumber),
+                        episodeTitle,
+                        content,
+                        _isFree))
+                        .then((value) {
+                      value
+                          ? _showResultDialog(
+                          title: '업로드 성공',
+                          content: '에피소드 등록에 성공했습니다.')
+                          : _showResultDialog(
+                          title: '업로드 실패',
+                          content: '에피소드 등록에 실패했습니다.');
+                    });
+                  },
+                  child: Text(
+                    '에피소드 등록',
+                    style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
               SizedBox(
-                width: _size.width * 0.02,
-              ),
-              NovelPriceTextField(
-                priceText: episodeNumber,
-              ),
-              SizedBox(
-                width: _size.width * 0.02,
-              ),
-              Text('화'),
+                height: _size.height * 0.15,
+              )
             ],
           ),
-          _customDividedSpace(_size),
-          EpisodeContentTextField(content: content),
-          SizedBox(
-            height: _size.height * 0.03,
-          ),
-          Container(
-            height: _size.height * 0.05,
-            decoration: BoxDecoration(
-              border: Border.all(width: 0.5),
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: TextButton(
-              onPressed: () {
-                _formKey.currentState?.save();
-                print(
-                    '에피소드: $episodeTitle, 구매필요여부: $_isFree,  에피소드: $episodeNumber화,  가격: $content');
-                bool episodeNumberValid =
-                    RegExp(r"^[0-9]*$").hasMatch(episodeNumber);
-                episodeTitle == ''
-                    ? _showResultDialog(
-                        title: "등록 실패", content: "에피소드 제목을 입력해주세요.")
-                    : episodeNumber == ''
-                        ? _showResultDialog(
-                            title: "등록 실패", content: "에피소드 회차를 입력해주세요.")
-                        : episodeNumberValid == false
-                            ? _showResultDialog(
-                                title: "등록 실패", content: "회차에는 숫자만 입력 가능합니다.")
-                            : content == ''
-                                ? _showResultDialog(
-                                    title: "등록 실패", content: "에피소드 본문을 입력해주세요.")
-                                : SpringAdminApi()
-                                    .uploadEpisode(EpisodeUploadRequest(
-                                        widget.novelId,
-                                        int.parse(episodeNumber),
-                                        episodeTitle,
-                                        content,
-                                        _isFree))
-                                    .then((value) {
-                                    value
-                                        ? _showResultDialog(
-                                            title: '업로드 성공',
-                                            content: '에피소드 등록에 성공했습니다.')
-                                        : _showResultDialog(
-                                            title: '업로드 실패',
-                                            content: '에피소드 등록에 실패했습니다.');
-                                  });
-              },
-              child: Text(
-                '에피소드 등록',
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: _size.height * 0.15,
-          )
-        ],
-      ),
-    ));
+        ));
   }
 
   Widget _openFreeOrNotOverlay() {
@@ -206,6 +206,7 @@ class EpisodeUploadFormState extends State<EpisodeUploadForm> {
           onPressed: () {
             setState(() {
               _isFree = true;
+              _charged = '유료';
             });
             Navigator.pop(context);
             print(_isFree);
@@ -217,6 +218,7 @@ class EpisodeUploadFormState extends State<EpisodeUploadForm> {
           onPressed: () {
             setState(() {
               _isFree = false;
+              _charged = '무료';
             });
             Navigator.pop(context);
             print(_isFree);
