@@ -5,9 +5,9 @@ import kr.eddi.demo.rating.request.CheckRatingRequest;
 
 public interface StarRatingService {
 
-    /*Boolean addStarRatingToNovel(AddStarRatingRequest request);
+    Boolean addStarRatingToNovel(AddStarRatingRequest request);
 
-    int checkRatingToNovel(CheckRatingRequest request);
+    /*int checkRatingToNovel(CheckRatingRequest request);
 
     Boolean modifyStarRatingToNovel(AddStarRatingRequest request);*/
 

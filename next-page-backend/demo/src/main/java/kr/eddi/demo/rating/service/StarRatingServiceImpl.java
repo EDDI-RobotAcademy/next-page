@@ -22,7 +22,7 @@ public class StarRatingServiceImpl implements StarRatingService {
     @Autowired
     StarRatingRepository ratingRepository;
 
-    /*@Override
+    @Override
     public Boolean addStarRatingToNovel(AddStarRatingRequest request){
         Optional<NovelInformation> maybeNovel = informationRepository.findById(request.getNovelId());
 
@@ -39,7 +39,7 @@ public class StarRatingServiceImpl implements StarRatingService {
         }
     }
 
-    @Override
+    /*@Override
     public int checkRatingToNovel(CheckRatingRequest request){
         Optional<StarRating> maybeRating = ratingRepository.findByMemberIdAndNovelId(request.getMemberId(), request.getNovelId());
 
