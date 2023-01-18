@@ -271,6 +271,14 @@ public class NovelServiceImpl implements NovelService {
             return null;
         } else {
             NovelInformation novelInfo = maybeInfo.get();
+            double starRating = 0.0;
+            int totalStarRating = novelInfo.getTotalStarRating();
+            int ratingCount = novelInfo.getRatingCount();
+            if(totalStarRating > 0 && ratingCount > 0) {
+                    starRating = Math.round((double) totalStarRating / (double) ratingCount *10.0) /10.0;
+            } else{
+                starRating = 0.0;
+            }
 
            Map<String, Object> tmpNovelInfo = new HashMap<>();
             tmpNovelInfo.put("category", novelInfo.getCategory().getCategoryName());
@@ -284,7 +292,7 @@ public class NovelServiceImpl implements NovelService {
             tmpNovelInfo.put("createdDate", novelInfo.getCreatedDate());
             tmpNovelInfo.put("thumbnail", novelInfo.getCoverImage().getReName());
             tmpNovelInfo.put("viewCount", novelInfo.getViewCount());
-            tmpNovelInfo.put("starRating", novelInfo.getStarRating());
+            tmpNovelInfo.put("starRating", starRating);
             tmpNovelInfo.put("commentCount", novelInfo.getCommentCount());
 
 
