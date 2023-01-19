@@ -21,6 +21,13 @@ class PurchasedEpisodeRequest{
   PurchasedEpisodeRequest(this.novelId, this.memberId);
 }
 
+class CheckPurchasedEpisodeRequest{
+  int memberId;
+  int episodeId;
+
+  CheckPurchasedEpisodeRequest(this.memberId, this.episodeId);
+}
+
 class PurchaseEpisodeRequest{
   int memberId;
   int novelId;
