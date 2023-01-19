@@ -14,7 +14,6 @@ import kr.eddi.demo.novel.repository.NovelInformationRepository;
 import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
-import kr.eddi.demo.novel.service.NovelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -131,8 +130,19 @@ public class NovelServiceImpl implements NovelService {
         if(maybeNovelInfo.isEmpty()) {
             return false;
         }
+
+        // 카테고리 찾기
+        Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(request.getCategory());
+        if(maybeCategory.isEmpty()) {
+            return false;
+        }
+        NovelCategory category = maybeCategory.get();
+
+        log.info("쿼리 검색 결과 "+ category.getCategoryName());
+
         NovelInformation novelInfo = maybeNovelInfo.get();
-        novelInfo.modify(request);
+
+        novelInfo.modify(request, category);
         informationRepository.save(novelInfo);
         return true;
     }
@@ -146,8 +156,18 @@ public class NovelServiceImpl implements NovelService {
         if(maybeNovelInfo.isEmpty()) {
             return false;
         }
+
+        // 카테고리 찾기
+        Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(request.getCategory());
+        if(maybeCategory.isEmpty()) {
+            return false;
+        }
+
+        NovelCategory category = maybeCategory.get();
+
+        log.info("쿼리 검색 결과 "+ category.getCategoryName());
         NovelInformation novelInfo = maybeNovelInfo.get();
-        novelInfo.modify(request);
+        novelInfo.modify(request, category);
 
         Optional<NovelCoverImage> maybeCoverImg = coverImageRepository.findByInformation_Id(novelInfoId);
         if(maybeCoverImg.isEmpty()) {
