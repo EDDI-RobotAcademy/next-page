@@ -11,6 +11,7 @@ import '../../comment/comment_list_screen.dart';
 import '../../member/screens/sign_in_screen.dart';
 import '../../notice/api/notice_requests.dart';
 import '../../notice/notice_upload_form.dart';
+import '../../utility/providers/comment_provider.dart';
 import '../../utility/providers/episode_provider.dart';
 import '../../utility/providers/notice_provider.dart';
 import '../../widgets/custom_bottom_appbar.dart';
@@ -348,6 +349,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                       .toString()),
                                                                   onPressed:
                                                                       () {
+                                                                        Provider.of<CommentProvider>(context, listen: false).
+                                                                        requestNovelCommentList(widget.id);
                                                                     Navigator
                                                                         .push(
                                                                       context,
