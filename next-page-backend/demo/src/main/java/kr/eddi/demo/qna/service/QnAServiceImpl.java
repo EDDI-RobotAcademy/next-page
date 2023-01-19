@@ -53,8 +53,30 @@ public class QnAServiceImpl implements QnAService {
     }
 
     @Override
-    public List<QnA> list() {
-        return qnaRepository.findAll(Sort.by(Sort.Direction.DESC, "qnaNo"));
+    public List<QnaResponse> getAllQnaList() {
+        List<QnA> qnaList =  qnaRepository.findAll(Sort.by(Sort.Direction.DESC, "qnaNo"));
+        List<QnaResponse> qnaResponseList = new ArrayList<>();
+        //qna response 객체 생성
+        for(QnA qna : qnaList) {
+            QnaResponse response = new QnaResponse();
+            response.setQnaNo(qna.getQnaNo());
+            response.setTitle(qna.getTitle());
+            response.setContent(qna.getContent());
+            response.setCategory(qna.getCategory());
+            response.setRegDate(qna.getRegDate());
+
+            if(qna.getComment() != null) {
+                response.setHasComment(true);
+                response.setComment(qna.getComment().getComment());
+                response.setCommentRegDate(qna.getComment().getCreatedDate());
+            } else {
+                response.setHasComment(false);
+                response.setComment("none");
+                response.setCommentRegDate("none");
+            }
+            qnaResponseList.add(response);
+        }
+        return qnaResponseList;
     }
 
     @Override
@@ -62,7 +84,7 @@ public class QnAServiceImpl implements QnAService {
         Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
 
         if(maybeMember.isPresent()) {
-            List<QnA> myQnaList = qnaRepository.findQnaListByMemberId(memberId);
+            List<QnA> myQnaList = qnaRepository.findQnaListByMemberId(memberId, Sort.by(Sort.Direction.DESC, "qnaNo"));
             List<QnaResponse> qnaResponseList = new ArrayList<>();
 
             //qna response 객체 생성
@@ -76,9 +98,11 @@ public class QnAServiceImpl implements QnAService {
                         if(qna.getComment() != null) {
                             response.setHasComment(true);
                             response.setComment(qna.getComment().getComment());
+                            response.setCommentRegDate(qna.getComment().getCreatedDate());
                         } else {
                             response.setHasComment(false);
                             response.setComment("none");
+                            response.setCommentRegDate("none");
                         }
                         qnaResponseList.add(response);
 

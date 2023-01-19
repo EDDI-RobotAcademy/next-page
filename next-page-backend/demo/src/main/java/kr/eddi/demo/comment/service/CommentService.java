@@ -9,10 +9,15 @@ import java.util.List;
 public interface CommentService {
     Boolean commentWrite(CommentWriteRequest commentWriteRequest, Long novelEpisodeNo);
     Boolean commentDelete(Long commentNo);
+
+    Boolean qnaCommentDelete(Long qnaNo);
+
     Boolean commentModify(Long commentNo, CommentModifyRequest commentModifyRequest);
 
-    Boolean qnaCommentWrite(CommentWriteRequest commentWriteRequest, Long QnaNo);
+    Boolean qnaCommentWrite(CommentWriteRequest commentWriteRequest, Long qnaNo);
 
     List<CommentResponse> getCommentListByEpisodeId(Long episodeId);
+
+    List<CommentResponse> getCommentListByNovelId(Long novelInfoId);
 
 }
