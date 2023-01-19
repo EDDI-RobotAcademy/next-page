@@ -139,7 +139,7 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
             duration: const Duration(milliseconds: 400),
             height: visible ? size.height * 0.1 : 0.0,
             child: _buildViewerBottomAppbar(
-                context.watch<CommentProvider>().commentCount)));
+                context.watch<CommentProvider>().episodeCommentCount)));
   }
 
   AppBar _buildViewerAppbar() {

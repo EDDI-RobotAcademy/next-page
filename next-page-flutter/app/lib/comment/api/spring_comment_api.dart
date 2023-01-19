@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app/comment/api/comment_reponses.dart';
+import 'package:app/comment/api/comment_responses.dart';
 import 'package:app/comment/api/comment_requests.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -82,6 +82,27 @@ class SpringCommentApi {
       debugPrint("통신 실패");
       return false;
     }
+  }
+
+  Future<List<CommentAndEpisodeResponse>?> getNovelCommentList(int novelInfoId) async {
+    print(novelInfoId);
+    var response = await http.get(
+        Uri.http(httpUri, '/comment/novel-comment-list/$novelInfoId'),
+        headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      debugPrint("댓글 리스트 통신 확인");
+      print(response.body.toString());
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+      debugPrint(jsonData.toString());
+
+      List<CommentAndEpisodeResponse> commentResponseList =
+      jsonData.map((dataJson) => CommentAndEpisodeResponse.fromJson(dataJson)).toList();
+
+      return commentResponseList;
+    }
+    throw Exception("댓글 리스트 통신 실패");
   }
 
 }

@@ -1,5 +1,6 @@
 package kr.eddi.demo.comment.service;
 
+import kr.eddi.demo.comment.response.CommentAndEpisodeResponse;
 import kr.eddi.demo.comment.response.CommentResponse;
 import kr.eddi.demo.comment.request.CommentModifyRequest;
 import kr.eddi.demo.comment.request.CommentWriteRequest;
@@ -18,6 +19,6 @@ public interface CommentService {
 
     List<CommentResponse> getCommentListByEpisodeId(Long episodeId);
 
-    List<CommentResponse> getCommentListByNovelId(Long novelInfoId);
+    List<CommentAndEpisodeResponse> getCommentListByNovelId(Long novelInfoId);
 
 }
