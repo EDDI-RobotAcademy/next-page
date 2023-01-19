@@ -87,13 +87,14 @@ public class NovelInformation {
         this.ratingCount = 0;
     }
 
-    public void modify(NovelInformationModifyRequest request) {
+    public void modify(NovelInformationModifyRequest request, NovelCategory category) {
         this.title = request.getTitle();
         this.introduction = request.getIntroduction();
         this.publisher = request.getPublisher();
         this.author = request.getAuthor();
         this.openToPublic = request.getOpenToPublic();
         this.purchasePoint = request.getPurchasePoint();
+        this.category = category;
     }
 
     /**
