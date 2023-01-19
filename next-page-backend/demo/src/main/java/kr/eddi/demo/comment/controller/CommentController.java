@@ -1,5 +1,6 @@
 package kr.eddi.demo.comment.controller;
 
+import kr.eddi.demo.comment.response.CommentAndEpisodeResponse;
 import kr.eddi.demo.comment.response.CommentResponse;
 import kr.eddi.demo.comment.service.CommentService;
 import kr.eddi.demo.comment.request.CommentModifyRequest;
@@ -62,7 +63,7 @@ public class CommentController {
     }
 
     @GetMapping("/novel-comment-list/{novelInfoId}")
-    public List<CommentResponse> getCommentListByNovelId(@PathVariable("novelInfoId") Long novelInfoId) {
+    public List<CommentAndEpisodeResponse> getCommentListByNovelId(@PathVariable("novelInfoId") Long novelInfoId) {
         log.info("getCommentListByNovelId(): " + novelInfoId);
         return commentService.getCommentListByNovelId(novelInfoId);
     }

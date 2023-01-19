@@ -1,5 +1,6 @@
 package kr.eddi.demo.comment.service;
 
+import kr.eddi.demo.comment.response.CommentAndEpisodeResponse;
 import kr.eddi.demo.comment.response.CommentResponse;
 import kr.eddi.demo.comment.entity.Comment;
 import kr.eddi.demo.comment.repository.CommentRepository;
@@ -166,18 +167,32 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public List<CommentResponse> getCommentListByNovelId(Long novelInfoId) {
+    public List<CommentAndEpisodeResponse> getCommentListByNovelId(Long novelInfoId) {
         Optional<NovelInformation> maybeNovel = novelInformationRepository.findById(novelInfoId);
 
         if(maybeNovel.isPresent()) {
             List<NovelEpisode> episodesList = maybeNovel.get().getEpisodeList();
-            List<CommentResponse> commentResponseList = new ArrayList<>();
+
+            List<CommentAndEpisodeResponse> responseList = new ArrayList<>();
 
             for(NovelEpisode epi : episodesList) {
-               commentResponseList.addAll(getCommentListByEpisodeId(epi.getId()));
+                List<Comment> commentList = commentRepository.findCommentListByEpisodeId(epi.getId(), Sort.by(Sort.Direction.DESC, "commentNo"));
+                for(Comment comment : commentList) {
+                    CommentAndEpisodeResponse response = new CommentAndEpisodeResponse();
+
+                    response.setCommentNo(comment.getCommentNo());
+                    response.setComment(comment.getComment());
+                    response.setNickName(comment.getMember().getNickName());
+                    response.setRegDate(comment.getCreatedDate());
+                    response.setNovelTitle(comment.getNovelEpisode().getInformation().getTitle());
+                    response.setEpisodeNumber(comment.getNovelEpisode().getEpisodeNumber());
+                    response.setEpisodeTitle(comment.getNovelEpisode().getEpisodeTitle());
+
+                    responseList.add(response);
+                }
             }
 
-            return commentResponseList;
+            return responseList;
 
         } throw new RuntimeException("소설 정보 없음!");
     }
