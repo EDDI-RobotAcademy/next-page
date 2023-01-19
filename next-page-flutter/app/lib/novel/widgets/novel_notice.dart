@@ -77,7 +77,6 @@ class _NovelNoticeState extends State<NovelNotice> {
                       margin: EdgeInsets.only(right: 5.0),
                       padding: EdgeInsets.all(3.0),
                     ),
-                    Text(notice.title, style: TextStyle(fontSize: 18),),
                     Text(
                       notice.title,
                       style: const TextStyle(
@@ -92,7 +91,7 @@ class _NovelNoticeState extends State<NovelNotice> {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 5),
+                  padding: const EdgeInsets.only(top: 10),
                   child: Text(notice.content),
                 ),
                 Row(
