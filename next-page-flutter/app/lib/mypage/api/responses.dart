@@ -6,6 +6,7 @@ class QnA {
   String regDate;
   bool hasComment;
   String comment;
+  String commentRegDate;
 
   QnA({
     required this.qnaNo,
@@ -14,7 +15,8 @@ class QnA {
     required this.content,
     required this.regDate,
     required this.hasComment,
-    required this.comment
+    required this.comment,
+    required this.commentRegDate
     });
 
   factory QnA.fromJson(Map<String, dynamic> json) {
@@ -25,7 +27,8 @@ class QnA {
       content: json['content'],
       regDate: json['regDate'],
       hasComment: json['hasComment'],
-      comment: json['comment']
+      comment: json['comment'],
+      commentRegDate: json['commentRegDate']
     );
   }
 

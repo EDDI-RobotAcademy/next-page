@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
+import '../../comment/api/comment_requests.dart';
 import '../../http_uri.dart';
+import '../../mypage/api/responses.dart';
 import 'upload_requests.dart';
 import 'package:http/http.dart' as http;
 
@@ -125,6 +127,64 @@ class SpringAdminApi {
       return true;
     } else {
       print("에피소드 업로드 통신 실패");
+      return false;
+    }
+  }
+
+  Future<List<QnA>?> getAllQnaList() async {
+
+    var response = await http.get(
+      Uri.http(httpUri, '/qna/list'),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      print("getAllQnaList 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+      print(jsonData.toString());
+
+      List<QnA> qnaList = jsonData.map((dataJson) => QnA.fromJson(dataJson)).toList();
+
+      return qnaList;
+
+    } else {
+      throw Exception("getMyQnaList 통신 실패");
+    }
+  }
+
+  Future<bool> writeQnaComment(int qnaNo, CommentWriteRequest request) async {
+    var data = { 'commentWriterId' : request.memberId, 'comment' : request.comment };
+    var body = json.encode(data);
+    print("write comment: " + body);
+
+    var response = await http.post(
+      Uri.http( httpUri, '/comment/write-for-qna/$qnaNo'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if(response.statusCode == 200) {
+      print("댓글 작성 통신 확인");
+      return true;
+    } else {
+      print("댓글 작성 통신 실패");
+      return false;
+    }
+  }
+
+  Future<bool> deleteQnaComment(int qnaNo) async {
+    var response = await http.delete(
+      Uri.http( httpUri, '/comment/delete-qna-comment/$qnaNo'),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if(response.statusCode == 200) {
+      print("qna 댓글 삭제 통신 확인");
+      return true;
+    } else {
+      print("qna 댓글 삭제 통신 실패");
       return false;
     }
   }

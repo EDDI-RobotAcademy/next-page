@@ -11,8 +11,6 @@ public interface QnAService {
 
     public Boolean write(QnARequest qnaRequest);
 
-    public List<QnA> list();
-
     public QnA read(Long qnaNo);
 
     public void modify(QnA qna);
@@ -20,6 +18,8 @@ public interface QnAService {
     public void remove(Long qnaNo);
 
     public List<QnaResponse> getQnaListByMemberId(Long memberId);
+
+    List<QnaResponse> getAllQnaList();
 
 
 

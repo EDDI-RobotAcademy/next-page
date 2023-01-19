@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,12 +27,12 @@ public class NoticeServiceImpl implements NoticeService {
         // NovelInfoId 값이 0이면 일반공지
         if (novelInfoId == 0) {
             log.info("일반 공지사항 조회");
-            return noticeRepository.getNoticeListFindByNovelInfoId(novelInfoId, pageRequest);
+            return noticeRepository.getNoticeListFindByNovelInfoId(novelInfoId, pageRequest, Sort.by(Sort.Direction.DESC, "noticeNo"));
         } else {
             Optional<NovelInformation> maybeNovelInfo = novelInfoRepository.findById(novelInfoId);
 
             if (maybeNovelInfo.isPresent()) {
-                return noticeRepository.getNoticeListFindByNovelInfoId(novelInfoId, pageRequest);
+                return noticeRepository.getNoticeListFindByNovelInfoId(novelInfoId, pageRequest, Sort.by(Sort.Direction.DESC, "noticeNo"));
             }
             throw new RuntimeException("해당 소설의 공지 정보 없음!");
         }

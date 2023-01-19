@@ -24,10 +24,10 @@ public class QnAController {
     private QnAService service;
 
     @GetMapping("/list")
-    public List<QnA> QnAList () { // QnA 목록
-        log.info("QnAList()");
+    public List<QnaResponse> getQnAList () { // QnA 목록
+        log.info("getQnAList()");
 
-        return service.list();
+        return service.getAllQnaList();
     }
 
     @PostMapping("/register")
