@@ -335,6 +335,10 @@ public class NovelServiceImpl implements NovelService {
         return episodeRepository.findByInformation_Id(novelInfoId, request);
     }
 
+    @Override
+    public Page<NovelEpisode> getNovelEpisodeListByCategory
+
+
     /**
      * 에피소드 상세사항을 가져옵니다.
      * @param episodeId
