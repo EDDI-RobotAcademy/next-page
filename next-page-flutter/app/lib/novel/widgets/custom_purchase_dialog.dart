@@ -9,7 +9,7 @@ import '../screens/scroll_novel_viewer_screen.dart';
 
 class CustomPurchaseDialog extends StatelessWidget {
   const CustomPurchaseDialog(
-      {Key? key, required this.point, required this.novelTitle, required this.episode, required this.purchasePoint, required this.memberId, required this.novelId, required this.routeIndex, required this.author, required this.publisher})
+      {Key? key, required this.point, required this.novelTitle, required this.episode, required this.purchasePoint, required this.memberId, required this.novelId, required this.routeIndex, required this.author, required this.publisher, required this.purchasedEpisodeList})
       : super(key: key);
 
   final int point;
@@ -21,6 +21,7 @@ class CustomPurchaseDialog extends StatelessWidget {
   final int routeIndex;
   final String author;
   final String publisher;
+  final List<dynamic> purchasedEpisodeList;
 
   @override
   Widget build(BuildContext context) {
@@ -88,21 +89,22 @@ class CustomPurchaseDialog extends StatelessWidget {
                           SpringNovelApi().purchaseEpisode(
                               PurchaseEpisodeRequest(
                                   novelId, memberId, episode['id'])
-                          ).then((_bool) {
-                            print(_bool);
-                            (_bool!)
-                                ?
-                                Get.off(()=> ScrollNovelViewerScreen(
-                                  appBarTitle: novelTitle,
-                                  id: novelId,
-                                  routeIndex: routeIndex,
-                                  text: episode['text'],
-                                  episodeTitle: episode['episodeTitle'],
-                                  author: author,
-                                  episodeInfo: episode,
-                                  publisher: publisher,
-                                  purchasePoint: purchasePoint,
-                                ))
+                          ).then((value) {
+                            print('구매성공했다며? 결과값 밑에');
+                            print(value);
+                            value ?
+                            Get.offAll(()=> ScrollNovelViewerScreen(
+                              appBarTitle: novelTitle,
+                              id: novelId,
+                              routeIndex: routeIndex,
+                              text: episode['text'],
+                              episodeTitle: episode['episodeTitle'],
+                              author: author,
+                              episodeInfo: episode,
+                              publisher: publisher,
+                              purchasePoint: purchasePoint,
+                              purchasedEpisodeList: purchasedEpisodeList,
+                            ))
                                 :Get.back();
                           })
                               : Get.off(()=> PointChargeScreen(fromWhere: 0,));

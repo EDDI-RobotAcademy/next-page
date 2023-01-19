@@ -103,9 +103,9 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
         _nickname = prefs.getString('nickname')!;
       });
     }
-    _nickname != 'admin'?
-    SpringNovelApi().requestViewCountUp(widget.id)
-        :print('관리자로 에피소드 감상 시 조회수가 오르지 않습니다.');
+    _nickname != 'admin'
+        ? SpringNovelApi().requestViewCountUp(widget.id)
+        : print('관리자로 에피소드 감상 시 조회수가 오르지 않습니다.');
   }
 
   _scrollListener() async {
@@ -480,8 +480,94 @@ class _ScrollNovelViewerScreenState extends State<ScrollNovelViewerScreen>
                       foregroundColor:
                       MaterialStateProperty.all(Colors.black)),
                   onPressed: () {
+                    print('현재는 몇화: $_presentEpisodeNo');
+                    print('내 닉네임은?: $_nickname');
                     widget.episodeInfo['episodeNumber'] != _lastEpisodeNo!
-                        ? Get.offAll(() => ScrollNovelViewerScreen(
+                        ? _checkPurchasedEpisode(_episodeProvider!
+                        .episodeList[_presentEpisodeNo!])
+                        : print('마지막 화당');
+                    widget.episodeInfo['episodeNumber'] != _lastEpisodeNo!
+                        ? (_episodeProvider!
+                        .episodeList[_presentEpisodeNo!]
+                    ['needToBuy'])
+                        ? _nickname == 'admin'
+                        ? Get.offAll(() =>
+                        ScrollNovelViewerScreen(
+                          appBarTitle: widget.appBarTitle,
+                          id: widget.id,
+                          routeIndex: widget.routeIndex,
+                          text: _episodeProvider!.episodeList[
+                          _presentEpisodeNo!]['text'],
+                          episodeTitle:
+                          _episodeProvider!.episodeList[
+                          _presentEpisodeNo!]
+                          ['episodeTitle'],
+                          author: widget.author,
+                          episodeInfo:
+                          _episodeProvider!.episodeList[
+                          _presentEpisodeNo!],
+                          publisher: widget.publisher,
+                          purchasePoint: widget.purchasePoint,
+                          purchasedEpisodeList:
+                          widget.purchasedEpisodeList,
+                        ))
+                        : SpringNovelApi()
+                        .checkPurchaseEpisode(
+                        CheckPurchasedEpisodeRequest(
+                            _episodeProvider!.episodeList[
+                            _presentEpisodeNo!]['id'],
+                            _memberId))
+                        .then((value) {
+                      print('다음화 구입했니? $value');
+                      value
+                          ? Get.offAll(() =>
+                          ScrollNovelViewerScreen(
+                            appBarTitle:
+                            widget.appBarTitle,
+                            id: widget.id,
+                            routeIndex:
+                            widget.routeIndex,
+                            text: _episodeProvider!
+                                .episodeList[
+                            _presentEpisodeNo!]
+                            ['text'],
+                            episodeTitle: _episodeProvider!
+                                .episodeList[
+                            _presentEpisodeNo!]
+                            ['episodeTitle'],
+                            author: widget.author,
+                            episodeInfo:
+                            _episodeProvider!
+                                .episodeList[
+                            _presentEpisodeNo!],
+                            publisher: widget.publisher,
+                            purchasePoint:
+                            widget.purchasePoint,
+                            purchasedEpisodeList: widget
+                                .purchasedEpisodeList,
+                          ))
+                          : _showAlertDialog(
+                          context,
+                          CustomPurchaseDialog(
+                            routeIndex:
+                            widget.routeIndex,
+                            memberId: _memberId,
+                            novelId: widget.id,
+                            novelTitle:
+                            widget.appBarTitle,
+                            purchasePoint:
+                            widget.purchasePoint,
+                            point: _currentPoint,
+                            episode: _episodeProvider!
+                                .episodeList[
+                            _presentEpisodeNo!],
+                            author: widget.author,
+                            publisher: widget.publisher,
+                            purchasedEpisodeList: widget
+                                .purchasedEpisodeList,
+                          ));
+                    })
+                        : Get.offAll(() => ScrollNovelViewerScreen(
                       appBarTitle: widget.appBarTitle,
                       id: widget.id,
                       routeIndex: widget.routeIndex,
