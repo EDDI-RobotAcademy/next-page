@@ -4,6 +4,7 @@ import kr.eddi.demo.episode_payment.entity.EpisodePayment;
 import kr.eddi.demo.episode_payment.repository.EpisodePaymentRepository;
 import kr.eddi.demo.episode_payment.requset.BuyEpisodeRequest;
 import kr.eddi.demo.episode_payment.requset.GetEpisodeListRequest;
+import kr.eddi.demo.episode_payment.requset.GetPurchasedEpisodeRequest;
 import kr.eddi.demo.member.entity.NextPageMember;
 import kr.eddi.demo.member.repository.MemberRepository;
 import kr.eddi.demo.novel.entity.NovelEpisode;
@@ -77,5 +78,17 @@ public class EpisodePaymentServiceImpl implements EpisodePaymentService{
 
          }
          return tmpList;
+    }
+
+    @Override
+    public Boolean checkPurchasedEpisode(GetPurchasedEpisodeRequest request){
+        Optional<EpisodePayment> maybePayment = episodePaymentRepository.findEpisodePaymentByMemberAndEpisodeId(request.getMemberId(), request.getEpisodeId());
+
+        if(maybePayment.isPresent()){
+            log.info("maybePayment가 있다면" + maybePayment.get().getEpisodeId());
+            return true;
+        } else {
+            return false;
+        }
     }
 }

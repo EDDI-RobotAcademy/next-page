@@ -72,12 +72,12 @@ class SpringNovelApi {
 
   Future<List<dynamic>> getNovelEpisodeList(EpisodeRequest request) async {
     var response = await http.post(Uri.http(httpUri, '/novel/episode-list/${request.novelId}'),
-        headers: {"Content-Type": "application/json"},
-        body: json.encode({
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
         'novelId': request.novelId,
         'size': request.size,
         'page': request.page
-        }),
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -116,7 +116,7 @@ class SpringNovelApi {
     }
   }
 
-  Future<bool?> purchaseEpisode (PurchaseEpisodeRequest request) async {
+  Future<bool> purchaseEpisode (PurchaseEpisodeRequest request) async {
     var data = { 'memberId': request.memberId, 'novelId': request.novelId, 'episodeId': request.episodeId };
     var body = json.encode(data);
 
@@ -199,6 +199,23 @@ class SpringNovelApi {
       return json.decode(response.body);
     } else {
       throw Exception("별점 수정 통신 실패");
+    }
+  }
+
+  Future<bool> checkPurchaseEpisode(CheckPurchasedEpisodeRequest request) async{
+    var data = {  'episodeId': request.episodeId, 'memberId': request.memberId};
+    var body = json.encode(data);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/episode-payment/check-purchased-episode'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      debugPrint("구매한 에피소드 수정 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("구매한 에피소드 통신 실패");
     }
   }
 }

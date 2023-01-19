@@ -26,7 +26,8 @@ class EpisodeList extends StatefulWidget {
         required this.id,
         required this.title,
         required this.routeIndex,
-        required this.novel, required this.loginState})
+        required this.novel,
+        required this.loginState})
       : super(key: key);
 
   @override
@@ -139,17 +140,19 @@ class _EpisodeListState extends State<EpisodeList> {
             (_loginState)
             //유료에피소드의 경우
                 ? (episode['needToBuy'])
-                ?_nickname == 'admin'?
-            Get.to(ScrollNovelViewerScreen(
-                episodeInfo: episode,
-                author: widget.novel.author,
-                episodeTitle: episode['episodeTitle'],
-                text: episode['text'],
-                id: widget.id,
-                appBarTitle: widget.title,
-                routeIndex: widget.routeIndex,
-                publisher: widget.novel.publisher,
-                purchasePoint: widget.novel.purchasePoint))
+                ? _nickname == 'admin'
+                ? Get.to(ScrollNovelViewerScreen(
+              episodeInfo: episode,
+              author: widget.novel.author,
+              episodeTitle: episode['episodeTitle'],
+              text: episode['text'],
+              id: widget.id,
+              appBarTitle: widget.title,
+              routeIndex: widget.routeIndex,
+              publisher: widget.novel.publisher,
+              purchasePoint: widget.novel.purchasePoint,
+              purchasedEpisodeList: _purchasedEpisodeList!,
+            ))
                 : (_isPurchased)
             //구매했을 경우
                 ? _payEpisodeResponse(episode)
@@ -165,7 +168,8 @@ class _EpisodeListState extends State<EpisodeList> {
                 appBarTitle: widget.title,
                 routeIndex: widget.routeIndex,
                 publisher: widget.novel.publisher,
-                purchasePoint: widget.novel.purchasePoint))
+                purchasePoint: widget.novel.purchasePoint,
+                purchasedEpisodeList: _purchasedEpisodeList!))
             //비로그인 상태일 때 에피소드 클릭시
                 : Get.to(SignInScreen(
               fromWhere: 5,
@@ -292,7 +296,8 @@ class _EpisodeListState extends State<EpisodeList> {
         appBarTitle: widget.title,
         routeIndex: widget.routeIndex,
         publisher: widget.novel.publisher,
-        purchasePoint: widget.novel.purchasePoint))
+        purchasePoint: widget.novel.purchasePoint,
+        purchasedEpisodeList: _purchasedEpisodeList!))
     //구매하지 않은 유로 에피소드를 클릭할 경우 구매 dialog로 이동
         : _showAlertDialog(
         context,
@@ -306,6 +311,7 @@ class _EpisodeListState extends State<EpisodeList> {
           episode: episode,
           author: widget.novel.author,
           publisher: widget.novel.publisher,
+          purchasedEpisodeList: _purchasedEpisodeList!,
         ));
   }
 }
