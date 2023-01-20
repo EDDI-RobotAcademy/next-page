@@ -4,6 +4,7 @@ import '../../model/tmp_carousel.dart';
 
 
 class CustomCarousel extends StatefulWidget {
+
   const CustomCarousel({Key? key}) : super(key: key);
 
   @override

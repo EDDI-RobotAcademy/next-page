@@ -44,6 +44,9 @@ dependencies:
   get: ^4.6.5
   image_picker: ^0.8.6
   dio: ^4.0.6
+  sliding_up_panel: ^2.0.0+1
+  flutter_rating_bar: ^4.0.1
+  fluttertoast: ^8.1.2
 
 dev_dependencies:
   mockito: ^5.2.0
@@ -78,6 +81,7 @@ flutter:
     - assets/images/thumbnail/
     - assets/images/carousel/
     - assets/images/banner/
+    - assets/images/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

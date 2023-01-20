@@ -11,3 +11,15 @@ class WriteNoticeRequest{
     required this.novelInfoId
   });
 }
+
+class NoticeRequest{
+  final int novelInfoId;
+  final int page;
+  final int size;
+
+  NoticeRequest({
+    required this.novelInfoId,
+    required this.page,
+    required this.size
+  });
+}

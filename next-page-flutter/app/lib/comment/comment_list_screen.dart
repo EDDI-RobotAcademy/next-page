@@ -1,10 +1,11 @@
+import 'package:app/comment/widgets/novel_comment_list_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
 import '../novel/screens/novel_detail_screen.dart';
 import '../utility/providers/comment_provider.dart';
-import 'widgets/comment_list_form.dart';
+import 'widgets/episode_comment_list_form.dart';
 
 
 class CommentListScreen extends StatefulWidget {
@@ -30,7 +31,9 @@ class _CommentListScreenState extends State<CommentListScreen> {
       },
       child: Scaffold(
           appBar: _buildCommentScreenAppBar(),
-          body: CommentListForm(episodeId: widget.episodeId,)
+          body: widget.episodeId == 9999 ?
+            NovelCommentListForm(novelInfoId: widget.id)
+          : EpisodeCommentListForm(episodeId: widget.episodeId,)
       ),
     );
   }
@@ -85,8 +88,9 @@ class _CommentListScreenState extends State<CommentListScreen> {
                     .of(context)
                     .size
                     .width * 0.01,),
-                Text(
-                  "(" + context.watch<CommentProvider>().commentCount.toString()+")",
+                Text(widget.episodeId == 9999 ?
+                 "(" + context.watch<CommentProvider>().novelCommentCount.toString()+")"
+                  :"(" + context.watch<CommentProvider>().episodeCommentCount.toString()+")",
                   style: TextStyle(fontSize: 15),
                 )
               ],

@@ -9,15 +9,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../utility/providers/comment_provider.dart';
 import 'comment_text_form.dart';
 
-class CommentListForm extends StatefulWidget {
-  const CommentListForm({Key? key, required this.episodeId}) : super(key: key);
+class EpisodeCommentListForm extends StatefulWidget {
+  const EpisodeCommentListForm({Key? key, required this.episodeId}) : super(key: key);
   final int episodeId;
 
   @override
-  State<CommentListForm> createState() => _CommentListFormState();
+  State<EpisodeCommentListForm> createState() => _EpisodeCommentListFormState();
 }
 
-class _CommentListFormState extends State<CommentListForm> {
+class _EpisodeCommentListFormState extends State<EpisodeCommentListForm> {
   int _current = 0;
   bool _onModify = false;
   bool _hasCommentList = false;
@@ -83,17 +83,17 @@ class _CommentListFormState extends State<CommentListForm> {
                                     nickname == comment.episodeCommentList![index].nickName ?
                                     Row(
                                       children: [
-                                        TextButton(onPressed: (){
-                                          print('수정요청');
-                                          setState(() {
-                                            _current = index;
-                                            _onModify = true;
-                                          });
-                                        }, child: Text("수정",
-                                            style: TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: size.width * 0.033
-                                            ))),
+                                        // TextButton(onPressed: (){
+                                        //   print('수정요청');
+                                        //   setState(() {
+                                        //     _current = index;
+                                        //     _onModify = true;
+                                        //   });
+                                        // }, child: Text("수정",
+                                        //     style: TextStyle(
+                                        //         color: Colors.grey,
+                                        //         fontSize: size.width * 0.033
+                                        //     ))),
                                         TextButton(onPressed: () async {
                                           print("삭제요청");
                                           _showDeleteDialog(title: '알림', content: '댓글을 삭제하시겠습니까?',

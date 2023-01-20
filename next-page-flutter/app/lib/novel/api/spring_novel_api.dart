@@ -116,7 +116,7 @@ class SpringNovelApi {
     }
   }
 
-  Future<bool?> purchaseEpisode (PurchaseEpisodeRequest request) async {
+  Future<bool> purchaseEpisode (PurchaseEpisodeRequest request) async {
     var data = { 'memberId': request.memberId, 'novelId': request.novelId, 'episodeId': request.episodeId };
     var body = json.encode(data);
 
@@ -148,6 +148,100 @@ class SpringNovelApi {
       debugPrint("통신 확인");
     } else {
       throw Exception("error");
+    }
+  }
+
+  Future<bool> requestAddStarRating(AddStarRatingRequest request) async{
+    var data = { 'novelId': request.novelId, 'memberId': request.memberId, 'starRating': request.starRating };
+    var body = json.encode(data);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/rating/add-rating'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      debugPrint("별점 주기 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("error");
+    }
+  }
+
+  Future<int> checkMyStarRating(CheckMyStarRatingRequest request) async{
+    var data = { 'novelId': request.novelId, 'memberId': request.memberId};
+    var body = json.encode(data);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/rating/check-my-rating'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      debugPrint("별점 기록 체크 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("error");
+    }
+  }
+
+  Future<bool> requestModifyStarRating(AddStarRatingRequest request) async{
+    var data = { 'novelId': request.novelId, 'memberId': request.memberId, 'starRating': request.starRating };
+    var body = json.encode(data);
+
+    var response = await http.put(
+      Uri.http(httpUri, '/rating/modify-rating'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      debugPrint("별점 수정 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("별점 수정 통신 실패");
+    }
+  }
+
+  Future<bool> checkPurchaseEpisode(CheckPurchasedEpisodeRequest request) async{
+    var data = {  'episodeId': request.episodeId, 'memberId': request.memberId};
+    var body = json.encode(data);
+
+    var response = await http.post(
+      Uri.http(httpUri, '/episode-payment/check-purchased-episode'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      debugPrint("구매한 에피소드 수정 통신 확인");
+      return json.decode(response.body);
+    } else {
+      throw Exception("구매한 에피소드 통신 실패");
+    }
+  }
+
+  Future<List<NovelListResponse>> getNovelListByCategory(String categoryName) async {
+    var data = {  'categoryName': categoryName};
+    var body = json.encode(data);
+
+
+    var response = await http.post(Uri.http(httpUri, '/novel/novel-list/category'),
+      headers: {"Content-Type": "application/json"},
+      body: body
+    );
+
+    if(response.statusCode == 200){
+      debugPrint("카테고리별 소설 리스트 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+
+      List<NovelListResponse> novelList =
+      jsonData.map((dataJson) => NovelListResponse.fromJson(dataJson)).toList();
+
+
+      return novelList;
+    }else {
+      throw ("카테고리별 소설 리스트 통신 실패");
     }
   }
 }

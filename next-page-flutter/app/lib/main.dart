@@ -1,12 +1,14 @@
-import 'package:app/member/screens/member_join_screen.dart';
-import 'package:app/utility/providers/category_provider.dart';
-import 'package:app/utility/providers/comment_provider.dart';
-import 'package:app/utility/providers/qna_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 
+import 'member/screens/member_join_screen.dart';
+import 'utility/providers/category_provider.dart';
+import 'utility/providers/comment_provider.dart';
+import 'utility/providers/episode_provider.dart';
+import 'utility/providers/notice_provider.dart';
+import 'utility/providers/qna_provider.dart';
 import 'widgets/custom_bottom_appbar.dart';
 import 'member/screens/sign_in_screen.dart';
 import 'member/screens/sign_up_screen.dart';
@@ -25,6 +27,9 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (BuildContext context) => CategoryProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => QnaProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => CommentProvider()),
+          ChangeNotifierProvider(create: (BuildContext context) => EpisodeProvider()),
+          ChangeNotifierProvider(create: (BuildContext context) => NoticeProvider()),
+          ChangeNotifierProvider(create: (BuildContext context) => NovelListProvider())
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,

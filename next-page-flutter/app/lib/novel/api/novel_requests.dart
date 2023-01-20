@@ -21,6 +21,13 @@ class PurchasedEpisodeRequest{
   PurchasedEpisodeRequest(this.novelId, this.memberId);
 }
 
+class CheckPurchasedEpisodeRequest{
+  int memberId;
+  int episodeId;
+
+  CheckPurchasedEpisodeRequest(this.memberId, this.episodeId);
+}
+
 class PurchaseEpisodeRequest{
   int memberId;
   int novelId;
@@ -28,3 +35,18 @@ class PurchaseEpisodeRequest{
 
   PurchaseEpisodeRequest(this.novelId, this.memberId, this.episodeId);
 }
+
+class AddStarRatingRequest{
+  int novelId;
+  int memberId;
+  int starRating;
+
+  AddStarRatingRequest(this.novelId, this.memberId, this.starRating);
+}
+
+class CheckMyStarRatingRequest{
+  int novelId;
+  int memberId;
+  CheckMyStarRatingRequest(this.novelId, this.memberId);
+}
+

@@ -1,11 +1,13 @@
 import 'package:app/notice/notice_upload_form.dart';
+import 'package:app/notice/screens/common_notice_list_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/custom_title_appbar.dart';
 
 class NoticeManagementScreen extends StatefulWidget {
-  const NoticeManagementScreen({Key? key}) : super(key: key);
+  const NoticeManagementScreen({Key? key, required this.nickname}) : super(key: key);
+  final String nickname;
 
   @override
   State<NoticeManagementScreen> createState() => _NoticeManagementScreenState();
@@ -19,7 +21,10 @@ class _NoticeManagementScreenState extends State<NoticeManagementScreen> {
       body: Card(
         child: Column(
           children: [
-            _menuListTileWithDivide("일반 공지사항 등록", NoticeUploadForm(novelInfoId: 0,)),
+            _menuListTileWithDivide("일반 공지사항 등록",
+                NoticeUploadForm(novelInfoId: 0,)),
+            _menuListTileWithDivide("일반 공지사항 목록 보기",
+                CommonNoticeListScreen(nickname: widget.nickname)),
           ],
         ),
       ),

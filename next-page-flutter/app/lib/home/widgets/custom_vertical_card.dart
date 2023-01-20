@@ -24,9 +24,9 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => NovelDetailScreen(
-                      id: widget.novel.id,
+                          id: widget.novel.id,
                       routeIndex: 0,
-                    )),
+                        )),
               );
             },
             child: Container(

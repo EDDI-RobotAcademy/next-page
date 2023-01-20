@@ -13,7 +13,7 @@ class NovelIntroTextField extends StatefulWidget {
 }
 
 class _NovelIntroTextFieldState extends State<NovelIntroTextField> {
-  int _big = 1;
+  final int _big = 1;
 
   @override
   Widget build(BuildContext context) {

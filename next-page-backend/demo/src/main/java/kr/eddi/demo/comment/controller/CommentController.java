@@ -1,5 +1,6 @@
 package kr.eddi.demo.comment.controller;
 
+import kr.eddi.demo.comment.response.CommentAndEpisodeResponse;
 import kr.eddi.demo.comment.response.CommentResponse;
 import kr.eddi.demo.comment.service.CommentService;
 import kr.eddi.demo.comment.request.CommentModifyRequest;
@@ -31,7 +32,7 @@ public class CommentController {
     public void commentWriteForQna(@PathVariable("qnaId") Long qnaId, @RequestBody CommentWriteRequest commentWriteRequest) {
         log.info("commentWriteForQna()");
 
-        commentService.commentWrite(commentWriteRequest, qnaId);
+        commentService.qnaCommentWrite(commentWriteRequest, qnaId);
     }
 
     @DeleteMapping("/delete/{commentNo}")
@@ -39,6 +40,13 @@ public class CommentController {
         log.info("commentDelete()" + commentNo);
 
         commentService.commentDelete(commentNo);
+    }
+
+    @DeleteMapping("/delete-qna-comment/{qnaNo}")
+    public void qnaCommentDelete (@PathVariable("qnaNo") Long qnaNo) {
+        log.info("qnaCommentDelete()" + qnaNo);
+
+        commentService.qnaCommentDelete(qnaNo);
     }
 
     @PutMapping("/modify/{commentNo}")
@@ -52,5 +60,11 @@ public class CommentController {
     public List<CommentResponse> getCommentListByEpisodeId(@PathVariable("episodeId") Long episodeId) {
         log.info("getCommentListByEpisodeId(): " + episodeId);
         return commentService.getCommentListByEpisodeId(episodeId);
+    }
+
+    @GetMapping("/novel-comment-list/{novelInfoId}")
+    public List<CommentAndEpisodeResponse> getCommentListByNovelId(@PathVariable("novelInfoId") Long novelInfoId) {
+        log.info("getCommentListByNovelId(): " + novelInfoId);
+        return commentService.getCommentListByNovelId(novelInfoId);
     }
 }

@@ -27,7 +27,7 @@ class NovelModifyFormState extends State<NovelModifyForm> {
   final picker = ImagePicker();
   XFile? _image;
   String _category = "판타지";
-  final String _openToPublicTxt = '공개';
+  String _openToPublicTxt = '공개';
   bool _openToPublic = true;
   String author = '';
   String intro = '';
@@ -44,7 +44,9 @@ class NovelModifyFormState extends State<NovelModifyForm> {
     price = widget.novel.purchasePoint.toString();
     author = widget.novel.author;
     publisher = widget.novel.publisher;
-    intro = widget.novel.introduction;
+    intro = widget.novel.introduction.replaceAll('<br>', '''
+    
+    ''');
     super.initState();
   }
 
@@ -144,7 +146,9 @@ class NovelModifyFormState extends State<NovelModifyForm> {
                           price == widget.novel.purchasePoint.toString() &&
                           author == widget.novel.author &&
                           publisher == widget.novel.publisher &&
-                          intro == widget.novel.introduction
+                          intro == widget.novel.introduction &&
+                          _openToPublic ==  widget.novel.openToPublic &&
+                          _category == widget.novel.category
                           ? _showResultDialog(
                           title: '변경 사항 없음', content: '변경 사항을 작성해주세요')
                           : title == ''
@@ -364,6 +368,7 @@ class NovelModifyFormState extends State<NovelModifyForm> {
           onPressed: () {
             setState(() {
               _openToPublic = true;
+              _openToPublicTxt = '공개';
             });
             Navigator.pop(context);
             print(_openToPublic);
@@ -375,6 +380,7 @@ class NovelModifyFormState extends State<NovelModifyForm> {
           onPressed: () {
             setState(() {
               _openToPublic = false;
+              _openToPublicTxt = '비공개';
             });
             Navigator.pop(context);
             print(_openToPublic);
