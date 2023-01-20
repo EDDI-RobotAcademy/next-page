@@ -176,24 +176,50 @@ public class CommentServiceImpl implements CommentService {
             List<CommentAndEpisodeResponse> responseList = new ArrayList<>();
 
             for(NovelEpisode epi : episodesList) {
-                List<Comment> commentList = commentRepository.findCommentListByEpisodeId(epi.getId(), Sort.by(Sort.Direction.DESC, "commentNo"));
+
+                List<Comment> commentList = commentRepository.findCommentListByEpisodeId(epi.getId(),
+                        Sort.by(Sort.Direction.DESC, "commentNo"));
+
                 for(Comment comment : commentList) {
-                    CommentAndEpisodeResponse response = new CommentAndEpisodeResponse();
-
-                    response.setCommentNo(comment.getCommentNo());
-                    response.setComment(comment.getComment());
-                    response.setNickName(comment.getMember().getNickName());
-                    response.setRegDate(comment.getCreatedDate());
-                    response.setNovelTitle(comment.getNovelEpisode().getInformation().getTitle());
-                    response.setEpisodeNumber(comment.getNovelEpisode().getEpisodeNumber());
-                    response.setEpisodeTitle(comment.getNovelEpisode().getEpisodeTitle());
-
-                    responseList.add(response);
+                    responseList.add(convertCommentToCommentEpiResponse(comment));
                 }
             }
-
             return responseList;
 
         } throw new RuntimeException("소설 정보 없음!");
     }
+    @Override
+    @Transactional
+    public List<CommentAndEpisodeResponse> getCommentListByMemberId(Long memberId) {
+        Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
+
+        if(maybeMember.isPresent()) {
+            List<Comment> commentList = commentRepository.findCommentListByMemberId(memberId,
+                    Sort.by(Sort.Direction.DESC, "commentNo"));
+
+            List<CommentAndEpisodeResponse> responseList = new ArrayList<>();
+            for(Comment comment : commentList) {
+                responseList.add(convertCommentToCommentEpiResponse(comment));
+            }
+            return responseList;
+        }
+        throw new RuntimeException("멤버 정보 없음!");
+    }
+
+    // Comment 엔티티를 CommentAndEpisodeResponse로 변환
+    public CommentAndEpisodeResponse convertCommentToCommentEpiResponse(Comment comment) {
+
+                CommentAndEpisodeResponse response = new CommentAndEpisodeResponse();
+
+                response.setCommentNo(comment.getCommentNo());
+                response.setComment(comment.getComment());
+                response.setNickName(comment.getMember().getNickName());
+                response.setRegDate(comment.getCreatedDate());
+                response.setNovelTitle(comment.getNovelEpisode().getInformation().getTitle());
+                response.setEpisodeNumber(comment.getNovelEpisode().getEpisodeNumber());
+                response.setEpisodeTitle(comment.getNovelEpisode().getEpisodeTitle());
+
+                return response;
+    }
+
 }
