@@ -49,3 +49,4 @@ class CheckMyStarRatingRequest{
   int memberId;
   CheckMyStarRatingRequest(this.novelId, this.memberId);
 }
+

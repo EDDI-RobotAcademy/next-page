@@ -11,6 +11,7 @@ import kr.eddi.demo.novel.repository.CoverImageRepository;
 import kr.eddi.demo.novel.repository.NovelCategoryRepository;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import kr.eddi.demo.novel.repository.NovelInformationRepository;
+import kr.eddi.demo.novel.request.NovelCategoryRequest;
 import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
@@ -54,21 +55,21 @@ public class NovelServiceImpl implements NovelService {
 
         // request에서 받은 멤버 아이디로 회원 찾고 권한 체크 (이후 권한 부여 시스템 작성 후에 로직 추가 할예정)
         Optional<NextPageMember> maybeMember = memberRepository.findById(request.getMember_id());
-        if(maybeMember.isEmpty()) {
+        if (maybeMember.isEmpty()) {
             return false;
         }
         NextPageMember member = maybeMember.get();
 
-        log.info("category를 왜 못찾냐 : " +request.getCategory());
+        log.info("category를 왜 못찾냐 : " + request.getCategory());
 
         // 카테고리 찾기
         Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(request.getCategory());
-        if(maybeCategory.isEmpty()) {
+        if (maybeCategory.isEmpty()) {
             return false;
         }
         NovelCategory category = maybeCategory.get();
 
-        log.info("쿼리 검색 결과 "+ category.getCategoryName());
+        log.info("쿼리 검색 결과 " + category.getCategoryName());
 
 
         // 소설정보 entity 생성
@@ -77,31 +78,34 @@ public class NovelServiceImpl implements NovelService {
 
         // 커버이미지 entity 생성
         try {
-                log.info("requestUploadFilesWithText() - Make file: " + image.getOriginalFilename());
+            log.info("requestUploadFilesWithText() - Make file: " + image.getOriginalFilename());
 
-                UUID fileRandomName = UUID.randomUUID();
+            UUID fileRandomName = UUID.randomUUID();
 
-                String fileReName = fileRandomName +image.getOriginalFilename();
+            String fileReName = fileRandomName + image.getOriginalFilename();
 
-                // 저장 경로 지정 + 파일네임
-                FileOutputStream writer2 = new FileOutputStream("../../next-page-flutter/app/assets/images/thumbnail/" + fileReName);
-                log.info("디렉토리에 파일 배치 성공!");
+            // 저장 경로 지정 + 파일네임
+            FileOutputStream writer2 = new FileOutputStream("../../next-page-flutter/app/assets/images/thumbnail/" + fileReName);
+            //FileOutputStream writer3 = new FileOutputStream("/Users/gimjangsun/Desktop/test/assets/images/thumbnail/" + fileReName);
+            log.info("디렉토리에 파일 배치 성공!");
 
-                // 파일 저장(저장할 때는 byte 형식으로 저장해야 하므로 파라미터로 받은 multipartFile 파일들의 getBytes() 메소드를 적용하여 저장
-                writer2.write(image.getBytes());
-
-                // 커버이미지 entity에 값 세팅
-                NovelCoverImage coverImage = new NovelCoverImage(
-                        image.getOriginalFilename(),
-                        fileReName,
-                        information
-                );
+            // 파일 저장(저장할 때는 byte 형식으로 저장해야 하므로 파라미터로 받은 multipartFile 파일들의 getBytes() 메소드를 적용하여 저장
+            writer2.write(image.getBytes());
+            //writer3.write(image.getBytes());
 
 
-                // 정보 entity 측에 커버이미지 entity 저장
-                coverImage.updateToInformation();
-                coverImageRepository.save(coverImage);
-                writer2.close();
+            // 커버이미지 entity에 값 세팅
+            NovelCoverImage coverImage = new NovelCoverImage(
+                    image.getOriginalFilename(),
+                    fileReName,
+                    information
+            );
+
+
+            // 정보 entity 측에 커버이미지 entity 저장
+            coverImage.updateToInformation();
+            coverImageRepository.save(coverImage);
+            writer2.close();
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -120,6 +124,7 @@ public class NovelServiceImpl implements NovelService {
 
     /**
      * 이미지 없이 소설 정보를 수정할 때에 사용되는 메소드입니다
+     *
      * @param novelInfoId
      * @param request
      * @return
@@ -127,18 +132,18 @@ public class NovelServiceImpl implements NovelService {
     @Override
     public Boolean informationModifyWithOutImg(Long novelInfoId, NovelInformationModifyRequest request) {
         Optional<NovelInformation> maybeNovelInfo = informationRepository.findById(novelInfoId);
-        if(maybeNovelInfo.isEmpty()) {
+        if (maybeNovelInfo.isEmpty()) {
             return false;
         }
 
         // 카테고리 찾기
         Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(request.getCategory());
-        if(maybeCategory.isEmpty()) {
+        if (maybeCategory.isEmpty()) {
             return false;
         }
         NovelCategory category = maybeCategory.get();
 
-        log.info("쿼리 검색 결과 "+ category.getCategoryName());
+        log.info("쿼리 검색 결과 " + category.getCategoryName());
 
         NovelInformation novelInfo = maybeNovelInfo.get();
 
@@ -153,54 +158,54 @@ public class NovelServiceImpl implements NovelService {
     public Boolean informationModifyWithImg(Long novelInfoId, MultipartFile image, NovelInformationModifyRequest request) {
 
         Optional<NovelInformation> maybeNovelInfo = informationRepository.findById(novelInfoId);
-        if(maybeNovelInfo.isEmpty()) {
+        if (maybeNovelInfo.isEmpty()) {
             return false;
         }
 
         // 카테고리 찾기
         Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(request.getCategory());
-        if(maybeCategory.isEmpty()) {
+        if (maybeCategory.isEmpty()) {
             return false;
         }
 
         NovelCategory category = maybeCategory.get();
 
-        log.info("쿼리 검색 결과 "+ category.getCategoryName());
+        log.info("쿼리 검색 결과 " + category.getCategoryName());
         NovelInformation novelInfo = maybeNovelInfo.get();
         novelInfo.modify(request, category);
 
         Optional<NovelCoverImage> maybeCoverImg = coverImageRepository.findByInformation_Id(novelInfoId);
-        if(maybeCoverImg.isEmpty()) {
+        if (maybeCoverImg.isEmpty()) {
             return false;
         }
         NovelCoverImage coverImage = maybeCoverImg.get();
 
         // 커버이미지 entity 수정
         try {
-                log.info("requestUploadFilesWithText() - Make file: " + image.getOriginalFilename());
+            log.info("requestUploadFilesWithText() - Make file: " + image.getOriginalFilename());
 
-                UUID fileRandomName = UUID.randomUUID();
+            UUID fileRandomName = UUID.randomUUID();
 
-                String fileReName = fileRandomName + image.getOriginalFilename();
+            String fileReName = fileRandomName + image.getOriginalFilename();
 
-                // 저장 경로 지정 + 파일네임
-                FileOutputStream writer2 = new FileOutputStream("../../next-page-flutter/app/assets/images/thumbnail/" + fileReName);
-                log.info("디렉토리에 파일 배치 성공!");
+            // 저장 경로 지정 + 파일네임
+            FileOutputStream writer2 = new FileOutputStream("../../next-page-flutter/app/assets/images/thumbnail/" + fileReName);
+            log.info("디렉토리에 파일 배치 성공!");
 
-                // 파일 저장(저장할 때는 byte 형식으로 저장해야 하므로 파라미터로 받은 multipartFile 파일들의 getBytes() 메소드를 적용하여 저장
-                writer2.write(image.getBytes());
+            // 파일 저장(저장할 때는 byte 형식으로 저장해야 하므로 파라미터로 받은 multipartFile 파일들의 getBytes() 메소드를 적용하여 저장
+            writer2.write(image.getBytes());
 
-                // 커버이미지 entity에 이미지 정보값 수정
-               coverImage.modify(
-                       image.getOriginalFilename(),
-                        fileReName
-               );
+            // 커버이미지 entity에 이미지 정보값 수정
+            coverImage.modify(
+                    image.getOriginalFilename(),
+                    fileReName
+            );
 
 
              /*   // 정보 entity 측에 새롭게 바꾼 커버이미지 entity 업데이트
                 coverImage.updateToInformation();*/
-                coverImageRepository.save(coverImage);
-                writer2.close();
+            coverImageRepository.save(coverImage);
+            writer2.close();
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -216,11 +221,10 @@ public class NovelServiceImpl implements NovelService {
     }
 
 
-
-
     /**
      * 카테고리를 생성합니다
-     * @param id 카테고리 번호
+     *
+     * @param id   카테고리 번호
      * @param name 카테고리 이름
      */
 
@@ -232,6 +236,7 @@ public class NovelServiceImpl implements NovelService {
 
     /**
      * 에피소드를 저장합니다
+     *
      * @param request
      * @return
      */
@@ -241,7 +246,7 @@ public class NovelServiceImpl implements NovelService {
     @Transactional
     public Boolean episodeRegister(NovelEpisodeRegisterRequest request) {
         Optional<NovelInformation> maybeInformation = informationRepository.findById(request.getInformation_id());
-        if(maybeInformation.isEmpty()) {
+        if (maybeInformation.isEmpty()) {
             return false;
         }
         NovelInformation information = maybeInformation.get();
@@ -253,6 +258,7 @@ public class NovelServiceImpl implements NovelService {
 
     /**
      * 특정 관리자 회원이 등록한 소설 정보 리스트를 가져옵니다.
+     *
      * @param member_id
      * @param request
      * @return
@@ -265,13 +271,14 @@ public class NovelServiceImpl implements NovelService {
 
     /**
      * 등록된 모든 소설 리스트를 가져옵니다.
+     *
      * @return
      */
     @Override
-    public List<NovelInformation> getNovelList(){
-        List<NovelInformation> tmpList = informationRepository .findAll(Sort.by(Sort.Direction.DESC, "id"));
+    public List<NovelInformation> getNovelList() {
+        List<NovelInformation> tmpList = informationRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 
-        log.info("모든 소설 리스트: "+String.valueOf(tmpList));
+        log.info("모든 소설 리스트: " + String.valueOf(tmpList));
 
         return tmpList;
     }
@@ -279,6 +286,7 @@ public class NovelServiceImpl implements NovelService {
 
     /**
      * 소설 정보 상세 사항을 가져옵니다.
+     *
      * @param novelInfoId
      * @return
      */
@@ -287,20 +295,20 @@ public class NovelServiceImpl implements NovelService {
     @Override
     public Map<String, Object> getNovelInfoDetail(Long novelInfoId) {
         Optional<NovelInformation> maybeInfo = informationRepository.findById(novelInfoId);
-        if(maybeInfo.isEmpty()) {
+        if (maybeInfo.isEmpty()) {
             return null;
         } else {
             NovelInformation novelInfo = maybeInfo.get();
             double starRating = 0.0;
             int totalStarRating = novelInfo.getTotalStarRating();
             int ratingCount = novelInfo.getRatingCount();
-            if(totalStarRating > 0 && ratingCount > 0) {
-                    starRating = Math.round((double) totalStarRating / (double) ratingCount *10.0) /10.0;
-            } else{
+            if (totalStarRating > 0 && ratingCount > 0) {
+                starRating = Math.round((double) totalStarRating / (double) ratingCount * 10.0) / 10.0;
+            } else {
                 starRating = 0.0;
             }
 
-           Map<String, Object> tmpNovelInfo = new HashMap<>();
+            Map<String, Object> tmpNovelInfo = new HashMap<>();
             tmpNovelInfo.put("category", novelInfo.getCategory().getCategoryName());
             tmpNovelInfo.put("id", novelInfo.getId());
             tmpNovelInfo.put("title", novelInfo.getTitle());
@@ -316,7 +324,6 @@ public class NovelServiceImpl implements NovelService {
             tmpNovelInfo.put("commentCount", novelInfo.getCommentCount());
 
 
-
             log.info(tmpNovelInfo.toString());
 
             return tmpNovelInfo;
@@ -326,6 +333,7 @@ public class NovelServiceImpl implements NovelService {
 
     /**
      * 소설 정보에 해당하는 에피소드 리스트를 가져옵니다.
+     *
      * @param novelInfoId
      * @param request
      * @return
@@ -335,12 +343,30 @@ public class NovelServiceImpl implements NovelService {
         return episodeRepository.findByInformation_Id(novelInfoId, request);
     }
 
+
+    //카테고리에 따라 에피소드 리스트를 가져옵니다.
+    @Transactional
     @Override
-    public Page<NovelEpisode> getNovelEpisodeListByCategory
+    public List<NovelInformation> getNovelListByCategory(String categoryName) {
+        //List<NovelInformation> novelList = informationRepository.findNovelByCategoryName(episodeName);
+
+        Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(categoryName);
+
+        if (maybeCategory.isPresent()) {
+            log.info(maybeCategory.get().getCategoryName() + "이게 나와야함");
+            List<NovelInformation> novelList = maybeCategory.get().getInformationList();
+            log.info(novelList.toString());
+            return novelList;
+        }
+
+        log.info("null이라고???");
+        return null;
+    }
 
 
     /**
      * 에피소드 상세사항을 가져옵니다.
+     *
      * @param episodeId
      * @return
      */
@@ -348,8 +374,8 @@ public class NovelServiceImpl implements NovelService {
     @Override
     public NovelEpisode getNovelEpisodeDetail(Long episodeId) {
 
-        Optional<NovelEpisode> maybeEpisode =  episodeRepository.findById(1L);
-        if(maybeEpisode.isEmpty()) {
+        Optional<NovelEpisode> maybeEpisode = episodeRepository.findById(1L);
+        if (maybeEpisode.isEmpty()) {
             return null;
         }
 
@@ -359,11 +385,12 @@ public class NovelServiceImpl implements NovelService {
 
     /**
      * 등록된 에피소드를 삭제합니다.
+     *
      * @param episodeId
      * @return
      */
     @Override
-    public Boolean deleteNovelEpisode(Long episodeId){
+    public Boolean deleteNovelEpisode(Long episodeId) {
 
         Optional<NovelEpisode> maybeEpisode = episodeRepository.findById(episodeId);
 
@@ -381,11 +408,11 @@ public class NovelServiceImpl implements NovelService {
     }
 
     @Override
-    public NovelEpisode getNovelEpisodeByEpisodeNumber(Long episodeNumber){
+    public NovelEpisode getNovelEpisodeByEpisodeNumber(Long episodeNumber) {
 
         Optional<NovelEpisode> maybeEpisode = episodeRepository.findEpisodeByEpisodeNumber(episodeNumber);
 
-        if(maybeEpisode.isPresent()){
+        if (maybeEpisode.isPresent()) {
 
             NovelEpisode episode = maybeEpisode.get();
 
@@ -395,7 +422,7 @@ public class NovelServiceImpl implements NovelService {
     }
 
     @Override
-    public  void viewCountUp(Long novelId){
+    public void viewCountUp(Long novelId) {
         Optional<NovelInformation> maybeInformation = informationRepository.findById(novelId);
 
         NovelInformation novel = maybeInformation.get();
