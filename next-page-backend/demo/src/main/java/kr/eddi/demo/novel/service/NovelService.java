@@ -2,6 +2,7 @@ package kr.eddi.demo.novel.service;
 
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
+import kr.eddi.demo.novel.request.NovelCategoryRequest;
 import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
@@ -31,6 +32,10 @@ public interface NovelService {
     Map<String, Object> getNovelInfoDetail(Long novelInfoId);
 
     Page<NovelEpisode> getNovelEpisodeListByInfoId(Long novelInfoId, PageRequest request);
+
+
+    List<NovelInformation> getNovelListByCategory(String categoryName);
+
 
     NovelEpisode getNovelEpisodeDetail(Long episodeId);
 

@@ -1,6 +1,7 @@
 package kr.eddi.demo.novel.controller;
 
 
+import kr.eddi.demo.novel.request.NovelCategoryRequest;
 import kr.eddi.demo.novel.service.NovelServiceImpl;
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
@@ -73,6 +74,15 @@ public class NovelController {
         log.info("getUploaderNovelInfoList()");
         PageRequest request = PageRequest.of(form.getPage(), form.getSize());
         return novelService.getUploaderNovelInfoList(member_id, request);
+    }
+
+   @PostMapping("/novel-list/category")
+    public List<NovelInformation> getNovelListByCategory(@RequestBody NovelCategoryRequest request){
+        log.info("getNovelListByCategory()");
+        log.info("요청한 카테고리명: " + request.getCategoryName());
+
+        return novelService.getNovelListByCategory(request.getCategoryName());
+
     }
 
     @GetMapping("/all-novel-list")

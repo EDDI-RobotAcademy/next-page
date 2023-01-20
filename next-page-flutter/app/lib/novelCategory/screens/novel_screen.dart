@@ -59,62 +59,62 @@ class _NovelScreenState extends State<NovelScreen>
   Widget build(BuildContext context) {
     return
       Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            '소설',
-            style: TextStyle(
-                color: AppTheme.pointColor, fontWeight: FontWeight.bold),
-          ),
-          actions: [
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    _loginState?
-                    Get.to(() => const PointChargeScreen(
-                      fromWhere: 1,
-                    ))
-                        :Get.to(() => const SignInScreen(fromWhere: 1, novel: null, routeIndex: 1));
-                  },
-                  child: Container(
-                      width: MediaQuery.of(context).size.width * 0.07,
-                      child: Image.asset(
-                          'assets/images/coin_image_asset.png')),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.03,
+      appBar: AppBar(
+        title: const Text(
+          '소설',
+          style: TextStyle(
+              color: AppTheme.pointColor, fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          Row(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        _loginState?
+                        Get.to(() => const PointChargeScreen(
+                              fromWhere: 1,
+                            ))
+                            :Get.to(() => const SignInScreen(fromWhere: 1, novel: null, routeIndex: 1));
+                      },
+                      child: Container(
+                          width: MediaQuery.of(context).size.width * 0.07,
+                          child: Image.asset(
+                              'assets/images/coin_image_asset.png')),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.03,
+                    )
+                  ],
                 )
-              ],
-            )
 
-          ],
-          elevation: 0.5,
-          backgroundColor: Colors.white,
-          bottom: TabBar(
-            isScrollable: true,
-            controller: controller,
-            labelColor: Colors.black,
-            tabs: const <Tab>[
-              Tab(text: '전체'),
-              Tab(text: '판타지'),
-              Tab(text: '무협'),
-              Tab(text: '로맨스'),
-              Tab(text: '현대판타지'),
-              Tab(text: 'BL'),
-            ],
-          ),
-        ),
-        body: TabBarView(
+        ],
+        elevation: 0.5,
+        backgroundColor: Colors.white,
+        bottom: TabBar(
+          isScrollable: true,
           controller: controller,
-          children: <Widget>[
-            AllCategoryScreen(category: _allCategory),
-            AllCategoryScreen(category: _fantasyCategory),
-            AllCategoryScreen(category: _martialArtsCategory),
-            AllCategoryScreen(category: _romanceCategory),
-            AllCategoryScreen(category: _modernFantasyCategory),
-            AllCategoryScreen(category: _blCategory),
+          labelColor: Colors.black,
+          tabs: const <Tab>[
+            Tab(text: '전체'),
+            Tab(text: '판타지'),
+            Tab(text: '무협'),
+            Tab(text: '로맨스'),
+            Tab(text: '현대판타지'),
+            Tab(text: 'BL'),
           ],
         ),
-      );
+      ),
+      body: TabBarView(
+        controller: controller,
+        children: <Widget>[
+          AllCategoryScreen(category: _allCategory),
+          AllCategoryScreen(category: _fantasyCategory),
+          AllCategoryScreen(category: _martialArtsCategory),
+          AllCategoryScreen(category: _romanceCategory),
+          AllCategoryScreen(category: _modernFantasyCategory),
+          AllCategoryScreen(category: _blCategory),
+        ],
+      ),
+    );
   }
 }
