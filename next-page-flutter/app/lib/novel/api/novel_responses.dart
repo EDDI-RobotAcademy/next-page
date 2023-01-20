@@ -9,6 +9,7 @@ class NovelListResponse {
   int purchasePoint;
   bool openToPublic;
   String createdDate;
+  int viewCount;
   LinkedHashMap<String, dynamic> coverImage;
 
   NovelListResponse(
@@ -20,7 +21,8 @@ class NovelListResponse {
       required this.purchasePoint,
       required this.openToPublic,
       required this.createdDate,
-      required this.coverImage});
+      required this.coverImage,
+      required this.viewCount});
 
   factory NovelListResponse.fromJson(Map<String, dynamic> json) {
     return NovelListResponse(
@@ -32,7 +34,8 @@ class NovelListResponse {
         purchasePoint: json["purchasePoint"],
         openToPublic: json["openToPublic"],
         createdDate: json["createdDate"],
-        coverImage: json["coverImage"]);
+        coverImage: json["coverImage"],
+        viewCount: json["viewCount"]);
   }
 }
 

@@ -72,12 +72,12 @@ class SpringNovelApi {
 
   Future<List<dynamic>> getNovelEpisodeList(EpisodeRequest request) async {
     var response = await http.post(Uri.http(httpUri, '/novel/episode-list/${request.novelId}'),
-      headers: {"Content-Type": "application/json"},
-      body: json.encode({
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({
         'novelId': request.novelId,
         'size': request.size,
         'page': request.page
-      }),
+        }),
     );
 
     if (response.statusCode == 200) {
@@ -216,6 +216,32 @@ class SpringNovelApi {
       return json.decode(response.body);
     } else {
       throw Exception("구매한 에피소드 통신 실패");
+    }
+  }
+
+  Future<List<NovelListResponse>> getNovelListByCategory(String categoryName) async {
+    var data = {  'categoryName': categoryName};
+    var body = json.encode(data);
+
+
+    var response = await http.post(Uri.http(httpUri, '/novel/novel-list/category'),
+      headers: {"Content-Type": "application/json"},
+      body: body
+    );
+
+    if(response.statusCode == 200){
+      debugPrint("카테고리별 소설 리스트 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+
+      List<NovelListResponse> novelList =
+      jsonData.map((dataJson) => NovelListResponse.fromJson(dataJson)).toList();
+
+
+      return novelList;
+    }else {
+      throw ("카테고리별 소설 리스트 통신 실패");
     }
   }
 }
