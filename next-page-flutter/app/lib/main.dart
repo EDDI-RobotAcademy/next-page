@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (BuildContext context) => CommentProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => EpisodeProvider()),
           ChangeNotifierProvider(create: (BuildContext context) => NoticeProvider()),
+          ChangeNotifierProvider(create: (BuildContext context) => NovelListProvider())
         ],
         child: GetMaterialApp(
             debugShowCheckedModeBanner: false,
