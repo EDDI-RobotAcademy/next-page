@@ -6,8 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../member/api/spring_member_api.dart';
 import '../../member/widgets/alerts/custom_result_alert.dart';
+import '../../widgets/custom_title_appbar.dart';
 
-class NicknameModifyScreen extends StatefulWidget{
+class NicknameModifyScreen extends StatefulWidget {
   const NicknameModifyScreen({Key? key}) : super(key: key);
 
   @override
@@ -58,61 +59,82 @@ class NicknameModifyScreenState extends State<NicknameModifyScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-          appBar: AppBar(
-            title: Text('닉네임 변경'),
-          ),
+          appBar: customTitleAppbar(context, "닉네임 변경", 99),
           body: Form(
-            key: _formKey,
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                children: [
+              key: _formKey,
+              child: Padding(
+
+                padding: EdgeInsets.all(18.0),
+                child: Column(children: [
+
                   Container(
-                    color: Colors.grey.shade100,
-                    child: ListTile(
+                      color: Colors.grey.shade100,
+                      child: ListTile(
                         title: Text("현재 닉네임"),
                         subtitle: Text(currentNickname, textAlign: TextAlign.end, style: TextStyle(fontSize: 20)),
-                    )
+                      )
                   ),
-                  SizedBox(height: size.height * 0.01,),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
                   ListTile(
-                    title: NicknameTextField(controller: nicknameController, label: '새로운 닉네임',),
+                    title: NicknameTextField(
+                      controller: nicknameController,
+                      label: '새로운 닉네임',
+                    ),
                   ),
-                  SizedBox(height: size.height * 0.03,),
+                  SizedBox(
+                    height: size.height * 0.03,
+                  ),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          minimumSize: Size(size.width * 0.4, size.height * 0.05)),
+                        minimumSize: Size(size.width * 0.4, size.height * 0.05),
+                        backgroundColor: Colors.blueAccent,
+                      ),
                       onPressed: () async {
-                        if(_formKey.currentState!.validate()) {
-                          var result = await SpringMemberApi().modifyNickname(NicknameModifyRequest(memberId, newNickname));
+                        if (_formKey.currentState!.validate()) {
+                          var result = await SpringMemberApi().modifyNickname(
+                              NicknameModifyRequest(memberId, newNickname));
                           debugPrint('result: ' + result);
-                          if(result == modifySuccess) {
+                          if (result == modifySuccess) {
                             var prefs = await SharedPreferences.getInstance();
                             prefs.setString('nickname', newNickname);
                             setState(() {
                               currentNickname = newNickname;
                             });
-                            _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: result));
-                          } else if(result == noSuchUser) {
-                            _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: result));
-                          } else if(result == dupNickname) {
-                            _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: result));
+                            _showAlertDialog(
+                                context,
+                                CustomResultAlert(
+                                    title: '알림', alertMsg: result));
+                          } else if (result == noSuchUser) {
+                            _showAlertDialog(
+                                context,
+                                CustomResultAlert(
+                                    title: '알림', alertMsg: result));
+                          } else if (result == dupNickname) {
+                            _showAlertDialog(
+                                context,
+                                CustomResultAlert(
+                                    title: '알림', alertMsg: result));
                           }
                         } else {
-                          _showAlertDialog(context, CustomResultAlert(title: '알림', alertMsg: '유효한 닉네임을 입력하세요!'));
+                          _showAlertDialog(
+                              context,
+                              CustomResultAlert(
+                                  title: '알림', alertMsg: '유효한 닉네임을 입력하세요!'));
                         }
                       },
                       child: Text('닉네임 변경하기'))
-                  ]),
-              )
-            ),
-          )
-    );
+                ]),
+              )),
+        ));
   }
 
   void _showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => alert);
+    showDialog(context: context, builder: (BuildContext context) => alert);
   }
 }
