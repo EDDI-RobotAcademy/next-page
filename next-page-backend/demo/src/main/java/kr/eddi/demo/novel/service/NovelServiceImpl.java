@@ -11,15 +11,12 @@ import kr.eddi.demo.novel.repository.CoverImageRepository;
 import kr.eddi.demo.novel.repository.NovelCategoryRepository;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import kr.eddi.demo.novel.repository.NovelInformationRepository;
-import kr.eddi.demo.novel.request.NovelCategoryRequest;
 import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -259,14 +256,14 @@ public class NovelServiceImpl implements NovelService {
     /**
      * 특정 관리자 회원이 등록한 소설 정보 리스트를 가져옵니다.
      *
-     * @param member_id
+     * @param memberNickName
      * @param request
      * @return
      */
 
     @Override
-    public Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request) {
-        return informationRepository.findByMember_Id(member_id, request);
+    public Page<NovelInformation> getUploaderNovelInfoList(String memberNickName, PageRequest request) {
+        return informationRepository.findByMemberNickName(memberNickName, request);
     }
 
     /**
@@ -348,7 +345,6 @@ public class NovelServiceImpl implements NovelService {
     @Transactional
     @Override
     public List<NovelInformation> getNovelListByCategory(String categoryName) {
-        //List<NovelInformation> novelList = informationRepository.findNovelByCategoryName(episodeName);
 
         Optional<NovelCategory> maybeCategory = categoryRepository.findByCategoryNameContainingIgnoreCase(categoryName);
 
@@ -431,6 +427,22 @@ public class NovelServiceImpl implements NovelService {
 
         informationRepository.save(novel);
 
+    }
+
+    /**
+     * 몇개의 인기 소설 리스트만을 반환합니다.
+     * @param
+     * @return List
+     */
+    @Transactional
+    @Override
+    public List<NovelInformation> getShortNovelList(int size){
+
+        Slice<NovelInformation> slice = informationRepository.findNovelInformation(Pageable.ofSize(size), "admin");
+        List<NovelInformation> tmpNovelList = slice.getContent();
+
+
+        return tmpNovelList;
     }
 
 }
