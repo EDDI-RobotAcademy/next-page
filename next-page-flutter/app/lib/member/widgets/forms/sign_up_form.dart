@@ -1,15 +1,15 @@
+import 'package:app/member/screens/sign_in_screen.dart';
 import 'package:app/widgets/cupertino_result_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 import '../../api/spring_member_api.dart';
 import '../../api/requests.dart';
 import '../../utility/custom_text_style.dart';
-import '../alerts/custom_result_and_push_alert.dart';
 import '../text_fields/email_text_field.dart';
 import '../text_fields/nickname_text_field.dart';
-import '../text_fields/password_check_text_field.dart';
 import '../text_fields/password_text_field.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -23,7 +23,7 @@ class SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
 
   late String email;
-  String password = ''; //LateInitializationError 때문에 late -> ''값으로 초기화
+  late String password;
   late String nickname;
 
   late TextEditingController emailController = TextEditingController();
@@ -137,8 +137,6 @@ class SignUpFormState extends State<SignUpForm> {
                       controller: passwordController,
                       label: '비밀번호',
                     ),
-                    SizedBox(height: size.height * 0.03),
-                    PasswordCheckTextField(password: password),
                     SizedBox(height: size.height * 0.03),
                     // 회원가입 버튼
                     ElevatedButton(

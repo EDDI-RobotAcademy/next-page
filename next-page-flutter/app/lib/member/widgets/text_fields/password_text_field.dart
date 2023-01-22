@@ -13,6 +13,8 @@ class PasswordTextField extends StatefulWidget {
 }
 
 class _PasswordTextFieldState extends State<PasswordTextField> {
+  bool _passwordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -24,12 +26,21 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
         SizedBox(height: size.height * 0.01),
         TextFormField(
           controller: widget.controller,
-          obscureText: true,
+          obscureText: !_passwordVisible,
           validator: (value) => CheckValidate().validatePassword(value!),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             prefixIcon: Icon(Icons.lock),
             hintText: "Enter password",
+              suffixIcon: IconButton(
+                icon: Icon(
+                    _passwordVisible ? Icons.visibility : Icons.visibility_off),
+                onPressed: () {
+                  setState(() {
+                    _passwordVisible = !_passwordVisible;
+                  });
+                },
+              )
            ),
         )
       ],

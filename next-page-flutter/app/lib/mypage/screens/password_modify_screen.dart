@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../member/api/spring_member_api.dart';
 import '../../member/widgets/alerts/custom_result_alert.dart';
-import '../../member/widgets/text_fields/password_check_text_field.dart';
 import '../../member/widgets/text_fields/password_text_field.dart';
 import '../../widgets/custom_title_appbar.dart';
 
@@ -19,7 +18,7 @@ class PasswordModifyScreen extends StatefulWidget {
 class PasswordModifyScreenState extends State<PasswordModifyScreen> {
   final _formKey = GlobalKey<FormState>();
   late int memberId;
-  String newPassword = '';
+  late String newPassword;
 
   late TextEditingController newPasswordController = TextEditingController();
 
@@ -66,17 +65,10 @@ class PasswordModifyScreenState extends State<PasswordModifyScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: size.height * 0.04,
-                  ),
-                  ListTile(
-                      title: PasswordCheckTextField(
-                    password: newPassword,
-                  )),
-                  SizedBox(
                     height: size.height * 0.03,
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
+                      style: TextButton.styleFrom(
                         minimumSize: Size(size.width * 0.4, size.height * 0.05),
                         backgroundColor: Colors.blueAccent,
                       ),
