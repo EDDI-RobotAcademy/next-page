@@ -25,7 +25,7 @@ public interface NovelService {
 
     Boolean episodeRegister(NovelEpisodeRegisterRequest request);
 
-    Page<NovelInformation> getUploaderNovelInfoList(Long member_id, PageRequest request);
+    Page<NovelInformation> getUploaderNovelInfoList(String memberNickName, PageRequest request);
 
     List<NovelInformation> getNovelList();
 
@@ -44,4 +44,6 @@ public interface NovelService {
     NovelEpisode getNovelEpisodeByEpisodeNumber(Long episodeNumber);
 
     void viewCountUp(Long novelId);
+
+    List<NovelInformation> getShortNovelList(int size);
 }

@@ -69,11 +69,11 @@ public class NovelController {
         return novelService.episodeRegister(form.toRequest());
     }
 
-    @PostMapping("/{member_id}/information-list")
-    public Page<NovelInformation> getUploaderNovelInfoList(@PathVariable("member_id") Long member_id, @RequestBody PageForm form){
+    @PostMapping("/{memberNickname}/information-list")
+    public Page<NovelInformation> getUploaderNovelInfoList(@PathVariable("memberNickname") String memberNickname, @RequestBody PageForm form){
         log.info("getUploaderNovelInfoList()");
         PageRequest request = PageRequest.of(form.getPage(), form.getSize());
-        return novelService.getUploaderNovelInfoList(member_id, request);
+        return novelService.getUploaderNovelInfoList(memberNickname, request);
     }
 
    @PostMapping("/novel-list/category")
@@ -119,5 +119,13 @@ public class NovelController {
         log.info("viewCountUp()");
 
         novelService.viewCountUp(novel_info_id);
+    }
+
+    @GetMapping("/novel-list/short/{size}")
+    public List<NovelInformation> getShortNovelList(@PathVariable("size") int size){
+        log.info("getShortNovelList()");
+
+        return novelService.getShortNovelList(size);
+
     }
 }
