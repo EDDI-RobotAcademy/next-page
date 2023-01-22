@@ -47,8 +47,8 @@ class _EpisodeListState extends State<EpisodeList> {
 
   @override
   void initState() {
-    _asyncMethod();
     _episodeProvider = Provider.of<EpisodeProvider>(context, listen: false);
+    _asyncMethod();
     Future.delayed(Duration.zero, () async {
       _future = _getPurchasedEpisodeList();
     });
