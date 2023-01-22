@@ -1,3 +1,4 @@
+import 'package:app/widgets/cupertino_result_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -5,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import '../../api/spring_member_api.dart';
 import '../../api/requests.dart';
 import '../../utility/custom_text_style.dart';
-import '../alerts/custom_result_alert.dart';
 import '../alerts/custom_result_and_push_alert.dart';
 import '../text_fields/email_text_field.dart';
 import '../text_fields/nickname_text_field.dart';
@@ -89,10 +89,8 @@ class SignUpFormState extends State<SignUpForm> {
                                   Size(size.width * 0.2, size.height * 0.045)),
                           onPressed: () async {
                             if (emailController.text.isEmpty) {
-                              _showAlertDialog(
-                                  context,
-                                  CustomResultAlert(
-                                      title: '알림', alertMsg: '내용을 입력해주세요!'));
+                              cupertinoResultAlert(
+                                  context, '알림', '내용을 입력해 주세요');
                             } else {
                               emailPass =
                                   await SpringMemberApi().emailCheck(email);
@@ -120,10 +118,8 @@ class SignUpFormState extends State<SignUpForm> {
                                   Size(size.width * 0.2, size.height * 0.045)),
                           onPressed: () async {
                             if (nicknameController.text.isEmpty) {
-                              _showAlertDialog(
-                                  context,
-                                  CustomResultAlert(
-                                      title: '알림', alertMsg: '내용을 입력해주세요!'));
+                              cupertinoResultAlert(
+                                  context, '알림', '내용을 이력해주세요!');
                             } else {
                               debugPrint("nickname:" + nickname);
                               nicknamePass = await SpringMemberApi()
@@ -158,18 +154,12 @@ class SignUpFormState extends State<SignUpForm> {
                               debugPrint(signUpSuccess.toString());
                               _showSignUpResult(context);
                             } else {
-                              _showAlertDialog(
-                                  context,
-                                  CustomResultAlert(
-                                      title: '알림',
-                                      alertMsg: '이메일 혹은 닉네임 중복 여부를 체크해주세요!'));
+                              cupertinoResultAlert(
+                                  context, '알림', '이메일 혹은 닉네임 중복 여부를 체크해 주세요!');
                             }
                           } else {
-                            _showAlertDialog(
-                                context,
-                                CustomResultAlert(
-                                    title: '알림',
-                                    alertMsg: '모두 유효한 값이 입력 되었는지 확인해주세요!'));
+                            cupertinoResultAlert(
+                                context, '알림', '모두 유효한 값이 입력 되었는지 확인 부탁드립니다.');
                           }
                         },
                         child: Text("회원 가입", style: smallTextStyleWhite)),
@@ -189,26 +179,22 @@ class SignUpFormState extends State<SignUpForm> {
               alertMsg: '회원 가입을 축하합니다! \n로그인 페이지로 이동합니다.',
               route: '/sign-in'));
     } else {
-      _showAlertDialog(
-          context,
-          CustomResultAlert(
-              title: '알림', alertMsg: '통신이 원활하지 않습니다. \n다시 시도해주세요.'));
+      cupertinoResultAlert(context, '알림', '통신이 원할하지 않습니다.\n다시 시도해주세요. ');
     }
   }
 
   // 중복검사 결과 알림창 보여주기 메서드
   void _showDupCheckResult(BuildContext context, bool? result, String type) {
     if (result == true) {
-      _showAlertDialog(context,
-          CustomResultAlert(title: '중복 확인', alertMsg: '사용 가능한 $type 입니다.'));
+      cupertinoResultAlert(context, '중복 확인', '사용가능한 $type 입니다.');
     } else {
-      _showAlertDialog(context,
-          CustomResultAlert(title: '중복 확인', alertMsg: '중복되는 $type 입니다.'));
+      cupertinoResultAlert(context, '중복 확인', '중복되는 $type 입니다.');
     }
   }
 
   // 알림창 보여주기 메서드
   void _showAlertDialog(BuildContext context, Widget alert) {
+    // 안 메서드가 알럿을 띄워주는 역할
     showDialog(context: context, builder: (BuildContext context) => alert);
   }
 }
