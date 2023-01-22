@@ -85,7 +85,7 @@ class SpringCommentApi {
   }
 
   Future<List<CommentAndEpisodeResponse>?> getNovelCommentList(int novelInfoId) async {
-    print(novelInfoId);
+    print("novelInfoId: " + novelInfoId.toString());
     var response = await http.get(
         Uri.http(httpUri, '/comment/novel-comment-list/$novelInfoId'),
         headers: {"Content-Type": "application/json"});
@@ -105,4 +105,24 @@ class SpringCommentApi {
     throw Exception("댓글 리스트 통신 실패");
   }
 
+  Future<List<CommentAndEpisodeResponse>?> getMemberCommentList(int memberId) async {
+    print("memberId: " + memberId.toString());
+    var response = await http.get(
+        Uri.http(httpUri, '/comment/member-comment-list/$memberId'),
+        headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      debugPrint("멤버 댓글 리스트 통신 확인");
+      print(response.body.toString());
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes)) as List;
+
+      debugPrint(jsonData.toString());
+
+      List<CommentAndEpisodeResponse> commentResponseList =
+      jsonData.map((dataJson) => CommentAndEpisodeResponse.fromJson(dataJson)).toList();
+
+      return commentResponseList;
+    }
+    throw Exception("멤버 댓글 리스트 통신 실패");
+  }
 }

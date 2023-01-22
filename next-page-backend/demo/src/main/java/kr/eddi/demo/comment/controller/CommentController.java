@@ -67,4 +67,10 @@ public class CommentController {
         log.info("getCommentListByNovelId(): " + novelInfoId);
         return commentService.getCommentListByNovelId(novelInfoId);
     }
+
+    @GetMapping("/member-comment-list/{memberId}")
+    public List<CommentAndEpisodeResponse> getCommentListByMemberId(@PathVariable("memberId") Long memberId) {
+        log.info("getCommentListByMemberId(): " + memberId);
+        return commentService.getCommentListByMemberId(memberId);
+    }
 }

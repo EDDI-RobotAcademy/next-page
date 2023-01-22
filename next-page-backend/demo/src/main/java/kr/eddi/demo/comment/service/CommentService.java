@@ -21,4 +21,6 @@ public interface CommentService {
 
     List<CommentAndEpisodeResponse> getCommentListByNovelId(Long novelInfoId);
 
+    List<CommentAndEpisodeResponse> getCommentListByMemberId(Long memberId);
+
 }

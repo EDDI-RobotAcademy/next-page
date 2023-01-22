@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../admin/screens/novel_uploade_screen.dart';
+import '../../comment/my_comment_list_screen.dart';
 import '../../member/api/spring_member_api.dart';
 import '../../member/screens/sign_in_screen.dart';
 import '../../point/screens/point_charge_screen.dart';
@@ -54,7 +55,13 @@ class _MypageScreenState extends State<MypageScreen> {
         memberId = prefs.getInt('userId')!;
         nickname = prefs.getString('nickname')!;
       });
-      currentPoint = await SpringMemberApi().lookUpUserPoint(memberId);
+      await SpringMemberApi().lookUpUserPoint(memberId).
+      then((value) => prefs.setInt('point', value));
+
+      setState(() {
+        currentPoint = prefs.getInt('point')!;
+      });
+
     } else {
       setState(() {
         _loginState = false;
@@ -165,10 +172,9 @@ class _MypageScreenState extends State<MypageScreen> {
               Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(nickname + '님의 MY PAGE', style: TextStyle(fontSize: 20)),
-                    SizedBox(height: size.height * 0.01,),
+                    SizedBox(height: size.height * 0.02,),
                     _menuCardBasic('소설 정보 등록', NovelUploadScreen()),
                     _menuCardBasic('고객 QnA 관리', QnaManagementScreen()),
                     _menuCardBasic('일반 공지사항 관리', NoticeManagementScreen(nickname: nickname,)),
@@ -193,8 +199,8 @@ class _MypageScreenState extends State<MypageScreen> {
                     ),
                     '충전하기'),
                 _menuCardBasic('회원 정보 변경', MyInfoModifyScreen()),
-                _menuCardBasic('소설 구매 내역', TmpMyScreen()),
-                _menuCardBasic('내가 쓴 댓글', TmpMyScreen()),
+                // _menuCardBasic('소설 구매 내역', TmpMyScreen()),
+                _menuCardBasic('댓글 내역', MyCommentScreen(memberId: memberId)),
                 _menuCardBasic('나의 QnA', QnaScreen( memberId: memberId,)),
                 _menuCardBasic('공지사항', CommonNoticeListScreen(nickname: nickname)),
                 _logOutMenuCard()
