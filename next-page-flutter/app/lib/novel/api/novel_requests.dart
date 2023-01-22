@@ -1,9 +1,9 @@
 class NovelRequest {
   int page;
   int size;
-  int memberId;
+  String nicnkName;
 
-  NovelRequest(this.page, this.size, this.memberId);
+  NovelRequest(this.page, this.size, this.nicnkName);
 }
 
 class EpisodeRequest {
@@ -12,6 +12,13 @@ class EpisodeRequest {
   int novelId;
 
   EpisodeRequest(this.page, this.size, this.novelId);
+}
+
+class PageRequest {
+  int page;
+  int size;
+
+  PageRequest(this.page, this.size);
 }
 
 class PurchasedEpisodeRequest{

@@ -9,7 +9,7 @@ import 'novel_responses.dart';
 
 class SpringNovelApi {
 
-  Future<List<NovelListResponse>?> allNovelList() async {
+  Future<List<NovelListResponse>> getAllNovelList() async {
     var response = await http.get(Uri.http(httpUri, '/novel/all-novel-list'),
         headers: {"Content-Type": "application/json"});
 
@@ -47,28 +47,28 @@ class SpringNovelApi {
     }
   }
 
-  /*Future<List<NovelListResponse>?> getUploaderNovelList(NovelRequest request) async {
+  Future<List<dynamic>> getAdminNovelList(NovelRequest request) async {
     var response = await http.post(
-      Uri.http(httpUri, '/novel/${request.memberId}/information-list'),
+      Uri.http(httpUri, '/novel/${request.nicnkName}/information-list'),
       headers: {"Content-Type": "application/json"},
       body: json.encode({
-        'memberId': request.memberId,
+        'nickName': request.nicnkName,
         'size': request.size,
         'page': request.page
       }),
     );
     if (response.statusCode == 200) {
-      debugPrint("통신 확인");
+      debugPrint("관리자 업로드 소설 리스트 통신 확인");
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
 
-      debugPrint(jsonData.toString());
+      debugPrint(jsonData['content'].toString());
 
-      return json.decode(response.body);
+      return jsonData['content'];
     } else {
       throw ("error");
     }
-  }*/
+  }
 
   Future<List<dynamic>> getNovelEpisodeList(EpisodeRequest request) async {
     var response = await http.post(Uri.http(httpUri, '/novel/episode-list/${request.novelId}'),
@@ -242,6 +242,26 @@ class SpringNovelApi {
       return novelList;
     }else {
       throw ("카테고리별 소설 리스트 통신 실패");
+    }
+  }
+
+  Future<List<dynamic>> getShortNovelList(int size) async {
+    var response = await http.get(
+      Uri.http(httpUri, '/novel/novel-list/short/$size'),
+      headers: {"Content-Type": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      debugPrint("짧은 소설 리스트 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      debugPrint(jsonData.toString());
+      List<dynamic> shortNovelList =
+      jsonData.map((dataJson) => NovelListResponse.fromJson(dataJson)).toList();
+
+      return shortNovelList;
+    } else {
+      throw ("error");
     }
   }
 }

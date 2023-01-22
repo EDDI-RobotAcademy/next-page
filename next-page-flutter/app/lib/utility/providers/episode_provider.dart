@@ -16,6 +16,7 @@ class EpisodeProvider extends ChangeNotifier {
         .getNovelEpisodeList(EpisodeRequest(page, 50, novelId))
         .then((value) {
       _episodeList = value;
+      _episodeList!.sort((a,b) => a['episodeNumber'].compareTo(b['episodeNumber']));
       episodesLength = _episodeList!.length;
       _episodeList.isNotEmpty
           ? latestEpisode = _episodeList[episodesLength! - 1]
