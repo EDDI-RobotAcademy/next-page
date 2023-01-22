@@ -33,33 +33,33 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
     widget.category == 0
         ? _future = getAllNovelList()
         : widget.category == 1
-            ? _novelListProvider!.getNovelList('판타지')
-            : widget.category == 2
-                ? _novelListProvider!.getNovelList('무협')
-                : widget.category == 3
-                    ? _novelListProvider!.getNovelList('로맨스')
-                    : widget.category == 4
-                        ? _novelListProvider!.getNovelList('현판')
-                        : widget.category == 5
-                            ? _novelListProvider!.getNovelList('BL')
-                            : print('절대 나올 수 없는 메세지');
+        ? _novelListProvider!.getNovelList('판타지')
+        : widget.category == 2
+        ? _novelListProvider!.getNovelList('무협')
+        : widget.category == 3
+        ? _novelListProvider!.getNovelList('로맨스')
+        : widget.category == 4
+        ? _novelListProvider!.getNovelList('현판')
+        : widget.category == 5
+        ? _novelListProvider!.getNovelList('BL')
+        : print('절대 나올 수 없는 메세지');
 
     setState(() {
       widget.category == 1 && _novelListProvider!.fantasyNovelList != null
           ? _isLoading = false
           : widget.category == 2 &&
-                  _novelListProvider!.chivalryNovelList != null
-              ? _isLoading = false
-              : widget.category == 3 &&
-                      _novelListProvider!.romanceNovelList != null
-                  ? _isLoading = false
-                  : widget.category == 4 &&
-                          _novelListProvider!.modernFantasyNovelList != null
-                      ? _isLoading = false
-                      : widget.category == 5 &&
-                              _novelListProvider!.blNovelList != null
-                          ? _isLoading = false
-                          : print('나오면 망');
+          _novelListProvider!.chivalryNovelList != null
+          ? _isLoading = false
+          : widget.category == 3 &&
+          _novelListProvider!.romanceNovelList != null
+          ? _isLoading = false
+          : widget.category == 4 &&
+          _novelListProvider!.modernFantasyNovelList != null
+          ? _isLoading = false
+          : widget.category == 5 &&
+          _novelListProvider!.blNovelList != null
+          ? _isLoading = false
+          : print('나오면 망');
     });
 
     Future.delayed(Duration(milliseconds: 300), () {
@@ -77,7 +77,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
   }
 
   Future getAllNovelList() async {
-    await SpringNovelApi().allNovelList().then((novelList) {
+    await SpringNovelApi().getAllNovelList().then((novelList) {
       setState(() {
         _allNovelList = novelList;
 
@@ -95,17 +95,17 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
             setState(() {
               sort = "최신순";
               widget.category == 0?
-              _allNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate))
+              _allNovelList!.sort((a,b) => b.id.compareTo(a.id))
                   :widget.category == 1?
-                  _fantasyNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate))
+              _fantasyNovelList!.sort((a,b) => b.id.compareTo(a.id))
                   :widget.category == 2?
-              _chivalryNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate))
-              :widget.category == 3?
-              _romanceNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate))
-              :widget.category == 4?
-              _modernFantasyNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate))
-              :widget.category == 5?
-              _blNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate))
+              _chivalryNovelList!.sort((a,b) => b.id.compareTo(a.id))
+                  :widget.category == 3?
+              _romanceNovelList!.sort((a,b) => b.id.compareTo(a.id))
+                  :widget.category == 4?
+              _modernFantasyNovelList!.sort((a,b) => b.id.compareTo(a.id))
+                  :widget.category == 5?
+              _blNovelList!.sort((a,b) => b.id.compareTo(a.id))
                   :print('이거 뜨면 안돼');
             });
             Navigator.pop(context);
@@ -141,86 +141,86 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
     final List<Widget> stack = <Widget>[];
     _isLoading
         ? stack.add(Stack(
-            children: const <Widget>[
-              Opacity(
-                opacity: 0.3,
-                child: ModalBarrier(dismissible: false, color: Colors.grey),
-              ),
-              Center(
-                child: CircularProgressIndicator(),
+      children: const <Widget>[
+        Opacity(
+          opacity: 0.3,
+          child: ModalBarrier(dismissible: false, color: Colors.grey),
+        ),
+        Center(
+          child: CircularProgressIndicator(),
+        ),
+      ],
+    ))
+        : stack.add(Scaffold(
+        body: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Wrap(children: [
+                ElevatedButton(
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      backgroundColor:
+                      MaterialStateProperty.all(Colors.transparent),
+                      elevation: MaterialStateProperty.all(0.0),
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          sort,
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        const Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.black,
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (context) => actionSheet);
+                    })
+              ]),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.05,
               ),
             ],
-          ))
-        : stack.add(Scaffold(
-            body: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Wrap(children: [
-                  ElevatedButton(
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all(EdgeInsets.zero),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.transparent),
-                        elevation: MaterialStateProperty.all(0.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            sort,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          const Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        showCupertinoModalPopup(
-                            context: context,
-                            builder: (context) => actionSheet);
-                      })
-                ]),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.05,
-                ),
-              ],
-            ),
-            Expanded(
-                child: widget.category == 0
-                    ? FutureBuilder(
-                        future: _future,
-                        builder: ((context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            if (snapshot.hasError) {
-                              return Center(
-                                child: Text(snapshot.error.toString()),
-                              );
-                            } else {
-                              return buildCardList(context);
-                            }
-                          } else {
-                            return const Text("망");
-                          }
-                        }))
-                    : widget.category == 1
-                        ? buildCardListForCategory(context, _fantasyNovelList!)
-                        : widget.category == 2
-                            ? buildCardListForCategory(context, _chivalryNovelList!)
-                            : widget.category == 3
-                                ? buildCardListForCategory(context, _romanceNovelList!)
-                                : widget.category == 4
-                                    ? buildCardListForCategory(context, _modernFantasyNovelList!)
-                                    : widget.category == 5
-                                        ? buildCardListForCategory(context, _blNovelList!)
-                                        : Text('등록된 소설이 없습니다.'))
-          ])));
+          ),
+          Expanded(
+              child: widget.category == 0
+                  ? FutureBuilder(
+                  future: _future,
+                  builder: ((context, snapshot) {
+                    if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const Center(
+                          child: CircularProgressIndicator());
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      if (snapshot.hasError) {
+                        return Center(
+                          child: Text(snapshot.error.toString()),
+                        );
+                      } else {
+                        return buildCardList(context);
+                      }
+                    } else {
+                      return const Text("망");
+                    }
+                  }))
+                  : widget.category == 1
+                  ? buildCardListForCategory(context, _fantasyNovelList!)
+                  : widget.category == 2
+                  ? buildCardListForCategory(context, _chivalryNovelList!)
+                  : widget.category == 3
+                  ? buildCardListForCategory(context, _romanceNovelList!)
+                  : widget.category == 4
+                  ? buildCardListForCategory(context, _modernFantasyNovelList!)
+                  : widget.category == 5
+                  ? buildCardListForCategory(context, _blNovelList!)
+                  : Text('등록된 소설이 없습니다.'))
+        ])));
 
     return Stack(children: stack);
   }
@@ -230,7 +230,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
     Size _size = MediaQuery.of(context).size;
     return Padding(
       padding:
-          EdgeInsets.fromLTRB(_size.width * 0.03, 0, _size.width * 0.03, 0),
+      EdgeInsets.fromLTRB(_size.width * 0.03, 0, _size.width * 0.03, 0),
       child: ListView.builder(
           itemCount: (_allNovelList!.length > 50) ? 50 : _allNovelList?.length,
           scrollDirection: Axis.vertical,
@@ -238,7 +238,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
           itemBuilder: (BuildContext context, int index) {
             return CustomHorizontalCard(
                 novel: sort == '최신순'? _allNovelList![index]
-                :_allNovelList![index]
+                    :_allNovelList![index]
                 , index: index);
           }),
     );
@@ -248,7 +248,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
     Size _size = MediaQuery.of(context).size;
     return Padding(
       padding:
-          EdgeInsets.fromLTRB(_size.width * 0.03, 0, _size.width * 0.03, 0),
+      EdgeInsets.fromLTRB(_size.width * 0.03, 0, _size.width * 0.03, 0),
       child: ListView.builder(
           itemCount: (list!.length > 50)
               ? 50

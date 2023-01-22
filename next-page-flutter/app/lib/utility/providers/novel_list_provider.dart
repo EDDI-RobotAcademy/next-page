@@ -28,24 +28,24 @@ class NovelListProvider extends ChangeNotifier {
     then((value) {
       if (categoryName == '판타지') {
         _fantasyNovelList = value;
-        _fantasyNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate));
+        _fantasyNovelList!.sort((a,b) => b.id.compareTo(a.id));
       } else if (categoryName == '무협') {
         _chivalryNovelList = value;
-        _chivalryNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate));
+        _chivalryNovelList!.sort((a,b) => b.id.compareTo(a.id));
       }
       else if (categoryName == '로맨스') {
         _romanceNovelList = value;
-        _romanceNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate));
+        _romanceNovelList!.sort((a,b) => b.id.compareTo(a.id));
 
       }
       else if (categoryName == '현판') {
         _modernFantasyNovelList = value;
-        _modernFantasyNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate));
+        _modernFantasyNovelList!.sort((a,b) => b.id.compareTo(a.id));
 
       }
       else if (categoryName == 'BL') {
         _blNovelList = value;
-        _blNovelList!.sort((a,b) => b.createdDate.compareTo(a.createdDate));
+        _blNovelList!.sort((a,b) => b.id.compareTo(a.id));
 
       }
       notifyListeners();
