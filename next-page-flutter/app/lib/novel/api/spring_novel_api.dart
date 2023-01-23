@@ -72,12 +72,12 @@ class SpringNovelApi {
 
   Future<List<dynamic>> getNovelEpisodeList(EpisodeRequest request) async {
     var response = await http.post(Uri.http(httpUri, '/novel/episode-list/${request.novelId}'),
-        headers: {"Content-Type": "application/json"},
-        body: json.encode({
+      headers: {"Content-Type": "application/json"},
+      body: json.encode({
         'novelId': request.novelId,
         'size': request.size,
         'page': request.page
-        }),
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -225,8 +225,8 @@ class SpringNovelApi {
 
 
     var response = await http.post(Uri.http(httpUri, '/novel/novel-list/category'),
-      headers: {"Content-Type": "application/json"},
-      body: body
+        headers: {"Content-Type": "application/json"},
+        body: body
     );
 
     if(response.statusCode == 200){
@@ -245,13 +245,32 @@ class SpringNovelApi {
     }
   }
 
-  Future<List<dynamic>> getShortNovelList(int size) async {
+  /*Future<List<dynamic>> getHotShortNovelList(int size) async {
     var response = await http.get(
       Uri.http(httpUri, '/novel/novel-list/short/$size'),
       headers: {"Content-Type": "application/json"},
     );
     if (response.statusCode == 200) {
-      debugPrint("짧은 소설 리스트 통신 확인");
+      debugPrint("짧은 인기 소설 리스트 통신 확인");
+
+      var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+
+      debugPrint(jsonData.toString());
+      List<dynamic> shortNovelList =
+      jsonData.map((dataJson) => NovelListResponse.fromJson(dataJson)).toList();
+
+      return shortNovelList;
+    } else {
+      throw ("error");
+    }
+  }*/
+  Future<List<dynamic>> getNewShortNovelList(int size) async {
+    var response = await http.get(
+      Uri.http(httpUri, '/novel/new-novel-list/short/$size'),
+      headers: {"Content-Type": "application/json"},
+    );
+    if (response.statusCode == 200) {
+      debugPrint("짧은 최신 소설 리스트 통신 확인");
 
       var jsonData = jsonDecode(utf8.decode(response.bodyBytes));
 
