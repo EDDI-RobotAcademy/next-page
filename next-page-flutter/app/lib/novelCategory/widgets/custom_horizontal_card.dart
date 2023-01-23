@@ -27,9 +27,9 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
   void initState() {
     todayString = DateFormat(format).format(now).toString();
     todayAfter1String =
-        DateFormat(format).format(now.add(Duration(days: 1))).toString();
+        DateFormat(format).format(now.subtract(Duration(days: 1))).toString();
     todayAfter2String =
-        DateFormat(format).format(now.add(Duration(days: 2))).toString();
+        DateFormat(format).format(now.subtract(Duration(days: 2))).toString();
     super.initState();
   }
 
@@ -45,9 +45,9 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => NovelDetailScreen(
-                          id: widget.novel.id,
-                          routeIndex: 1,
-                        )),
+                      id: widget.novel.id,
+                      routeIndex: 1,
+                    )),
               );
             },
             child: Card(
@@ -70,23 +70,23 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
                             ),
                           ),
                           widget.novel.createdDate == todayString ||
-                                  widget.novel.createdDate ==
-                                      todayAfter1String ||
-                                  widget.novel.createdDate == todayAfter2String
+                              widget.novel.createdDate ==
+                                  todayAfter1String ||
+                              widget.novel.createdDate == todayAfter2String
                               ? Container(
-                                  color: Colors.black,
-                                  child: Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        _size.width * 0.01,
-                                        0,
-                                        _size.width * 0.01,
-                                        0),
-                                    child: Text(
-                                      'new',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                )
+                            color: Colors.black,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  _size.width * 0.01,
+                                  0,
+                                  _size.width * 0.01,
+                                  0),
+                              child: Text(
+                                'new',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          )
                               : Text(''),
                         ]),
                         SizedBox(
@@ -98,11 +98,11 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
                             SizedBox(height: _size.height * 0.02),
                             widget.sort == '인기순'
                                 ? Text(
-                                    '${widget.index + 1}',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: _size.height * 0.022),
-                                  )
+                              '${widget.index + 1}',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: _size.height * 0.022),
+                            )
                                 : Text(''),
                             Text(
                               widget.novel.title,
@@ -125,23 +125,23 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
                                     ),
                                     widget.novel.ratingCount > 0
                                         ? Padding(
-                                            padding: EdgeInsets.only(
-                                                top: _size.height * 0.005),
-                                            child: Text(
-                                                (widget.novel.totalStarRating /
-                                                        widget.novel.ratingCount)
-                                                    .toStringAsFixed(1)),
-                                          )
+                                      padding: EdgeInsets.only(
+                                          top: _size.height * 0.005),
+                                      child: Text(
+                                          (widget.novel.totalStarRating /
+                                              widget.novel.ratingCount)
+                                              .toStringAsFixed(1)),
+                                    )
                                         : Padding(
-                                            padding: EdgeInsets.only(
-                                                top: _size.height * 0.005),
-                                            child: Text('0.0'),
-                                          )
+                                      padding: EdgeInsets.only(
+                                          top: _size.height * 0.005),
+                                      child: Text('0.0'),
+                                    )
                                   ]),
                                   Padding(
                                     padding: EdgeInsets.fromLTRB(_size.width * 0.04,_size.height * 0.003,0, 0),
                                     child: Text(widget.novel.viewCount.toString(),style: TextStyle(
-                                      fontWeight: FontWeight.bold
+                                        fontWeight: FontWeight.bold
                                     ),),
                                   )
                                 ],

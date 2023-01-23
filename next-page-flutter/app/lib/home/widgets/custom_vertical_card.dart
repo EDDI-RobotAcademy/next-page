@@ -21,8 +21,8 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
   @override
   void initState() {
     todayString = DateFormat(format).format(now).toString();
-    todayAfter1String = DateFormat(format).format(now.add(Duration(days: 1))).toString();
-    todayAfter2String = DateFormat(format).format(now.add(Duration(days: 2))).toString();
+    todayAfter1String = DateFormat(format).format(now.subtract(Duration(days: 1))).toString();
+    todayAfter2String = DateFormat(format).format(now.subtract(Duration(days: 2))).toString();
     super.initState();
   }
 
@@ -38,9 +38,9 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => NovelDetailScreen(
-                          id: widget.novel.id,
-                          routeIndex: 0,
-                        )),
+                      id: widget.novel.id,
+                      routeIndex: 0,
+                    )),
               );
             },
             child: Container(
@@ -64,7 +64,7 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                           child: Padding(
                             padding:  EdgeInsets.fromLTRB(_size.width * 0.01,0,_size.width * 0.01,0),
                             child: Text('new', style: TextStyle(
-                              color: Colors.white
+                                color: Colors.white
                             ),),
                           ),
                         )
