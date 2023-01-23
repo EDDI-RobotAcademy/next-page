@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app_theme.dart';
 import '../../member/api/spring_member_api.dart';
-import '../../member/widgets/alerts/custom_result_alert.dart';
 import '../../member/widgets/text_fields/password_text_field.dart';
+import '../../widgets/cupertino_result_alert.dart';
 import '../../widgets/custom_title_appbar.dart';
 
 class PasswordModifyScreen extends StatefulWidget {
@@ -70,7 +71,7 @@ class PasswordModifyScreenState extends State<PasswordModifyScreen> {
                   ElevatedButton(
                       style: TextButton.styleFrom(
                         minimumSize: Size(size.width * 0.4, size.height * 0.05),
-                        backgroundColor: Colors.blueAccent,
+                        backgroundColor: AppTheme.pointColor,
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -78,31 +79,17 @@ class PasswordModifyScreenState extends State<PasswordModifyScreen> {
                               PasswordModifyRequest(memberId, newPassword));
                           debugPrint('result: ' + result.toString());
                           if (result) {
-                            _showAlertDialog(
-                                context,
-                                CustomResultAlert(
-                                    title: '알림', alertMsg: '비밀번호가 변경되었습니다.'));
+                            cupertinoResultAlert(context, '알림', '비밀번호가 변경되었습니다.');
                           } else {
-                            _showAlertDialog(
-                                context,
-                                CustomResultAlert(
-                                    title: '알림',
-                                    alertMsg: '통신 문제로 비밀번호 변경에 실패했습니다.'));
+                            cupertinoResultAlert(context, '알림', '통신 문제로 비밀번호 변경에 실패했습니다.');
                           }
                         } else {
-                          _showAlertDialog(
-                              context,
-                              CustomResultAlert(
-                                  title: '알림', alertMsg: '유효한 값을 입력해주세요!'));
+                          cupertinoResultAlert(context, '알림', '유효한 값을 입력해주세요!');
                         }
                       },
                       child: Text('비밀번호 변경하기'))
                 ]),
               )),
         ));
-  }
-
-  void _showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(context: context, builder: (BuildContext context) => alert);
   }
 }

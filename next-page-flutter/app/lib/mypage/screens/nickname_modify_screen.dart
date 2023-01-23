@@ -1,3 +1,4 @@
+import 'package:app/app_theme.dart';
 import 'package:app/member/api/requests.dart';
 import 'package:app/member/widgets/text_fields/nickname_text_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../member/api/spring_member_api.dart';
-import '../../member/widgets/alerts/custom_result_alert.dart';
+import '../../widgets/cupertino_result_alert.dart';
 import '../../widgets/custom_title_appbar.dart';
 
 class NicknameModifyScreen extends StatefulWidget {
@@ -93,7 +94,7 @@ class NicknameModifyScreenState extends State<NicknameModifyScreen> {
                   ElevatedButton(
                       style: TextButton.styleFrom(
                         minimumSize: Size(size.width * 0.4, size.height * 0.05),
-                        backgroundColor: Colors.blueAccent,
+                        backgroundColor: AppTheme.pointColor,
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
@@ -106,35 +107,19 @@ class NicknameModifyScreenState extends State<NicknameModifyScreen> {
                             setState(() {
                               currentNickname = newNickname;
                             });
-                            _showAlertDialog(
-                                context,
-                                CustomResultAlert(
-                                    title: '알림', alertMsg: result));
+                            cupertinoResultAlert(context, '알림', result);
                           } else if (result == noSuchUser) {
-                            _showAlertDialog(
-                                context,
-                                CustomResultAlert(
-                                    title: '알림', alertMsg: result));
+                            cupertinoResultAlert(context, '알림', result);
                           } else if (result == dupNickname) {
-                            _showAlertDialog(
-                                context,
-                                CustomResultAlert(
-                                    title: '알림', alertMsg: result));
+                            cupertinoResultAlert(context, '알림', result);
                           }
                         } else {
-                          _showAlertDialog(
-                              context,
-                              CustomResultAlert(
-                                  title: '알림', alertMsg: '유효한 닉네임을 입력하세요!'));
+                          cupertinoResultAlert(context, '알림', '유효한 닉네임을 입력하세요!');
                         }
                       },
                       child: Text('닉네임 변경하기'))
                 ]),
               )),
         ));
-  }
-
-  void _showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(context: context, builder: (BuildContext context) => alert);
   }
 }
