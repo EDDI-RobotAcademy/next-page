@@ -5,6 +5,7 @@ import 'package:http_parser/http_parser.dart';
 import '../../comment/api/comment_requests.dart';
 import '../../http_uri.dart';
 import '../../mypage/api/responses.dart';
+import '../../utility/providers/novel_list_provider.dart';
 import 'upload_requests.dart';
 import 'package:http/http.dart' as http;
 
@@ -37,6 +38,7 @@ class SpringAdminApi {
       data: _formData,
     );
     if (response.statusCode == 200) {
+      NovelListProvider().getAllNovelList();
       return true;
     } else {
       throw false;
@@ -70,6 +72,7 @@ class SpringAdminApi {
       data: _formData,
     );
     if (response.statusCode == 200) {
+      NovelListProvider().getAllNovelList();
       return true;
     } else {
       throw false;
@@ -97,6 +100,7 @@ class SpringAdminApi {
     );
 
     if (response.statusCode == 200) {
+      NovelListProvider().getAllNovelList();
       print("소설 정보 수정 통신 확인");
       return true;
     } else {
@@ -188,4 +192,46 @@ class SpringAdminApi {
       return false;
     }
   }
+
+  /*Future<bool> deleteEpisode(int episodeId) async {
+    var response = await http.delete(
+      Uri.http( httpUri, '/novel/delete-episode/$episodeId'),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if(response.statusCode == 200) {
+      print("에피소드 삭제 통신 확인");
+      return true;
+    } else {
+      print("에피소드 삭제 통신 실패");
+      return false;
+    }
+  }*/
+
+  Future<bool> modifyEpisode(EpisodeModifyRequest request) async {
+    var data = {
+      'episodeNumber' : request.episodeNumber,
+      'episodeId' : request.episodeId,
+      'episodeTitle' : request.episodeTitle,
+      'text' : request.text,
+      'needToBuy' : request.needToBuy
+    };
+    var body = json.encode(data);
+    print("modify comment: " + body);
+
+    var response = await http.put(
+      Uri.http( httpUri, '/novel/modify-episode/${request.episodeId}'),
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if(response.statusCode == 200) {
+      print("에피소드 수정 통신 확인");
+      return true;
+    } else {
+      print("에피소드 수정 통신 실패");
+      return false;
+    }
+  }
+
 }
