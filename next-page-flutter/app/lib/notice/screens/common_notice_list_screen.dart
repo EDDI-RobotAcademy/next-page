@@ -33,7 +33,7 @@ class _CommonNoticeListScreenState extends State<CommonNoticeListScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: customTitleAppbar(context, '공지사항', 99),
+      appBar: customTitleAppbar(context, '공지사항'),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Consumer<NoticeProvider>(

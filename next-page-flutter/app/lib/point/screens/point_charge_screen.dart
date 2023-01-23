@@ -176,31 +176,10 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
       );
 
     return Scaffold(
-            appBar: AppBar(
-                elevation: 0,
-                title: Text("포인트 충전"),
-                leading: IconButton(
-                  icon: Icon(Icons.arrow_back_ios),
-                  onPressed: () {
-                    // 마이페이지에서 포인트 충전 페이지로 이동힌 경우
-                    // 뒤로가기 버튼을 누르면 충전 후 포인트 정보가 적용되게 함.
-                    // pushAndRemoveUntil로 마이페이지 앱바에 뒤로가기 생기는 것 방지
-                    if(widget.fromWhere == myIdx) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  CustomBottomAppbar(routeIndex: myIdx,)),
-                              (route) => false);
-                    } else {
-                      Navigator.pop(context);
-                    }
-                  }
-                )
-            ),
-            body: Stack(
-              children: stack,
-            ),
+      appBar: customTitleAppbar(context, '포인트 충전'),
+      body: Stack(
+        children: stack,
+      ),
     );
   }
 

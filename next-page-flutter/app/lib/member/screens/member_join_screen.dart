@@ -25,7 +25,7 @@ class _MemberJoinScreenState extends State<MemberJoinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: customTitleAppbar(context,"회원약관동의",99),
+        appBar: customTitleAppbar(context,"회원약관동의"),
         body: Center(
           child: Column(
             children: [

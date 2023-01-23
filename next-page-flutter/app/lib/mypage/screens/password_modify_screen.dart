@@ -52,7 +52,7 @@ class PasswordModifyScreenState extends State<PasswordModifyScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-          appBar: customTitleAppbar(context, "비밀번호 변경", 99),
+          appBar: customTitleAppbar(context, "비밀번호 변경"),
           body: Form(
               key: _formKey,
               child: Padding(

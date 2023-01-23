@@ -51,7 +51,7 @@ class _QnaManagementFormState extends State<QnaManagementForm> {
   Widget build(BuildContext context) {
     Size size = MediaQuery .of(context).size;
     return Scaffold(
-      appBar: customTitleAppbar(context, widget.answered ? '답변 완료 QnA' : '답변 대기 QnA', 9999),
+      appBar: customTitleAppbar(context, widget.answered ? '답변 완료 QnA' : '답변 대기 QnA'),
       body: Consumer<QnaProvider>(
             builder: (context, qna, child) {
               return Padding(

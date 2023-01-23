@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,16 +41,16 @@ class _QnaScreenState extends State<QnaScreen>
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('나의 QnA',
           style: TextStyle(
-            color: AppTheme.pointColor, fontWeight: FontWeight.bold),
+              color: AppTheme.pointColor,
+              fontWeight: FontWeight.bold,
+              fontSize: MediaQuery.of(context).size.width * 0.06),
       ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.grey,
-          onPressed: () { Navigator.pop(context); },),
-        elevation: 0.5,
+        elevation: 0.0,
         backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.grey),
         bottom:
         TabBar(
           isScrollable: true,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:test1_project/utility/providers/episode_provider.dart';
-import 'package:test1_project/widgets/custom_title_appbar.dart';
 import '../../app_theme.dart';
+import '../../utility/providers/episode_provider.dart';
+import '../../widgets/custom_title_appbar.dart';
 import '../forms/episode_upload_form.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -32,7 +32,7 @@ class _EpisodeUploadScreenState extends State<EpisodeUploadScreen> {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: customTitleAppbar(context, '에피소드 등록', 99),
+      appBar: customTitleAppbar(context, '에피소드 등록'),
       body: Stack(children: [
         EpisodeUploadForm(
           novelId: widget.novelId,

@@ -59,7 +59,7 @@ class NicknameModifyScreenState extends State<NicknameModifyScreen> {
           FocusScope.of(context).unfocus();
         },
         child: Scaffold(
-          appBar: customTitleAppbar(context, "닉네임 변경", 99),
+          appBar: customTitleAppbar(context, "닉네임 변경"),
           body: Form(
               key: _formKey,
               child: Padding(
@@ -91,7 +91,7 @@ class NicknameModifyScreenState extends State<NicknameModifyScreen> {
                     height: size.height * 0.03,
                   ),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
+                      style: TextButton.styleFrom(
                         minimumSize: Size(size.width * 0.4, size.height * 0.05),
                         backgroundColor: Colors.blueAccent,
                       ),

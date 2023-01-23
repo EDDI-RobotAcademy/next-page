@@ -17,7 +17,7 @@ class NovelModifyScreen extends StatelessWidget {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: customTitleAppbar(context, '소설 관리',99),
+        appBar: customTitleAppbar(context, '소설 관리'),
         body: SingleChildScrollView(
           child: Column(
             children: [
