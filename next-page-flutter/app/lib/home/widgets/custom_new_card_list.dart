@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../novel/api/novel_responses.dart';
+import '../../novel/api/spring_novel_api.dart';
+import '../../utility/providers/novel_list_provider.dart';
 import 'custom_vertical_card.dart';
 
 class CustomNewCardList extends StatefulWidget {
-  final List<dynamic> newList;
 
-  const CustomNewCardList({Key? key, required this.newList}) : super(key: key);
+  const CustomNewCardList({Key? key}) : super(key: key);
 
   @override
   State<CustomNewCardList> createState() => _CustomNewCardListState();
 }
 
 class _CustomNewCardListState extends State<CustomNewCardList> {
+  NovelListProvider? _novelListProvider;
   List<dynamic>? _newNovelList;
+  var _future;
 
   @override
   void initState() {
-    setState(() {
-      _newNovelList = widget.newList;
-      _newNovelList!.sort((a,b) => b.id.compareTo(a.id));
-    });
+    _novelListProvider = Provider.of<NovelListProvider>(context, listen: false);
+    _future = _getHotNovelList();
     super.initState();
+  }
+
+  _getHotNovelList() async {
+    _newNovelList = await SpringNovelApi().getNewShortNovelList(15);
   }
 
 
   Widget buildCardList(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
-    var _novelListProvider = Provider.of<List<NovelListResponse>>(context);
-    return Padding(
+    return
+      Padding(
       padding:
           EdgeInsets.fromLTRB(_size.width * 0.03, 0, _size.width * 0.03, 0),
       child: Column(
@@ -47,14 +51,14 @@ class _CustomNewCardListState extends State<CustomNewCardList> {
             child: SizedBox(
               height: _size.height * 0.28,
               child: ListView.builder(
-                  itemCount: (_novelListProvider!.length > 15)
+                  itemCount: (_newNovelList!.length > 15)
                       ? 15
-                      : _novelListProvider!.length,
+                      : _newNovelList!.length,
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return CustomVerticalCard(
-                        novel: _novelListProvider![index]);
+                        novel: _newNovelList![index]);
                   }),
             ),
           ),
@@ -65,6 +69,22 @@ class _CustomNewCardListState extends State<CustomNewCardList> {
 
   @override
   Widget build(BuildContext context) {
-    return buildCardList(context);
+    return FutureBuilder(
+        future: _future,
+        builder: ((context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            } else {
+              return buildCardList(context);
+            }
+          } else {
+            return const Text("망");
+          }
+        }));
   }
 }

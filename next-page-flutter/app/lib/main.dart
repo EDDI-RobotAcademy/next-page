@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 import 'member/screens/member_join_screen.dart';
 import 'novel/api/novel_responses.dart';
-import 'novel/api/spring_novel_api.dart';
 import 'utility/providers/category_provider.dart';
 import 'utility/providers/comment_provider.dart';
 import 'utility/providers/episode_provider.dart';
@@ -38,9 +37,9 @@ class MyApp extends StatelessWidget {
               create: (BuildContext context) => NoticeProvider()),
           ChangeNotifierProvider(
               create: (BuildContext context) => NovelListProvider()),
-          FutureProvider<List<NovelListResponse>>(
-              initialData: [],
-              create: (_) => SpringNovelApi().getAllNovelList()),
+          FutureProvider<List<NovelListResponse>?>(
+              initialData: NovelListProvider().allNovelList,
+              create: (_) => NovelListProvider().futureGetAllNovelList()),
         ],
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
