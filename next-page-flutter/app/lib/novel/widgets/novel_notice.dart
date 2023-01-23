@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
 import '../../utility/providers/notice_provider.dart';
+import '../../utility/toast_methods.dart';
 
 class NovelNotice extends StatefulWidget {
   const NovelNotice({Key? key, required this.novelInfoId}) : super(key: key);
@@ -115,6 +116,7 @@ class _NovelNoticeState extends State<NovelNotice> {
                                               context.read<NoticeProvider>().getNoticeList(
                                                   NoticeRequest(novelInfoId: widget.novelInfoId, page: 0, size: 10));
                                               Navigator.pop(context);
+                                              showToast('공지가 삭제되었습니다.');
                                             } else {
                                               cupertinoResultAlert(context, '알림', '통신이 원활하지 않습니다.');
                                             }
