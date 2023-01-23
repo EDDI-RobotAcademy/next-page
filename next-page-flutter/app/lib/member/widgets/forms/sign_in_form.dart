@@ -1,5 +1,7 @@
 
 
+import 'package:app/app_theme.dart';
+import 'package:app/widgets/cupertino_result_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +13,6 @@ import '../../api/responses.dart';
 import '../../api/spring_member_api.dart';
 import '../../utility/custom_text_style.dart';
 import '../buttons/navigation_btn.dart';
-import '../alerts/custom_result_alert.dart';
 import '../text_fields/email_text_field.dart';
 import '../text_fields/password_text_field.dart';
 
@@ -88,7 +89,7 @@ class _SignInFormState extends State <SignInForm>{
                     SizedBox(height: size.height * 0.05),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Color(0xff6699FF),
+                            primary: AppTheme.pointColor,
                             minimumSize: Size(size.width * 0.4, size.height * 0.05)),
                         onPressed: () async {
                           if(_formKey.currentState!.validate()) {
@@ -116,22 +117,14 @@ class _SignInFormState extends State <SignInForm>{
                               }
 
                             } else {
-                              showResultDialog(context, "알림", "이메일 혹은 비밀번호가 올바르지 않습니다.");
+                              cupertinoResultAlert(context, "알림", "이메일 혹은 비밀번호가 올바르지 않습니다.");
                             }
                           } else {
-                            showResultDialog(context, "알림", "유효한 값을 모두 입력해주세요!");
+                            cupertinoResultAlert(context, "알림", "유효한 값을 모두 입력해주세요!");
                           }
                         }, child: Text("로그인", style: smallTextStyleWhite)),
                     SizedBox(height: size.height * 0.03),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          NavigationButton(buttonText: "계정 찾기", route: "/find-account",),
-                          SizedBox(height: size.height * 0.03, child: VerticalDivider(thickness: 1)),// 세로 구분선
-                          NavigationButton(buttonText: "비밀번호 찾기", route: "/find-password",),
-                          SizedBox(height: size.height * 0.03, child: VerticalDivider(thickness: 1)),// 세로 구분선
-                          NavigationButton(buttonText: "회원 가입", route: "/member-join",) // meber_join_screen 연결
-                        ])
+                    NavigationButton(buttonText: "아직 NEXT PAGE 회원이 아니신가요?", route: "/member-join",)
                   ],
                 )
               ],
@@ -139,14 +132,5 @@ class _SignInFormState extends State <SignInForm>{
         )
     );
 
-
-
-
-  }
-  void showResultDialog(BuildContext context, String title, String alertMsg) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) =>
-            CustomResultAlert(title: title, alertMsg: alertMsg));
   }
 }
