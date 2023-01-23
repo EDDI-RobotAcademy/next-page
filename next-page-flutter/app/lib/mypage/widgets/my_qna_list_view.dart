@@ -50,9 +50,9 @@ class _MyQnaListViewState extends State<MyQnaListView> {
                 child: Row(
                   children: [
                     SizedBox(width: size.width * 0.01,),
-                    Text('답변 상태', style: TextStyle(fontSize: 13),),
+                    Text('답변 상태', style: TextStyle(fontSize: size.width * 0.033)),
                     SizedBox(width: size.width * 0.35,),
-                    Text('QnA 내역')
+                    Text('QnA 내역', style: TextStyle(fontSize: size.width * 0.033))
                   ],
                 )),
             Divider(thickness: 1, height: 1,),
@@ -63,85 +63,103 @@ class _MyQnaListViewState extends State<MyQnaListView> {
   }
 
   Widget myQnaListTile(QnA qna, Size size) {
-    var regDate = qna.regDate.split('T')[0];
 
     return Column(
       children: [
-        ExpansionTile(
-          leading: qna.hasComment
-              ? Text('완료', style: TextStyle(color: Colors.indigo))
-              : Text('대기', style: TextStyle(color: Colors.grey)),
-          title: Text(qna.title),
-          subtitle: Text(qna.category),
-          children: [
-            Divider(),
-            ListTile(
-                title: Text(qna.content),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(height: size.height * 0.03,),
-                    Text('등록일 : ' + regDate, textAlign: TextAlign.end,),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Visibility(
-                            visible: !qna.hasComment,
-                            child: TextButton(
-                                onPressed: () {
-                                  showAlertDialog(context,
-                                      AlertDialog(
-                                          shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(25.0))),
-                                          title: Text('알림'),
-                                          content: Text('등록한 QnA를 삭제하시겠습니까?'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                                child: const Text('아니오')
-                                            ),
-                                            TextButton(
-                                                onPressed: () async {
-                                                  // qna 삭제 요청 api
-                                                  await SpringMyPageApi()
-                                                      .deleteQna(qna.qnaNo);
-                                                  popPopPush(context,
-                                                      QnaScreen(memberId: widget.memberId));
-                                                },
-                                                child: const Text('네')
-                                            )
-                                          ]
-                                      ));
-                                },
-                                child: Text('삭제',
-                                  style: TextStyle(color: Colors.grey),)),
-                          ),
-                        ],
+        Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(
+            textColor: Colors.black,
+            leading: qna.hasComment
+                ? Text('완료', style: TextStyle(color: Colors.indigo, fontSize: size.width * 0.033))
+                : Text('대기', style: TextStyle(color: Colors.grey, fontSize: size.width * 0.033)),
+            title: Text(qna.title, style: TextStyle(fontSize: size.width * 0.04),),
+            subtitle: Text(qna.category, style: TextStyle(fontSize: size.width * 0.033),),
+            children: [
+              ListTile(
+                  title: Text(qna.content, style: TextStyle(fontSize: size.width * 0.04)),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SizedBox(height: size.height * 0.03,),
+                      Text( qna.regDate.substring(0,10),
+                        textAlign: TextAlign.end,
+                        style: TextStyle(fontSize: size.width * 0.03),),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Visibility(
+                              visible: !qna.hasComment,
+                              child: TextButton(
+                                  onPressed: () {
+                                    _showDeleteAlert(qna);
+                                  },
+                                  child: Text('삭제',
+                                    style: TextStyle(color: Colors.grey),)),
+                            ),
+                          ],
+                        ),
                       ),
+                    ],
+                  )),
+              Visibility(
+                  visible: qna.hasComment,
+                  child: ListTile(
+                    tileColor: Colors.grey.shade100,
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('re: 담당자',
+                          style: TextStyle(fontSize: size.width * 0.035, color: Colors.grey),),
+                        SizedBox(height: size.height * 0.01,),
+                        Text(qna.comment, style: TextStyle(fontSize: size.width * 0.037),),
+                      ],
                     ),
-                  ],
-                )),
-            Visibility(
-                visible: qna.hasComment,
-                child: ListTile(
-                  tileColor: Colors.grey.shade100,
-                  title: Text('관리자 답변', style: TextStyle(fontSize: 15),),
-                  leading: Icon(Icons.subdirectory_arrow_right),
-                  subtitle: Text(qna.comment),
-                )
-            )
-          ],
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        qna.hasComment ? Text(qna.commentRegDate.substring(0,10),
+                          style: TextStyle(fontSize: size.width * 0.03),)
+                            : Text(''),
+                      ],
+                    ),
+                    leading: Icon(Icons.subdirectory_arrow_right),
+                  )
+              )
+            ],
+          ),
         ),
+        Divider()
       ],
     );
   }
-  void showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(
+
+  void _showDeleteAlert(QnA qna) {
+    showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) => alert);
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text('QnA 삭제'),
+            content: Text('해당 QnA를 삭제하시겠습니까?'),
+            actions: [
+              CupertinoDialogAction(
+                child: Text('네'),
+                onPressed: () async {
+                  await SpringMyPageApi()
+                      .deleteQna(qna.qnaNo);
+                  popPopPush(context, QnaScreen(memberId: widget.memberId));
+                },
+              ),
+              CupertinoDialogAction(
+                child: Text('아니오'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 }
 
