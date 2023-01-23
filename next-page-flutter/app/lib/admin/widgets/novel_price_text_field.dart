@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test1_project/admin/forms/episode_upload_form.dart';
 import '../../widgets/rounded_short_text_field_container.dart';
+import '../forms/episode_modify_form.dart';
+import '../forms/episode_upload_form.dart';
 import '../forms/novel_modify_form.dart';
 import '../forms/novel_upload_form.dart';
 
@@ -21,6 +22,7 @@ class _NovelPriceTextFieldState extends State<NovelPriceTextField> {
     NovelUploadFormState? form = context.findAncestorStateOfType<NovelUploadFormState>();
     NovelModifyFormState? form2 = context.findAncestorStateOfType<NovelModifyFormState>();
     EpisodeUploadFormState? form3 = context.findAncestorStateOfType<EpisodeUploadFormState>();
+    EpisodeModifyFormState? form4 = context.findAncestorStateOfType<EpisodeModifyFormState>();
     TextEditingController _controller = TextEditingController(text: widget.priceText);
     return RoundedShortTextFieldContainer(
         child: Padding(
@@ -30,7 +32,8 @@ class _NovelPriceTextFieldState extends State<NovelPriceTextField> {
             onChanged: (text) {
               form?.price = text;
               form2?.price = text;
-              form3!.episodeNumber = text;
+              form3?.episodeNumber = text;
+              form4?.episodeNumber = text;
             },
             decoration: const InputDecoration(
                 border: InputBorder.none

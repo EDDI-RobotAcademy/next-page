@@ -41,7 +41,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
 
   final ScrollController _scrollController = ScrollController();
   late TabController _controller;
-  bool? _isLike = true;
+  bool? _isLike = false;
 
   String _nickname = '';
   int? _memberId;
@@ -349,8 +349,8 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                       .toString()),
                                                                   onPressed:
                                                                       () {
-                                                                        Provider.of<CommentProvider>(context, listen: false).
-                                                                        requestNovelCommentList(widget.id);
+                                                                    Provider.of<CommentProvider>(context, listen: false).
+                                                                    requestNovelCommentList(widget.id);
                                                                     Navigator
                                                                         .push(
                                                                       context,
@@ -512,7 +512,6 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
         }));
   }
 
-  //공개여부 드롭다운 구성
   Widget _novelManagementOverlay() {
     return CupertinoActionSheet(
       actions: <Widget>[
@@ -545,7 +544,6 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     );
   }
 
-  //공개여부 드롭다운 열기
   Widget _showNovelManagementOverlay(dynamic novelManagementActionSheet) {
     return IconButton(
         onPressed: () {

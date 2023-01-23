@@ -11,6 +11,7 @@ import kr.eddi.demo.novel.repository.CoverImageRepository;
 import kr.eddi.demo.novel.repository.NovelCategoryRepository;
 import kr.eddi.demo.novel.repository.NovelEpisodeRepository;
 import kr.eddi.demo.novel.repository.NovelInformationRepository;
+import kr.eddi.demo.novel.request.EpisodeModifyRequest;
 import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
 import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
@@ -83,12 +84,12 @@ public class NovelServiceImpl implements NovelService {
 
             // 저장 경로 지정 + 파일네임
             FileOutputStream writer2 = new FileOutputStream("../../next-page-flutter/app/assets/images/thumbnail/" + fileReName);
-            //FileOutputStream writer3 = new FileOutputStream("/Users/gimjangsun/Desktop/test/assets/images/thumbnail/" + fileReName);
+            FileOutputStream writer3 = new FileOutputStream("/Users/gimjangsun/Desktop/test/assets/images/thumbnail/" + fileReName);
             log.info("디렉토리에 파일 배치 성공!");
 
             // 파일 저장(저장할 때는 byte 형식으로 저장해야 하므로 파라미터로 받은 multipartFile 파일들의 getBytes() 메소드를 적용하여 저장
             writer2.write(image.getBytes());
-            //writer3.write(image.getBytes());
+            writer3.write(image.getBytes());
 
 
             // 커버이미지 entity에 값 세팅
@@ -103,6 +104,7 @@ public class NovelServiceImpl implements NovelService {
             coverImage.updateToInformation();
             coverImageRepository.save(coverImage);
             writer2.close();
+            writer3.close();
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -443,6 +445,41 @@ public class NovelServiceImpl implements NovelService {
 
 
         return tmpNovelList;
+    }
+
+    /**
+     * 몇개의 최신 소설 리스트만을 반환합니다.
+     * @param
+     * @return List
+     */
+    @Transactional
+    @Override
+    public List<NovelInformation> getShortNewNovelList(int size){
+
+        Slice<NovelInformation> slice = informationRepository.findNovelInformationById(Pageable.ofSize(size), "admin");
+        List<NovelInformation> tmpNovelList = slice.getContent();
+
+
+        return tmpNovelList;
+    }
+
+    /**
+     * 에피소드의 정보를 수정합니다.
+     * @param
+     * @return Boolean
+     */
+    @Override
+    public Boolean episodeModify(Long episodeId, EpisodeModifyRequest episodeModifyRequest){
+        Optional<NovelEpisode> maybeEpisode = episodeRepository.findById(episodeId);
+        if(maybeEpisode.isPresent()){
+            NovelEpisode episode = maybeEpisode.get();
+            episode.modify(episodeModifyRequest);
+            episodeRepository.save(episode);
+            log.info("수정 성공");
+            return true;
+        }
+        log.info("수정 실패");
+        return false;
     }
 
 }

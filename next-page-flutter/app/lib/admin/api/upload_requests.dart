@@ -35,3 +35,19 @@ class EpisodeUploadRequest {
   EpisodeUploadRequest(this.informationId, this.episodeNumber,
       this.episodeTitle, this.text, this.needToBuy);
 }
+
+class EpisodeModifyRequest{
+  int episodeNumber;
+  String episodeTitle;
+  String text;
+  bool needToBuy;
+  int episodeId;
+
+  EpisodeModifyRequest(
+      this.episodeNumber,
+      this.episodeTitle,
+      this.text,
+      this.needToBuy,
+      this.episodeId
+      );
+}

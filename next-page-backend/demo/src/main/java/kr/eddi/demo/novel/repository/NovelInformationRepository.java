@@ -15,5 +15,7 @@ public interface NovelInformationRepository extends JpaRepository<NovelInformati
 
     @Query("select n from NovelInformation n join fetch n.member m where m.nickName = :nickName order by n.viewCount desc")
     Slice<NovelInformation> findNovelInformation(Pageable pageable, String nickName);
+    @Query("select n from NovelInformation n join fetch n.member m where m.nickName = :nickName order by n.id desc")
+    Slice<NovelInformation> findNovelInformationById(Pageable pageable, String nickName);
 
 }
