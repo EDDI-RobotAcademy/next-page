@@ -1,7 +1,8 @@
 
 import 'package:app/member/api/spring_member_api.dart';
-import 'package:app/member/widgets/alerts/custom_result_alert.dart';
 import 'package:app/mypage/screens/password_modify_screen.dart';
+import 'package:app/utility/toast_methods.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -74,36 +75,7 @@ class _MyInfoModifyScreenState extends State<MyInfoModifyScreen> {
                         contentPadding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
                         title: Text("회원 탈퇴", style: TextStyle(color: Colors.grey),),
                         onTap: () {
-                          _showAlertDialog(context,
-                              AlertDialog(
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(25.0))),
-                                title: Text('알림'),
-                                content: Text('정말 탈퇴 하시겠습니까?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text('아니오', style: TextStyle(fontWeight: FontWeight.w400)),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      var prefs = await SharedPreferences.getInstance();
-                                      var userId = prefs.getInt('userId');
-                                      var result = await SpringMemberApi().deleteMember(userId!);
-
-                                      if(result) {
-                                        prefs.clear();
-                                        _showAlertDialog(context,
-                                            _pushToHomeAlert('회원 탈퇴가 완료되었습니다. \n확인을 누르면 홈화면으로 이동합니다.'));
-                                      } else {
-                                          _showAlertDialog(context,
-                                          CustomResultAlert(title: '알림', alertMsg: '서버가 불안정합니다. \n다시 시도해주세요.'));
-                                      }
-                                    },
-                                    child: const Text('네'),
-                                  ),
-                                ],
-                          ));
+                          _showDeleteAccountAlert(context);
                         }
                       ),
                       const Divider(thickness: 1, height: 1,),
@@ -113,27 +85,43 @@ class _MyInfoModifyScreenState extends State<MyInfoModifyScreen> {
     );
   }
 
-  void _showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(
+  void _showDeleteAccountAlert(BuildContext context) {
+    showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) => alert);
-  }
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text('회원 탈퇴'),
+            content: Text('탈퇴 시 NEXT PAGE의 서비스를\n이용할 수 없게 됩니다.\n정말 탈퇴 하시겠습니까?'),
+            actions: [
+              CupertinoDialogAction(
+                child: Text('네'),
+                onPressed: () async {
+                  var prefs = await SharedPreferences.getInstance();
+                  var userId = prefs.getInt('userId');
+                  var result = await SpringMemberApi().deleteMember(userId!);
 
-  Widget _pushToHomeAlert(String msg) {
-    return AlertDialog(
-      title: Text('알림'),
-      content: Text(msg),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => 
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          CustomBottomAppbar(routeIndex: 0,)),
-                      (route) => false),
-        child: Text("확인"),
-        )
-      ],
-    );
+                  if(result){
+                    print('탈퇴 완');
+                    prefs.clear();
+                    showToast('회원 탈퇴가 완료되었습니다.');
+                    Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            CustomBottomAppbar(routeIndex: 0,)),
+                        (route) => false);
+                  } else {
+                    showToast('통신 오류');
+                  }
+                },
+              ),
+              CupertinoDialogAction(
+                child: Text('아니오'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 }
