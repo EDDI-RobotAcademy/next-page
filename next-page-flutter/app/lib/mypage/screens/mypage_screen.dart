@@ -1,11 +1,14 @@
-
 import 'package:app/admin/screens/qna_management_screen.dart';
+import 'package:app/app_theme.dart';
 import 'package:app/notice/screens/common_notice_list_screen.dart';
 import 'package:app/notice/screens/notice_management_screen.dart';
+import 'package:app/utility/toast_methods.dart';
+import 'package:app/widgets/custom_bottom_appbar.dart';
 import 'package:app/widgets/custom_title_appbar.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../admin/screens/novel_uploade_screen.dart';
@@ -36,7 +39,7 @@ class _MypageScreenState extends State<MypageScreen> {
   @override
   void initState() {
     _asyncMethod();
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(Duration(milliseconds: 300), () {
       setState(() {
         _isLoading = false;
       });
@@ -54,13 +57,13 @@ class _MypageScreenState extends State<MypageScreen> {
         memberId = prefs.getInt('userId')!;
         nickname = prefs.getString('nickname')!;
       });
-      await SpringMemberApi().lookUpUserPoint(memberId).
-      then((value) => prefs.setInt('point', value));
+      await SpringMemberApi()
+          .lookUpUserPoint(memberId)
+          .then((value) => prefs.setInt('point', value));
 
       setState(() {
         currentPoint = prefs.getInt('point')!;
       });
-
     } else {
       setState(() {
         _loginState = false;
@@ -71,11 +74,11 @@ class _MypageScreenState extends State<MypageScreen> {
   Widget _menuCardBasic(String menu, Widget screen) {
     return Card(
         child: ListTile(
-      title: Text(menu),
-      trailing: Icon(Icons.arrow_forward_ios_rounded),
-      onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => screen)),
-    ));
+          title: Text(menu),
+          trailing: Icon(Icons.arrow_forward_ios_rounded),
+          onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => screen)),
+        ));
   }
 
   Widget _menuCardWithButton(String menu, Widget screen, String btnText) {
@@ -89,7 +92,7 @@ class _MypageScreenState extends State<MypageScreen> {
               },
               style: TextButton.styleFrom(
                 primary: Colors.white,
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: AppTheme.pointColor,
               ),
               child: Text(btnText))),
     );
@@ -101,29 +104,32 @@ class _MypageScreenState extends State<MypageScreen> {
           title: Text("로그아웃"),
           trailing: Icon(Icons.arrow_forward_ios_rounded),
           onTap: () {
-            _showAlertDialog(
-                context,
-                AlertDialog(
-                  title: Text('알림'),
-                  content: Text('로그아웃 하시겠습니까?'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('아니오'),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        var prefs = await SharedPreferences.getInstance();
-                        prefs.clear();
-                        setState(() {
-                          _loginState = false;
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: const Text('네'),
-                    ),
-                  ],
-                ));
+            showCupertinoDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CupertinoAlertDialog(
+                    title: Text('알림'),
+                    content: Text('로그아웃 하시겠습니까?'),
+                    actions: [
+                      CupertinoDialogAction(
+                        onPressed: () async {
+                          var prefs = await SharedPreferences.getInstance();
+                          prefs.clear();
+                          setState(() {
+                            _loginState = false;
+                          });
+                          Get.offAll(()=>CustomBottomAppbar(routeIndex: 0));
+                          showToast('로그아웃 되었습니다.');
+                        },
+                        child: const Text('네'),
+                      ),
+                      CupertinoDialogAction(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('아니오'),
+                      ),
+                    ],
+                  );
+                });
           }),
     );
   }
@@ -166,7 +172,7 @@ class _MypageScreenState extends State<MypageScreen> {
         ));
       } else {
         // 관리자 로그인 상태일 때 마이페이지
-        if(nickname == adminNickname) {
+        if (nickname == adminNickname) {
           stack.add(
               Padding(
                 padding: EdgeInsets.all(16.0),
@@ -198,7 +204,6 @@ class _MypageScreenState extends State<MypageScreen> {
                     ),
                     '충전하기'),
                 _menuCardBasic('회원 정보 변경', MyInfoModifyScreen()),
-                // _menuCardBasic('소설 구매 내역', TmpMyScreen()),
                 _menuCardBasic('댓글 내역', MyCommentScreen(memberId: memberId)),
                 _menuCardBasic('나의 QnA', QnaScreen( memberId: memberId,)),
                 _menuCardBasic('공지사항', CommonNoticeListScreen(nickname: nickname)),
@@ -211,12 +216,8 @@ class _MypageScreenState extends State<MypageScreen> {
     }
 
     return Scaffold(
-        appBar: customTitleAppbar(context, 'MY'),
-        body: Stack(children: stack),);
-
-  }
-
-  void _showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(context: context, builder: (BuildContext context) => alert);
+      appBar: customTitleAppbar(context, 'MY'),
+      body: Stack(children: stack),
+    );
   }
 }
