@@ -30,6 +30,7 @@ class _BoardTextFieldState extends State<BoardTextField> {
       ),
       SizedBox(height: size.height * 0.01),
       TextFormField(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) => value!.isEmpty ? widget.usage + "을 입력하세요" : null,
         maxLines: widget.maxLines,
         controller: widget.controller,
