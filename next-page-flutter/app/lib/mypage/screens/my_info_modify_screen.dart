@@ -37,7 +37,7 @@ class _MyInfoModifyScreenState extends State<MyInfoModifyScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: customTitleAppbar(context,"회원정보변경",99), // 앱바 변경
+      appBar: customTitleAppbar(context,"회원정보변경"), // 앱바 변경
       body: Padding(
           padding: EdgeInsets.all(0.0),
                   child: Column(

@@ -17,7 +17,7 @@ class _NoticeManagementScreenState extends State<NoticeManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customTitleAppbar(context, '일반 공지사항 관리', 99),
+      appBar: customTitleAppbar(context, '일반 공지사항 관리'),
       body: Card(
         child: Column(
           children: [

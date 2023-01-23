@@ -15,7 +15,6 @@ import '../../member/screens/sign_in_screen.dart';
 import '../../point/screens/point_charge_screen.dart';
 import 'my_info_modify_screen.dart';
 import 'qna_screen.dart';
-import 'tmp_my_screen.dart';
 
 class MypageScreen extends StatefulWidget {
   const MypageScreen({Key? key}) : super(key: key);
@@ -212,7 +211,7 @@ class _MypageScreenState extends State<MypageScreen> {
     }
 
     return Scaffold(
-        appBar: customTitleAppbar(context, 'MY', 99),
+        appBar: customTitleAppbar(context, 'MY'),
         body: Stack(children: stack),);
 
   }

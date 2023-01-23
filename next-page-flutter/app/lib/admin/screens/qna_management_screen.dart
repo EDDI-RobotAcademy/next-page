@@ -14,7 +14,7 @@ class _QnaManagementScreenState extends State<QnaManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customTitleAppbar(context, '고객 QnA 관리', 9999),
+      appBar: customTitleAppbar(context, '고객 QnA 관리'),
       body: Card(
         child: Column(
           children: [

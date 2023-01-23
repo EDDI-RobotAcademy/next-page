@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     provider.isEmpty ? print('전체 리스트 프로바이더 소환중') : _tmpNovelList = provider;
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'NEXT PAGE',
           style: TextStyle(

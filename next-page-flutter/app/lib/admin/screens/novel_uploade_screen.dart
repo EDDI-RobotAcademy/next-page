@@ -21,7 +21,7 @@ class _NovelUploadScreenState extends State<NovelUploadScreen> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-        appBar: customTitleAppbar(context, '소설 업로드', 99),
+        appBar: customTitleAppbar(context, '소설 업로드'),
         body: NovelUploadForm()
       ),
     );

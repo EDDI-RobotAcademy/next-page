@@ -63,7 +63,7 @@ class _NoticeUploadFormState extends State<NoticeUploadForm> {
     return Scaffold(
       appBar: customTitleAppbar(context,
           widget.novelInfoId == commonNoticeId
-          ? "일반 공지 등록하기" : "작품 공지 등록하기", 99),
+          ? "일반 공지 등록하기" : "작품 공지 등록하기"),
       body: Form(
           key: _formKey,
           child: Padding(
