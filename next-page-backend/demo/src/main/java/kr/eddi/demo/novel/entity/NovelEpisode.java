@@ -4,6 +4,7 @@ package kr.eddi.demo.novel.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.eddi.demo.comment.entity.Comment;
 import kr.eddi.demo.episode_payment.entity.EpisodePayment;
+import kr.eddi.demo.novel.request.EpisodeModifyRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -75,5 +76,12 @@ public class NovelEpisode {
    /* public void updateEpisodePayments(EpisodePayment episodePayment) {
         this.episodePayments.add(episodePayment);
     }*/
+
+    public void modify(EpisodeModifyRequest request){
+        this.episodeNumber = request.getEpisodeNumber();
+        this.episodeTitle = request.getEpisodeTitle();
+        this.text = request.getText();
+        this.needToBuy = request.getNeedToBuy();
+    }
 
 }

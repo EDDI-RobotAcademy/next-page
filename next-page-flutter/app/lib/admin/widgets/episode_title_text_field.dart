@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test1_project/admin/forms/episode_upload_form.dart';
+import 'package:test1_project/admin/forms/episode_modify_form.dart';
 import '../../widgets/rounded_text_field_container.dart';
+import '../forms/episode_upload_form.dart';
 
 
 class EpisodeTitleTextField extends StatefulWidget {
@@ -18,6 +19,7 @@ class _EpisodeTitleTextFieldState extends State<EpisodeTitleTextField> {
   @override
   Widget build(BuildContext context) {
     EpisodeUploadFormState? form = context.findAncestorStateOfType<EpisodeUploadFormState>();
+    EpisodeModifyFormState? form2 = context.findAncestorStateOfType<EpisodeModifyFormState>();
     TextEditingController controller = TextEditingController(text: widget.titleText);
     return RoundedTextFieldContainer(
       size: _mini,
@@ -27,6 +29,7 @@ class _EpisodeTitleTextFieldState extends State<EpisodeTitleTextField> {
             controller: controller,
               onChanged: (text) {
                 form?.episodeTitle = text;
+                form2?.episodeTitle = text;
               },
             decoration: const InputDecoration(
               hintText: '에피소드 제목 입력',

@@ -19,7 +19,7 @@ class _CustomCardListState extends State<CustomHotCardList> {
   }
 
   _getHotNovelList() async {
-    _hotNovelList = await SpringNovelApi().getShortNovelList(15);
+    _hotNovelList = await SpringNovelApi().getHotShortNovelList(15);
   }
 
   Widget buildCardList(BuildContext context) {

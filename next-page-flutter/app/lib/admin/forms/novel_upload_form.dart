@@ -121,47 +121,47 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                       bool priceValid = RegExp(r"^[0-9]*$").hasMatch(price);
                       _image == null
                           ? _showResultDialog(
-                          title: "등록 실패", content: "썸네일 이미지를 등록해주세요.")
+                              title: "등록 실패", content: "썸네일 이미지를 등록해주세요.")
                           : title == ''
-                          ? _showResultDialog(
-                          title: "등록 실패", content: "소설의 제목을 입력해주세요.")
-                          : price == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "회차당 구매가격을 입력해주세요.")
-                          : priceValid == false
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "구매가격애는 숫자만 입력 가능합니다.")
-                          : author == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "작가명을 입력해주세요.")
-                          : publisher == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "출판사명을 입력해주세요.")
-                          : intro == ''
-                          ? _showResultDialog(
-                          title: "등록 실패",
-                          content: "작품 소개를 입력해주세요.")
-                          : await SpringAdminApi()
-                          .uploadNovelInformation(
-                          _image!,
-                          NovelUploadRequest(
-                              title,
-                              _category,
-                              _openToPublic,
-                              author,
-                              int.parse(price),
-                              publisher,
-                              intro,
-                              _memberId))
-                          .then((value) {
-                        value?
-                        _showResultDialog(title: '업로드 성공', content: '소설 등록에 성공했습니다.')
-                            :_showResultDialog(title: '업로드 실패', content: '통신 상태를 확인해주세요.');
-                      });
+                              ? _showResultDialog(
+                                  title: "등록 실패", content: "소설의 제목을 입력해주세요.")
+                              : price == ''
+                                  ? _showResultDialog(
+                                      title: "등록 실패",
+                                      content: "회차당 구매가격을 입력해주세요.")
+                                  : priceValid == false
+                                      ? _showResultDialog(
+                                          title: "등록 실패",
+                                          content: "구매가격애는 숫자만 입력 가능합니다.")
+                                      : author == ''
+                                          ? _showResultDialog(
+                                              title: "등록 실패",
+                                              content: "작가명을 입력해주세요.")
+                                          : publisher == ''
+                                              ? _showResultDialog(
+                                                  title: "등록 실패",
+                                                  content: "출판사명을 입력해주세요.")
+                                              : intro == ''
+                                                  ? _showResultDialog(
+                                                      title: "등록 실패",
+                                                      content: "작품 소개를 입력해주세요.")
+                                                  : await SpringAdminApi()
+                                                      .uploadNovelInformation(
+                                                          _image!,
+                                                          NovelUploadRequest(
+                                                              title,
+                                                              _category,
+                                                              _openToPublic,
+                                                              author,
+                                                              int.parse(price),
+                                                              publisher,
+                                                              intro,
+                                                              _memberId))
+                                                      .then((value) {
+                                                        value?
+                                                      _showResultDialog(title: '업로드 성공', content: '소설 등록에 성공했습니다.')
+                                                    :_showResultDialog(title: '업로드 실패', content: '통신 상태를 확인해주세요.');
+                                                      });
                       //print('썸네일: ${_image!.path},  공개여부: $_openToPublic, 장르: $_category,  제목: $title,  가격: $price,  작가명: $author, 출판사명: $publisher, 작품소개: $intro');
                     },
                     child: const Padding(
@@ -197,28 +197,28 @@ class NovelUploadFormState extends State<NovelUploadForm> {
           color: AppTheme.chalk,
           child: _image == null
               ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(),
-                    borderRadius: BorderRadius.circular(29)),
-                child: IconButton(
-                    onPressed: () {
-                      getImage(ImageSource.gallery);
-                    },
-                    icon: Icon(Icons.camera_alt_outlined)),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.01,
-              ),
-              Text('썸네일을 등록해주세요')
-            ],
-          )
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(),
+                          borderRadius: BorderRadius.circular(29)),
+                      child: IconButton(
+                          onPressed: () {
+                            getImage(ImageSource.gallery);
+                          },
+                          icon: Icon(Icons.camera_alt_outlined)),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
+                    Text('썸네일을 등록해주세요')
+                  ],
+                )
               : Image.file(
-            File(_image!.path),
-            fit: BoxFit.fill,
-          )),
+                  File(_image!.path),
+                  fit: BoxFit.fill,
+                )),
     );
   }
 
@@ -436,8 +436,8 @@ class NovelUploadFormState extends State<NovelUploadForm> {
                 child: Text("확인"),
                 onPressed: () {
                   (title.contains('성공'))?
-                  Get.offAll(const CustomBottomAppbar(routeIndex: 4))
-                      :
+                      Get.offAll(const CustomBottomAppbar(routeIndex: 4))
+                  :
                   Navigator.pop(context);
                 },
               )
