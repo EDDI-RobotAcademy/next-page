@@ -11,18 +11,22 @@ class NovelListResponse {
   String createdDate;
   int viewCount;
   LinkedHashMap<String, dynamic> coverImage;
+  int totalStarRating;
+  int ratingCount;
 
   NovelListResponse(
       {required this.id,
-      required this.title,
-      required this.introduction,
-      required this.publisher,
-      required this.author,
-      required this.purchasePoint,
-      required this.openToPublic,
-      required this.createdDate,
-      required this.coverImage,
-      required this.viewCount});
+        required this.title,
+        required this.introduction,
+        required this.publisher,
+        required this.author,
+        required this.purchasePoint,
+        required this.openToPublic,
+        required this.createdDate,
+        required this.coverImage,
+        required this.viewCount,
+        required this.totalStarRating,
+        required this.ratingCount});
 
   factory NovelListResponse.fromJson(Map<String, dynamic> json) {
     return NovelListResponse(
@@ -35,7 +39,10 @@ class NovelListResponse {
         openToPublic: json["openToPublic"],
         createdDate: json["createdDate"],
         coverImage: json["coverImage"],
-        viewCount: json["viewCount"]);
+        viewCount: json["viewCount"],
+        totalStarRating: json["totalStarRating"],
+        ratingCount: json["ratingCount"]
+    );
   }
 }
 
@@ -56,18 +63,18 @@ class NovelResponse {
 
   NovelResponse(
       {required this.id,
-      required this.title,
-      required this.introduction,
-      required this.publisher,
-      required this.author,
-      required this.purchasePoint,
-      required this.openToPublic,
-      required this.createdDate,
-      required this.category,
-      required this.thumbnail,
-      required this.viewCount,
-      required this.starRating,
-      required this.commentCount});
+        required this.title,
+        required this.introduction,
+        required this.publisher,
+        required this.author,
+        required this.purchasePoint,
+        required this.openToPublic,
+        required this.createdDate,
+        required this.category,
+        required this.thumbnail,
+        required this.viewCount,
+        required this.starRating,
+        required this.commentCount});
 
   factory NovelResponse.fromJson(Map<String, dynamic> json) {
     return NovelResponse(
@@ -97,11 +104,11 @@ class EpisodeResponse {
 
   EpisodeResponse(
       {required this.id,
-      required this.episodeNumber,
-      required this.episodeTitle,
-      required this.text,
-      required this.needToBuy,
-      required this.uploadedDate});
+        required this.episodeNumber,
+        required this.episodeTitle,
+        required this.text,
+        required this.needToBuy,
+        required this.uploadedDate});
 
   factory EpisodeResponse.fromJson(Map<String, dynamic> json) {
     return EpisodeResponse(
