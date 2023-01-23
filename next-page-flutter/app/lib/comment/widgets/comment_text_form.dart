@@ -1,6 +1,7 @@
 import 'package:app/comment/api/comment_requests.dart';
 import 'package:app/comment/api/spring_comment_api.dart';
 import 'package:app/comment/utility/comment_validate.dart';
+import 'package:app/utility/toast_methods.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +57,6 @@ class _CommentTextFormState extends State<CommentTextForm> {
               flex: 6,
               child: TextFormField(
                 validator: (value) => CommentValidate().validateComment(focusNode, value!),
-                //autovalidateMode: AutovalidateMode.onUserInteraction,
                 focusNode: focusNode,
                 style: const TextStyle(fontSize: 15),
                 autofocus: false,
@@ -103,6 +103,7 @@ class _CommentTextFormState extends State<CommentTextForm> {
                       if(!writeResult) {
                         _showResultDialog(title: "알림", content: "통신이 원활하지 않습니다.\u{1F622}\n 잠시 후 다시 시도해주세요");
                       }
+                      showToast('댓글이 등록되었습니다.');
                     }
                     setState(() {
                       _filter.clear();
