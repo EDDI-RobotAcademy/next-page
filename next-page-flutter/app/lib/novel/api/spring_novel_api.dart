@@ -245,7 +245,7 @@ class SpringNovelApi {
     }
   }
 
-  /*Future<List<dynamic>> getHotShortNovelList(int size) async {
+  Future<List<dynamic>> getHotShortNovelList(int size) async {
     var response = await http.get(
       Uri.http(httpUri, '/novel/novel-list/short/$size'),
       headers: {"Content-Type": "application/json"},
@@ -263,7 +263,7 @@ class SpringNovelApi {
     } else {
       throw ("error");
     }
-  }*/
+  }
   Future<List<dynamic>> getNewShortNovelList(int size) async {
     var response = await http.get(
       Uri.http(httpUri, '/novel/new-novel-list/short/$size'),
