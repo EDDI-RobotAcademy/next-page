@@ -9,11 +9,12 @@ class NavigationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
       return TextButton(
           onPressed: () {
             Navigator.pushNamed(context, route);
           },
-          child: Text(buttonText)
+          child: Text(buttonText, style: TextStyle(fontSize: size.width * 0.03))
       );
   }
 }
