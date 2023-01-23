@@ -193,7 +193,7 @@ class SpringAdminApi {
     }
   }
 
-  /*Future<bool> deleteEpisode(int episodeId) async {
+  Future<bool> deleteEpisode(int episodeId) async {
     var response = await http.delete(
       Uri.http( httpUri, '/novel/delete-episode/$episodeId'),
       headers: {"Content-Type": "application/json"},
@@ -206,7 +206,7 @@ class SpringAdminApi {
       print("에피소드 삭제 통신 실패");
       return false;
     }
-  }*/
+  }
 
   Future<bool> modifyEpisode(EpisodeModifyRequest request) async {
     var data = {
