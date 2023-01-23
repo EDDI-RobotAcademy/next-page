@@ -1,6 +1,7 @@
 import 'package:app/notice/api/notice_requests.dart';
 import 'package:app/notice/api/spring_notice_api.dart';
 import 'package:app/widgets/cupertino_result_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -100,34 +101,34 @@ class _NovelNoticeState extends State<NovelNotice> {
                     nickname == 'admin' ?
                     TextButton(
                         onPressed: () {
-                          showAlertDialog(context,
-                              AlertDialog(
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(25.0))),
-                                  title: Text('알림'),
-                                  content: Text('등록한 공지를 삭제하시겠습니까?'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context),
-                                        child: const Text('아니오')
-                                    ),
-                                    TextButton(
-                                        onPressed: () async {
-                                          var result = await SpringNoticeApi().deleteNotice(notice.noticeNo);
-                                          if(result) {
-                                            context.read<NoticeProvider>().getNoticeList(
-                                                NoticeRequest(novelInfoId: widget.novelInfoId, page: 0, size: 10));
-                                            Navigator.pop(context);
-                                          } else {
-                                            cupertinoResultAlert(context, '알림', '통신이 원활하지 않습니다.');
-                                          }
-                                        },
-                                        child: const Text('네')
-                                    )
-                                  ]
-                              ));
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CupertinoAlertDialog(
+                                    title: Text('공지 삭제'),
+                                    content: Text('해당 공지를 삭제하시겠습니까?'),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                          onPressed: () async {
+                                            var result = await SpringNoticeApi().deleteNotice(notice.noticeNo);
+                                            if(result) {
+                                              context.read<NoticeProvider>().getNoticeList(
+                                                  NoticeRequest(novelInfoId: widget.novelInfoId, page: 0, size: 10));
+                                              Navigator.pop(context);
+                                            } else {
+                                              cupertinoResultAlert(context, '알림', '통신이 원활하지 않습니다.');
+                                            }
+                                          },
+                                          child: const Text('네')
+                                      ),
+                                      CupertinoDialogAction(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text('아니오')
+                                      ),
+                                    ]
+                                );
+                              });
                         },
                         child: Text('삭제',
                           style: TextStyle(color: Colors.black26),))
@@ -140,11 +141,5 @@ class _NovelNoticeState extends State<NovelNotice> {
         ),
       ),
     );
-  }
-
-  void showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) => alert);
   }
 }
