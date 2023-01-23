@@ -1,7 +1,8 @@
-import 'package:app/admin/forms/qna_management_form.dart';
-import 'package:app/widgets/custom_title_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../widgets/custom_title_appbar.dart';
+import '../forms/qna_management_form.dart';
 
 class QnaManagementScreen extends StatefulWidget {
   const QnaManagementScreen({Key? key}) : super(key: key);
