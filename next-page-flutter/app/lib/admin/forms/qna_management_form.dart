@@ -1,13 +1,14 @@
-import 'package:app/admin/api/spring_admin_api.dart';
-import 'package:app/comment/api/comment_requests.dart';
-import 'package:app/widgets/custom_title_appbar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../comment/api/comment_requests.dart';
 import '../../member/widgets/alerts/custom_result_alert.dart';
 import '../../mypage/api/responses.dart';
 import '../../utility/providers/qna_provider.dart';
+import '../../widgets/custom_title_appbar.dart';
+import '../api/spring_admin_api.dart';
 
 class QnaManagementForm extends StatefulWidget {
   const QnaManagementForm({Key? key, required this.answered }) : super(key: key);

@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../admin/api/spring_admin_api.dart';
+import '../../admin/screens/episode_modify_screen.dart';
 import '../../app_theme.dart';
 import '../../member/screens/sign_in_screen.dart';
 import '../../utility/providers/episode_provider.dart';
@@ -135,6 +138,11 @@ class _EpisodeListState extends State<EpisodeList> {
       child: Card(
         color: AppTheme.chalk,
         child: InkWell(
+          onLongPress: (){
+            showCupertinoModalPopup(
+                context: context,
+                builder: (context) => _episodeManagementOverlay(episode));
+          },
           onTap: () {
             //로그인 상태일 때 에피소드 클릭시
             (_loginState)
@@ -313,5 +321,35 @@ class _EpisodeListState extends State<EpisodeList> {
           publisher: widget.novel.publisher,
           purchasedEpisodeList: _purchasedEpisodeList!,
         ));
+  }
+  Widget _episodeManagementOverlay(dynamic episode) {
+    return CupertinoActionSheet(
+      actions: <Widget>[
+        CupertinoActionSheetAction(
+          isDefaultAction: true,
+          onPressed: () {
+            Get.off(()=>EpisodeModifyScreen(episode: episode));
+          },
+          child: const Text("에피소드 정보 수정"),
+        ),
+        CupertinoActionSheetAction(
+          isDefaultAction: true,
+          onPressed: () {
+            SpringAdminApi().deleteEpisode(episode['id']).then((value){
+              if (value){
+                Get.back();
+                Fluttertoast.showToast(
+                    msg: '에피소드 삭제 성공',
+                    gravity: ToastGravity.BOTTOM,
+                    toastLength: Toast.LENGTH_SHORT,
+                    timeInSecForIosWeb: 1
+                );
+              }
+            });
+          },
+          child: const Text("에피소드 에피소드 삭제"),
+        ),
+      ],
+    );
   }
 }

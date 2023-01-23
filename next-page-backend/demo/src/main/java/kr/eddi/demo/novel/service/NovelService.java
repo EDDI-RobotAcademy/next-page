@@ -1,11 +1,7 @@
 package kr.eddi.demo.novel.service;
-
 import kr.eddi.demo.novel.entity.NovelEpisode;
 import kr.eddi.demo.novel.entity.NovelInformation;
-import kr.eddi.demo.novel.request.NovelCategoryRequest;
-import kr.eddi.demo.novel.request.NovelEpisodeRegisterRequest;
-import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
-import kr.eddi.demo.novel.request.NovelInformationRegisterRequest;
+import kr.eddi.demo.novel.request.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,4 +42,8 @@ public interface NovelService {
     void viewCountUp(Long novelId);
 
     List<NovelInformation> getShortNovelList(int size);
+
+    List<NovelInformation> getShortNewNovelList(int size);
+
+    Boolean episodeModify(Long episodeId, EpisodeModifyRequest episodeModifyRequest);
 }

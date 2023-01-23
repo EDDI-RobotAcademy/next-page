@@ -47,6 +47,8 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   flutter_rating_bar: ^4.0.1
   fluttertoast: ^8.1.2
+  health: ^4.4.0
+  intl: ^0.17.0
 
 dev_dependencies:
   mockito: ^5.2.0

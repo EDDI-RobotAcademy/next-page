@@ -1,6 +1,8 @@
 package kr.eddi.demo.novel.controller;
 
 
+import kr.eddi.demo.comment.request.CommentModifyRequest;
+import kr.eddi.demo.novel.request.EpisodeModifyRequest;
 import kr.eddi.demo.novel.request.NovelCategoryRequest;
 import kr.eddi.demo.novel.service.NovelServiceImpl;
 import kr.eddi.demo.novel.entity.NovelEpisode;
@@ -127,5 +129,27 @@ public class NovelController {
 
         return novelService.getShortNovelList(size);
 
+    }
+
+    @GetMapping("/new-novel-list/short/{size}")
+    public List<NovelInformation> getShortNewNovelList(@PathVariable("size") int size){
+        log.info("getShortNewNovelList()");
+
+        return novelService.getShortNewNovelList(size);
+
+    }
+
+    @DeleteMapping("/delete-episode/{episodeId}")
+    public void episodeDelete (@PathVariable("episodeId") Long episodeId) {
+        log.info("episodeDelete()" + episodeId);
+
+        novelService.deleteNovelEpisode(episodeId);
+    }
+
+    @PutMapping("/modify-episode/{episodeId}")
+    public void episodeModify (@PathVariable("episodeId") Long episodeId, @RequestBody EpisodeModifyRequest request) {
+        log.info("episodeModify()");
+
+        novelService.episodeModify(episodeId, request);
     }
 }
