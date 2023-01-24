@@ -4,6 +4,7 @@ import '../widgets/sliver_header_delegate.dart';
 import 'favorite_screen.dart';
 import 'purchased_record_screen.dart';
 
+
 class StorageScreen extends StatefulWidget {
   const StorageScreen({Key? key}) : super(key: key);
 
@@ -19,10 +20,13 @@ class _StorageScreenState extends State<StorageScreen>
   final double sliverMinHeight = 80.0, sliverMaxHeight = 140.0;
   int pageIndex = 0;
 
+
   @override
   void initState() {
     super.initState();
   }
+
+
 
   @override
   void dispose() {
@@ -91,7 +95,7 @@ class _StorageScreenState extends State<StorageScreen>
       children: <Widget>[
         Expanded(
           child: Container(
-            child: Image.asset('assets/images/logo/logo2.png')
+              child: Image.asset('assets/images/logo/logo2.png')
           ),
         ),
         pageButtonLayout(),
@@ -114,7 +118,7 @@ class _StorageScreenState extends State<StorageScreen>
   Widget pageButton(String title, int page) {
     final fontColor = pageIndex == page ? Colors.black : Colors.grey;
     final lineColor =
-        pageIndex == page ? AppTheme.pointColor : Color(0xFFF1F1F1);
+    pageIndex == page ? AppTheme.pointColor : Color(0xFFF1F1F1);
 
     return InkWell(
       splashColor: AppTheme.pointColor,
@@ -153,7 +157,7 @@ class _StorageScreenState extends State<StorageScreen>
       controller: pageController,
       children: <Widget>[
         pageItem(FavoriteScreen()),
-        pageItem(PurchaseRecoreScreen()),
+        pageItem(PurchaseRecordScreen()),
       ],
       onPageChanged: (index) => setState(() => pageIndex = index),
     );
@@ -164,12 +168,8 @@ class _StorageScreenState extends State<StorageScreen>
     double height = MediaQuery.of(context).size.height;
     double minHeight = height - statusHeight - sliverMinHeight;
 
-    return SingleChildScrollView(
-      child: Container(
-        color: Colors.white,
-        constraints: BoxConstraints(minHeight: minHeight),
-        child: child,
-      ),
+    return Scaffold(
+      body: child,
     );
   }
 }

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/sliver_header_delegate.dart';
-
-class PurchaseRecoreScreen extends StatefulWidget {
-  const PurchaseRecoreScreen({Key? key}) : super(key: key);
+class PurchaseRecordScreen extends StatefulWidget {
+  const PurchaseRecordScreen({Key? key}) : super(key: key);
 
   @override
-  State<PurchaseRecoreScreen> createState() => _PurchaseRecoreScreenState();
+  State<PurchaseRecordScreen> createState() => _PurchaseRecordScreenState();
 }
 
-class _PurchaseRecoreScreenState extends State<PurchaseRecoreScreen> {
+class _PurchaseRecordScreenState extends State<PurchaseRecordScreen> {
 
   @override
   Widget build(BuildContext context) {
