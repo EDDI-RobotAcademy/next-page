@@ -49,6 +49,7 @@ dependencies:
   fluttertoast: ^8.1.2
   health: ^4.4.0
   intl: ^0.17.0
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   mockito: ^5.2.0
