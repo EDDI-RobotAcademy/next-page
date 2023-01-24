@@ -16,7 +16,7 @@ public class PedometerController {
     @Autowired
     PedometerService service;
 
-    /*@PostMapping("/check/today")
+    @PostMapping("/check/today")
     public Boolean checkTodayPedometer(@RequestBody CheckPedometerRequest request) {
         log.info("checkTodayPedometer()");
         log.info("checkTodayPedometer() created_datd: " +request.getNowDate());
@@ -25,7 +25,7 @@ public class PedometerController {
         return service.checkIsTaken(request);
     }
 
-    @GetMapping("/get-point/{memberId}")
+    /*@GetMapping("/get-point/{memberId}")
     public void getPointByPedometer(@PathVariable("memberId") Long memberId) {
         log.info("getPointByPedometer(): " + memberId);
 

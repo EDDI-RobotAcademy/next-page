@@ -27,7 +27,7 @@ public class PedometerServiceImpl implements PedometerService{
      * 오늘의 만보기 포인트 수령 여부를 확인합니다.
      * @param
      * @return Boolean
-     *//*
+     */
     @Transactional
     @Override
     public Boolean checkIsTaken(CheckPedometerRequest request) {
@@ -43,7 +43,7 @@ public class PedometerServiceImpl implements PedometerService{
             }
     }
 
-    @Transactional
+    /*@Transactional
     @Override
     public void getPointByPedometer(Long memberId){
         Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
