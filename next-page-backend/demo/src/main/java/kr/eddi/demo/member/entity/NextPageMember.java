@@ -5,6 +5,7 @@ import kr.eddi.demo.episode_payment.entity.EpisodePayment;
 import kr.eddi.demo.favorite.entity.Favorite;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.payment.entity.PointPayment;
+import kr.eddi.demo.pedometer.entity.Pedometer;
 import kr.eddi.demo.qna.entity.QnA;
 import kr.eddi.demo.security.entity.Authentication;
 import kr.eddi.demo.security.entity.BasicAuthentication;
@@ -63,6 +64,9 @@ public class NextPageMember {
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Favorite> favoriteList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Pedometer> pedometerList = new ArrayList<>();
 
 
     public NextPageMember(String email, String nickName) {
@@ -131,6 +135,14 @@ public class NextPageMember {
         this.episodePayments.add(episodePayment);
     }
 
+    /**
+     * 회원이 수령한 만보기 포인트 기록을 업데이트 합니다.
+     *
+     * @param pedometer 만보기 포인트 수령기록
+     */
+    public void updatePedometerRecordList(Pedometer pedometer) {
+        this.pedometerList.add(pedometer);
+    }
 
     /**
      * 해당 에피소드의 가격만큼 회원의 포인트를 차감합니다.
