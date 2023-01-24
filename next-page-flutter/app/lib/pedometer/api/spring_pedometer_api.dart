@@ -24,7 +24,7 @@ class SpringPedometerApi{
     }
   }
 
-  /*Future<bool> getPointByPedometer(int memberId) async{
+  Future<bool> getPointByPedometer(int memberId) async{
     var response = await http.get(
       Uri.http(httpUri, '/pedometer/get-point/$memberId'),
       headers: {"Content-Type": "application/json"},
@@ -42,5 +42,5 @@ class SpringPedometerApi{
     } else {
       throw Exception("error");
     }
-  }*/
+  }
 }
