@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../app_theme.dart';
 import '../member/screens/sign_in_screen.dart';
+import '../pedometer/pedometer_screen.dart';
 import '../point/screens/point_charge_screen.dart';
 import '../widgets/link_banner_box.dart';
 import 'widgets/custom_new_card_list.dart';
@@ -44,7 +45,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     Size _size = MediaQuery.of(context).size;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppTheme.natureWhite,
+        child: Image.asset('assets/images/shoes.png', width: _size.width * 0.08),
+        onPressed: (){
+          Get.to(() => PedometerScreen());
+        },
+      ),
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'NEXT PAGE',
           style: TextStyle(
@@ -79,28 +89,28 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Container(
         width: double.infinity,
-        color: Colors.white,
+        color: Colors.grey[100],
         child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-              child: Column(
-                children: <Widget>[
-                  const CustomCarousel(),
-                  SizedBox(
-                    height: _size.height * 0.04,
-                  ),
-                  CustomNewCardList(),
-                  SizedBox(
-                    height: _size.height * 0.04,
-                  ),
-                  const LinkBannerBox(),
-                  SizedBox(
-                    height: _size.height * 0.04,
-                  ),
-                  CustomHotCardList(),
-                ],
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            children: <Widget>[
+              const CustomCarousel(),
+              SizedBox(
+                height: _size.height * 0.04,
               ),
+              CustomNewCardList(),
+              SizedBox(
+                height: _size.height * 0.04,
+              ),
+              const LinkBannerBox(),
+              SizedBox(
+                height: _size.height * 0.04,
+              ),
+              CustomHotCardList(),
+            ],
           ),
         ),
+      ),
     );
   }
 }

@@ -88,6 +88,28 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
                             ),
                           )
                               : Text(''),
+                          widget.novel.publisher == '넥스트페이지'?
+                          Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: Container(
+                              color: Colors.black,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(
+                                    _size.width * 0.01,
+                                    0,
+                                    _size.width * 0.01,
+                                    0),
+                                child: Text(
+                                  '독점',
+                                  style: TextStyle(color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: _size.width * 0.025),
+                                ),
+                              ),
+                            ),
+                          ):
+                          Text('')
                         ]),
                         SizedBox(
                           width: _size.width * 0.05,
@@ -116,7 +138,9 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
                             ),
                             SizedBox(height: _size.height * 0.005,),
                             Container(
+                              width: _size.width * 0.6,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Wrap(children: [
                                     Icon(
@@ -138,11 +162,17 @@ class _CustomHorizontalCardState extends State<CustomHorizontalCard> {
                                       child: Text('0.0'),
                                     )
                                   ]),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(_size.width * 0.04,_size.height * 0.003,0, 0),
-                                    child: Text(widget.novel.viewCount.toString(),style: TextStyle(
-                                        fontWeight: FontWeight.bold
-                                    ),),
+                                  SizedBox(width: _size.width * 0.01,),
+                                  Wrap(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(0,_size.height * 0.004,0, 0),
+                                        child: Text('${widget.novel.viewCount.toString()}회'
+                                          ,style: TextStyle(
+                                              color: Colors.grey[600]
+                                          ),),
+                                      ),
+                                    ],
                                   )
                                 ],
                               ),
