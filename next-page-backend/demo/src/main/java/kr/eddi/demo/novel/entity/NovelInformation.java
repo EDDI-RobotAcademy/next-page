@@ -2,6 +2,7 @@ package kr.eddi.demo.novel.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.eddi.demo.favorite.entity.Favorite;
 import kr.eddi.demo.member.entity.NextPageMember;
 import kr.eddi.demo.novel.request.NovelInformationModifyRequest;
 import lombok.Getter;
@@ -74,6 +75,10 @@ public class NovelInformation {
     @JsonIgnore
     @JoinColumn(name = "category_id")
     private NovelCategory category;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "novel", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Favorite> favoriteList = new ArrayList<>();
 
     public NovelInformation(String title, String introduction, String publisher, String author, Boolean openToPublic, Long purchasePoint) {
         this.title = title;
@@ -158,5 +163,7 @@ public class NovelInformation {
     public void minusTotalStarRating(int starRating){
         this.totalStarRating -=starRating;
     }
+
+    public void updateInterestList(Favorite favorite) { this.favoriteList.add(favorite); }
 
 }
