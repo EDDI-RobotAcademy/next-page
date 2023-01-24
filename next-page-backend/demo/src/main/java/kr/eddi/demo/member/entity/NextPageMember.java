@@ -2,6 +2,7 @@ package kr.eddi.demo.member.entity;
 
 import kr.eddi.demo.comment.entity.Comment;
 import kr.eddi.demo.episode_payment.entity.EpisodePayment;
+import kr.eddi.demo.favorite.entity.Favorite;
 import kr.eddi.demo.novel.entity.NovelInformation;
 import kr.eddi.demo.payment.entity.PointPayment;
 import kr.eddi.demo.qna.entity.QnA;
@@ -45,20 +46,23 @@ public class NextPageMember {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Authentication> authentications = new HashSet<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<PointPayment> pointPaymentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<NovelInformation> novelInformationList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Comment> commentList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<EpisodePayment> episodePayments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<QnA> QnAList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Favorite> favoriteList = new ArrayList<>();
 
 
     public NextPageMember(String email, String nickName) {
@@ -138,4 +142,6 @@ public class NextPageMember {
     public void updateQnAList(QnA qnA) {
         this.QnAList.add(qnA);
     }
+
+    public void updateInterestList(Favorite favorite) { this.favoriteList.add(favorite); }
 }

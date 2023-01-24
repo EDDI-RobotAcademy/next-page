@@ -14,7 +14,9 @@ import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app_theme.dart';
 import '../../widgets/custom_bottom_appbar.dart';
+
 
 class PointChargeScreen extends StatefulWidget {
   const PointChargeScreen({Key? key, required this.fromWhere}) : super(key: key);
@@ -62,18 +64,24 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
 
   void _setUserData() async {
     var prefs = await SharedPreferences.getInstance();
-    memberId = prefs.getInt('userId')!;
-    currentPoint = prefs.getInt('point')!;
+
+    setState(() async {
+      memberId = prefs.getInt('userId')!;
+      currentPoint = prefs.getInt('point')!;
+    });
+
+    prefs.setInt('point', currentPoint);
+    print("prefs 포인트: " + prefs.getInt('point').toString());
   }
 
   Future<void> initStoreInfo() async {
     // 인앱 구매가 가능한지 체크
     debugPrint("initStoreInfo()");
-    // 임의의 아이디값 할당
-    memberId = 1;
     final bool isAvailable = await _inAppPurchase.isAvailable();
 
-    if (!isAvailable) { debugPrint("인앱결제 불가능!"); }
+    if (!isAvailable) {
+      debugPrint("인앱결제 불가능!");
+    }
 
     //플랫폼이 ios면
     if (Platform.isIOS) {
@@ -117,7 +125,7 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
             // 포인트 충전 후 유저 포인트 데이터 spring 서버에 요청
             int chargedPoint = await SpringMemberApi().lookUpUserPoint(memberId);
             var prefs =  await SharedPreferences.getInstance();
-            prefs.setInt('point', chargedPoint);
+           prefs.setInt('point', chargedPoint);
             setState(() {
               currentPoint = prefs.getInt('point')!;
               _loading = true;
@@ -165,6 +173,7 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // print(currentPoint);
 
     final List<Widget> stack = <Widget>[];
       stack.add(
@@ -176,7 +185,28 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
       );
 
     return Scaffold(
-      appBar: customTitleAppbar(context, '포인트 충전'),
+      appBar: AppBar(
+        elevation: 0,
+        title: Text("포인트 충전"),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              // 마이페이지에서 포인트 충전 페이지로 이동힌 경우
+              // 뒤로가기 버튼을 누르면 충전 후 포인트 정보가 적용되게 함.
+              // pushAndRemoveUntil로 마이페이지 앱바에 뒤로가기 생기는 것 방지
+              if(widget.fromWhere == myIdx) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            CustomBottomAppbar(routeIndex: myIdx,)),
+                        (route) => false);
+              } else {
+                Navigator.pop(context);
+              }
+            }
+        )
+      ),
       body: Stack(
         children: stack,
       ),
@@ -216,6 +246,10 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
                 height: size.width * 0.1,
                 width: size.width * 0.25,
                 child: ElevatedButton(
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                    backgroundColor: AppTheme.pointColor,
+                  ),
                   onPressed: () {
                   late PurchaseParam purchaseParam;
                   // 특수기호 제거하고 int 형변환

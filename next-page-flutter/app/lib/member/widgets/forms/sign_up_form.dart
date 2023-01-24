@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../app_theme.dart';
 import '../../api/spring_member_api.dart';
 import '../../api/requests.dart';
 import '../../utility/custom_text_style.dart';
@@ -84,7 +85,7 @@ class SignUpFormState extends State<SignUpForm> {
                             child: EmailTextField(controller: emailController)),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Color(0xff6699FF),
+                              primary: AppTheme.pointColor,
                               minimumSize:
                                   Size(size.width * 0.2, size.height * 0.045)),
                           onPressed: () async {
@@ -113,7 +114,7 @@ class SignUpFormState extends State<SignUpForm> {
                         )),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: Color(0xff6699FF),
+                              primary: AppTheme.pointColor,
                               minimumSize:
                                   Size(size.width * 0.2, size.height * 0.045)),
                           onPressed: () async {
@@ -140,10 +141,9 @@ class SignUpFormState extends State<SignUpForm> {
                     SizedBox(height: size.height * 0.03),
                     // 회원가입 버튼
                     ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Color(0xff6699FF),
-                            minimumSize:
-                                Size(size.width * 0.4, size.height * 0.053)),
+                        style: TextButton.styleFrom(
+                            minimumSize: Size(size.width * 0.4, size.height * 0.05),
+                            backgroundColor: AppTheme.pointColor),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             if (emailPass == true && nicknamePass == true) {

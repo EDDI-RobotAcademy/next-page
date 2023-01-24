@@ -1,5 +1,6 @@
 import 'package:app/comment/api/comment_responses.dart';
 import 'package:app/utility/providers/comment_provider.dart';
+import 'package:app/utility/toast_methods.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,17 +72,6 @@ class _MyCommentListViewState extends State<MyCommentListView> {
                 Spacer(flex: 1),
                 Row(
                   children: [
-                    // TextButton(onPressed: (){
-                    //   print('수정요청');
-                    //   setState(() {
-                    //     _current = index;
-                    //     _onModify = true;
-                    //   });
-                    // }, child: Text("수정",
-                    //     style: TextStyle(
-                    //         color: Colors.grey,
-                    //         fontSize: size.width * 0.033
-                    //     ))),
                     TextButton(onPressed: () async {
                       print("삭제요청");
                       _showDeleteDialog(context: context, title: '알림', content: '댓글을 삭제하시겠습니까?',
@@ -139,6 +129,7 @@ class _MyCommentListViewState extends State<MyCommentListView> {
                   if(!deleteResult) {
                     cupertinoResultAlert(context, '알림', '현재 통신이 원활하지 않습니다.');
                   }
+                  showToast('댓글이 삭제되었습니다.');
                 },
               ),
               CupertinoDialogAction(

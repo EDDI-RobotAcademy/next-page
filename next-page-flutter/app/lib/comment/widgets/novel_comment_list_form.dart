@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utility/providers/comment_provider.dart';
+import '../../utility/toast_methods.dart';
 
 class NovelCommentListForm extends StatefulWidget {
   const NovelCommentListForm({Key? key, required this.novelInfoId}) : super(key: key);
@@ -24,7 +25,7 @@ class _NovelCommentListFormState extends State<NovelCommentListForm> {
   String nickname = ''; //로그인한 사용자와 댓글 작성자가 같은지 판단하기 위한 닉네임 값
 
   @override
-  void initState() {
+  void initState(){
     _asyncMethod();
     super.initState();
   }
@@ -45,7 +46,6 @@ class _NovelCommentListFormState extends State<NovelCommentListForm> {
       padding: const EdgeInsets.fromLTRB(15,0,15,25),
       child: Column(
         children: <Widget>[
-          SizedBox(height: size.height * 0.02,),
           context.watch<CommentProvider>().novelCommentList!.isEmpty?
           const Expanded(
             child: Center(
@@ -60,7 +60,7 @@ class _NovelCommentListFormState extends State<NovelCommentListForm> {
                       shrinkWrap: true,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
-                          height: size.height * 0.18,
+                          height: size.height * 0.15,
                           alignment: Alignment.centerLeft,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,17 +82,6 @@ class _NovelCommentListFormState extends State<NovelCommentListForm> {
                                     nickname == comment.novelCommentList![index].nickName ?
                                     Row(
                                       children: [
-                                        // TextButton(onPressed: (){
-                                        //   print('수정요청');
-                                        //   setState(() {
-                                        //     _current = index;
-                                        //     _onModify = true;
-                                        //   });
-                                        // }, child: Text("수정",
-                                        //     style: TextStyle(
-                                        //         color: Colors.grey,
-                                        //         fontSize: size.width * 0.033
-                                        //     ))),
                                         TextButton(onPressed: () async {
                                           print("삭제요청");
                                           _showDeleteDialog(title: '알림', content: '댓글을 삭제하시겠습니까?',
@@ -106,7 +95,8 @@ class _NovelCommentListFormState extends State<NovelCommentListForm> {
                                         )
                                       ],
                                     )
-                                        : Text("")
+                                        : TextButton(onPressed: () {  },
+                                        child: Text(""),)
                                   ],
                                 ),
                               ),
@@ -121,7 +111,7 @@ class _NovelCommentListFormState extends State<NovelCommentListForm> {
                                           fontSize: size.width * 0.033
                                       ),),
                                     SizedBox(height: size.height * 0.02,),
-                                    Text(comment.novelCommentList![index].episodeNumber.toString() + "화," +
+                                    Text(comment.novelCommentList![index].episodeNumber.toString() + "화 " +
                                     "  " + comment.novelCommentList![index].episodeTitle,
                                       overflow: TextOverflow.ellipsis,
                                     style: TextStyle(color: Colors.grey),),
@@ -164,6 +154,7 @@ class _NovelCommentListFormState extends State<NovelCommentListForm> {
                   if(!deleteResult) {
                     cupertinoResultAlert(context, '알림', '현재 통신이 원활하지 않습니다.');
                   }
+                  showToast('댓글이 삭제되었습니다.');
                 },
               ),
               CupertinoDialogAction(

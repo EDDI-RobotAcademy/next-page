@@ -1,5 +1,6 @@
 import 'package:app/notice/api/notice_requests.dart';
 import 'package:app/utility/providers/notice_provider.dart';
+import 'package:app/utility/toast_methods.dart';
 import 'package:app/widgets/custom_title_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -63,21 +64,24 @@ class _CommonNoticeListScreenState extends State<CommonNoticeListScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      child: Text("일반", textAlign: TextAlign.center,),
+                      child: Text("일반",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: size.width * 0.033)),
                     color: Colors.grey.shade300,
                     margin: EdgeInsets.only(right: 5.0),
                     padding: EdgeInsets.all(3.0),
                       ),
-                  Text(notice.title, style: TextStyle(fontSize: 18),),
+                  Text(notice.title, style: TextStyle(fontSize: size.width * 0.04),),
                 ],
               ),
             subtitle: Padding(
               padding: const EdgeInsets.only(top: 10.0),
-              child: Text(notice.createdDate.substring(0, 9)),
+              child: Text( notice.createdDate.substring(0, 9),
+                  style: TextStyle(fontSize: size.width * 0.03)),
             ),
             children: [
               ListTile(
-                  title: Text(notice.content),
+                  title: Text(notice.content, style: TextStyle(fontSize: size.width * 0.04)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -85,34 +89,7 @@ class _CommonNoticeListScreenState extends State<CommonNoticeListScreen> {
                       widget.nickname == 'admin' ?
                       TextButton(
                           onPressed: () {
-                            showAlertDialog(context,
-                                AlertDialog(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(25.0))),
-                                    title: Text('알림'),
-                                    content: Text('등록한 공지를 삭제하시겠습니까?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('아니오')
-                                      ),
-                                      TextButton(
-                                          onPressed: () async {
-                                            var result = await SpringNoticeApi().deleteNotice(notice.noticeNo);
-                                            if(result) {
-                                              context.read<NoticeProvider>().getNoticeList(
-                                                  NoticeRequest(novelInfoId: 0, page: 0, size: 10));
-                                              Navigator.pop(context);
-                                            } else {
-                                              cupertinoResultAlert(context, '알림', '통신이 원활하지 않습니다.');
-                                            }
-                                          },
-                                          child: const Text('네')
-                                      )
-                                    ]
-                                ));
+                            _showDeleteDialog(notice);
                           },
                           child: Text('삭제',
                             style: TextStyle(color: Colors.grey),))
@@ -127,9 +104,35 @@ class _CommonNoticeListScreenState extends State<CommonNoticeListScreen> {
     );
   }
 
-  void showAlertDialog(BuildContext context, Widget alert) {
-    showDialog(
+  void _showDeleteDialog(NoticeResponse notice) {
+    showCupertinoDialog(
         context: context,
-        builder: (BuildContext context) => alert);
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+              title: Text('공지 삭제'),
+              content: Text('등록한 공지를 삭제하시겠습니까?'),
+              actions: [
+                CupertinoDialogAction(
+                    onPressed: () async {
+                      var result = await SpringNoticeApi().deleteNotice(notice.noticeNo);
+                      if(result) {
+                        context.read<NoticeProvider>().getNoticeList(
+                            NoticeRequest(novelInfoId: 0, page: 0, size: 10));
+                        Navigator.pop(context);
+                        showToast('공지가 삭제되었습니다.');
+                      } else {
+                        cupertinoResultAlert(context, '알림', '통신이 원활하지 않습니다.');
+                      }
+                    },
+                    child: const Text('네')
+                ),
+                CupertinoDialogAction(
+                    onPressed: () =>
+                        Navigator.pop(context),
+                    child: const Text('아니오')
+                ),
+              ]
+          );
+        });
   }
 }

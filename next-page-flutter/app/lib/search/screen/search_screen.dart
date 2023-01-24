@@ -59,7 +59,7 @@ class SearchScreenState extends State<SearchScreen> {
             scrollDirection: Axis.vertical,
             itemBuilder: (BuildContext context, int index) {
               return CustomHorizontalCard(
-                  novel: searchResults[index], index: index);
+                  novel: searchResults[index], index: index, sort: '최신순',);
             });
       }
     } else {
