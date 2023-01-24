@@ -11,6 +11,8 @@ import '../../comment/comment_list_screen.dart';
 import '../../member/screens/sign_in_screen.dart';
 import '../../notice/api/notice_requests.dart';
 import '../../notice/notice_upload_form.dart';
+import '../../storage/api/spring_storage_api.dart';
+import '../../storage/api/storage_request.dart';
 import '../../utility/providers/comment_provider.dart';
 import '../../utility/providers/episode_provider.dart';
 import '../../utility/providers/notice_provider.dart';
@@ -41,7 +43,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
 
   final ScrollController _scrollController = ScrollController();
   late TabController _controller;
-  bool? _isLike = false;
+  bool? _isLike;
 
   String _nickname = '';
   int? _memberId;
@@ -66,6 +68,7 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     _episodeProvider!.requestEpisodeList(0, widget.id);
     _future = getNovelInfo();
     _asyncMethod();
+    _checkLikeNovel();
     _controller = TabController(length: 3, vsync: this);
     super.initState();
     _colorAnimationController =
@@ -86,6 +89,10 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     if (widget.routeIndex == 2) {
       toBottomAppBar = 2; //검색 페이지 자동완성에서 넘어오는 경우 추가
     }
+    if (widget.routeIndex == 3) {
+      toBottomAppBar = 3;
+    }
+
     // 공지 정보를 불러오기 위한 provider
     _noticeProvider = Provider.of<NoticeProvider>(context, listen: false);
     _noticeProvider.getNoticeList(
@@ -103,6 +110,20 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     })
         : setState(() {
       _loginState = false;
+    });
+  }
+
+  Future _checkLikeNovel() async {
+    Future.delayed(Duration(milliseconds: 700), () {
+      if(_loginState) {
+        SpringStorageApi()
+            .checkLikeStatus(FavoriteRequest(_memberId!, widget.id))
+            .then((value) {
+          setState(() {
+            value ? _isLike = true : _isLike = false;
+          });
+        });
+      }
     });
   }
 
@@ -291,18 +312,19 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                   size.width *
                                                                       0.02,
                                                                 ),
-                                                                ElevatedButton
-                                                                    .icon(
+                                                                ElevatedButton.icon(
                                                                   style:
                                                                   ButtonStyle(
-                                                                    padding: MaterialStateProperty.all(
-                                                                        EdgeInsets
-                                                                            .zero),
+                                                                    padding: MaterialStateProperty
+                                                                        .all(EdgeInsets
+                                                                        .zero),
                                                                     backgroundColor:
-                                                                    MaterialStateProperty.all(
-                                                                        Colors.transparent),
+                                                                    MaterialStateProperty
+                                                                        .all(Colors
+                                                                        .transparent),
                                                                     elevation:
-                                                                    MaterialStateProperty.all(
+                                                                    MaterialStateProperty
+                                                                        .all(
                                                                         0.0),
                                                                   ),
                                                                   icon: const Icon(
@@ -311,51 +333,68 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                                                         .white,
                                                                     size: 17,
                                                                   ),
-                                                                  label: Text(_novel
-                                                                      .starRating
-                                                                      .toString(),
+                                                                  label: Text(
+                                                                      _novel
+                                                                          .starRating
+                                                                          .toString(),
                                                                       style: const TextStyle(
                                                                           color: Colors
                                                                               .white)),
-                                                                  onPressed:
-                                                                      () {
-                                                                    _loginState == false?
-                                                                    Get.to(() => SignInScreen(fromWhere: 5, novel: _novel, routeIndex: widget.routeIndex))
-                                                                        :_nickname == 'admin'?
-                                                                    _showRestrictionDialog(title: '평가 불가', content: '관리자는 작품에 별점 주기가 불가합니다.')
-                                                                        :_showStarRatingDialog();
+                                                                  onPressed: () {
+                                                                    _loginState ==
+                                                                        false
+                                                                        ? Get.to(() => SignInScreen(
+                                                                        fromWhere:
+                                                                        5,
+                                                                        novel:
+                                                                        _novel,
+                                                                        routeIndex:
+                                                                        widget
+                                                                            .routeIndex))
+                                                                        : _nickname ==
+                                                                        'admin'
+                                                                        ? _showRestrictionDialog(
+                                                                        title:
+                                                                        '평가 불가',
+                                                                        content:
+                                                                        '관리자는 작품에 별점 주기가 불가합니다.')
+                                                                        : _showStarRatingDialog();
                                                                   },
                                                                 ),
                                                                 //소설 댓글
-                                                                ElevatedButton
-                                                                    .icon(
+                                                                ElevatedButton.icon(
                                                                   style:
                                                                   ButtonStyle(
-                                                                    padding: MaterialStateProperty.all(
-                                                                        EdgeInsets
-                                                                            .zero),
+                                                                    padding: MaterialStateProperty
+                                                                        .all(EdgeInsets
+                                                                        .zero),
                                                                     backgroundColor:
-                                                                    MaterialStateProperty.all(
-                                                                        Colors.transparent),
+                                                                    MaterialStateProperty
+                                                                        .all(Colors
+                                                                        .transparent),
                                                                     elevation:
-                                                                    MaterialStateProperty.all(
+                                                                    MaterialStateProperty
+                                                                        .all(
                                                                         0.0),
                                                                   ),
-                                                                  icon: const Icon(
-                                                                      Icons
-                                                                          .sms_outlined),
+                                                                  icon: const Icon(Icons
+                                                                      .sms_outlined),
                                                                   label: Text(_novel
                                                                       .commentCount
                                                                       .toString()),
-                                                                  onPressed:
-                                                                      () {
-                                                                    Provider.of<CommentProvider>(context, listen: false).
-                                                                    requestNovelCommentList(widget.id);
-                                                                    Navigator
-                                                                        .push(
+                                                                  onPressed: () {
+                                                                    Provider.of<CommentProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                        false)
+                                                                        .requestNovelCommentList(
+                                                                        widget
+                                                                            .id);
+                                                                    Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
-                                                                          builder: (context) =>
+                                                                          builder:
+                                                                              (context) =>
                                                                               CommentListScreen(
                                                                                 id: widget.id,
                                                                                 appBarTitle: _novel.title,
@@ -474,23 +513,26 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
                                 _isLike == true
                                     ? IconButton(
                                     onPressed: () {
+                                      SpringStorageApi().pushLike(FavoriteRequest(_memberId!, widget.id));
                                       setState(() {
                                         _isLike = false;
                                       });
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.favorite,
                                       color: Colors.redAccent,
+                                      size: 30,
                                     ))
                                     : IconButton(
                                     onPressed: () {
+                                      SpringStorageApi().pushLike(FavoriteRequest(_memberId!, widget.id));
                                       setState(() {
                                         _isLike = true;
                                       });
                                     },
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.favorite_outline,
-                                      color: Colors.grey,
+                                      color: Colors.grey[600],
                                       size: 30,
                                     )),
                                 IconButton(
@@ -561,7 +603,10 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
     showCupertinoDialog(
         context: context,
         builder: (context) {
-          return StarRatingDialog(memberId: _memberId!, novelId: widget.id, routeIndex:widget.routeIndex);
+          return StarRatingDialog(
+              memberId: _memberId!,
+              novelId: widget.id,
+              routeIndex: widget.routeIndex);
         });
   }
 
