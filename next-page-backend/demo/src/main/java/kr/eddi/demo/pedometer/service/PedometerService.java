@@ -5,5 +5,5 @@ import kr.eddi.demo.pedometer.request.CheckPedometerRequest;
 public interface PedometerService {
 
     Boolean checkIsTaken(CheckPedometerRequest request);
-    /*void getPointByPedometer(Long memberId);*/
+    void getPointByPedometer(Long memberId);
 }

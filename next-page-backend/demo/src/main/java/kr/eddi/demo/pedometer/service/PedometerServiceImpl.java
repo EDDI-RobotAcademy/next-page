@@ -43,7 +43,7 @@ public class PedometerServiceImpl implements PedometerService{
             }
     }
 
-    /*@Transactional
+    @Transactional
     @Override
     public void getPointByPedometer(Long memberId){
         Optional<NextPageMember> maybeMember = memberRepository.findById(memberId);
@@ -55,5 +55,5 @@ public class PedometerServiceImpl implements PedometerService{
             member.addChargedPoint(300L);
             pedometerRepository.save(pedometer);
         }
-    }*/
+    }
 }

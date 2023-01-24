@@ -25,10 +25,10 @@ public class PedometerController {
         return service.checkIsTaken(request);
     }
 
-    /*@GetMapping("/get-point/{memberId}")
+    @GetMapping("/get-point/{memberId}")
     public void getPointByPedometer(@PathVariable("memberId") Long memberId) {
         log.info("getPointByPedometer(): " + memberId);
 
         service.getPointByPedometer(memberId);
-    }*/
+    }
 }
