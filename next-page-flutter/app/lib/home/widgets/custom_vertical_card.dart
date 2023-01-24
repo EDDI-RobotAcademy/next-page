@@ -68,7 +68,29 @@ class _CustomVerticalCardState extends State<CustomVerticalCard> {
                             ),),
                           ),
                         )
-                            :Text('')
+                            :Text(''),
+                        widget.novel.publisher == '넥스트페이지'?
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            color: Colors.black,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  _size.width * 0.01,
+                                  0,
+                                  _size.width * 0.01,
+                                  0),
+                              child: Text(
+                                '독점',
+                                style: TextStyle(color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: _size.width * 0.025),
+                              ),
+                            ),
+                          ),
+                        ):
+                        Text('')
                       ]),
                       Divider(
                         height: _size.height * 0.001,
