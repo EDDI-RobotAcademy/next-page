@@ -105,7 +105,7 @@ class _PedometerScreenState extends State<PedometerScreen> {
     final now = DateTime.now();
     final yesterday = now.subtract(Duration(days: 300));
     bool requested =
-        await health.requestAuthorization(types, permissions: permissions);
+    await health.requestAuthorization(types, permissions: permissions);
     print('requested: $requested');
 
     await Permission.activityRecognition.request();
@@ -115,7 +115,7 @@ class _PedometerScreenState extends State<PedometerScreen> {
       try {
         // fetch health data
         List<HealthDataPoint> healthData =
-            await health.getHealthDataFromTypes(yesterday, now, types);
+        await health.getHealthDataFromTypes(yesterday, now, types);
         // save all the new data points (only the first 100)
         _healthDataList.addAll((healthData.length < 100)
             ? healthData
@@ -135,7 +135,7 @@ class _PedometerScreenState extends State<PedometerScreen> {
       // update the UI to display the results
       setState(() {
         _state =
-            _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
+        _healthDataList.isEmpty ? AppState.NO_DATA : AppState.DATA_READY;
       });
     } else {
       print("Authorization not granted");
@@ -167,7 +167,7 @@ class _PedometerScreenState extends State<PedometerScreen> {
       HealthDataAccess.READ_WRITE,
     ];
     bool? hasPermissions =
-        await HealthFactory.hasPermissions(types, permissions: rights);
+    await HealthFactory.hasPermissions(types, permissions: rights);
     if (hasPermissions == false) {
       await health.requestAuthorization(types, permissions: permissions);
     }
@@ -240,184 +240,184 @@ class _PedometerScreenState extends State<PedometerScreen> {
       appBar: customTransparentAppbar(),
       body: _loginState
           ? _isLoading
-              ? Container(
-                  color: Colors.white,
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              : FutureBuilder(
-                  future: _future,
-                  builder: ((context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.connectionState ==
-                        ConnectionState.done) {
-                      if (snapshot.hasError) {
-                        return Center(
-                          child: Text(snapshot.error.toString()),
-                        );
-                      } else {
-                        return Stack(
-                          children: [
-                            Container(
-                              color: Colors.grey[200],
+          ? Container(
+        color: Colors.white,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      )
+          : FutureBuilder(
+          future: _future,
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.connectionState ==
+                ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              } else {
+                return Stack(
+                  children: [
+                    Container(
+                      color: Colors.grey[200],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(
+                                top: _size.height * 0.005),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(19),
+                                  bottomLeft: Radius.circular(19)),
+                              child: Card(
+                                color: AppTheme.natureWhite,
+                                child: InkWell(
+                                    child: Container(
+                                      height: _size.height * 0.08,
+                                      child: Row(children: <Widget>[
+                                        SizedBox(
+                                          width: _size.height * 0.02,
+                                        ),
+                                        Container(
+                                            height: _size.height * 0.03,
+                                            child: Image.asset(
+                                                'assets/images/coin_image_asset.png')),
+                                        Padding(
+                                          padding: EdgeInsets.fromLTRB(
+                                              10, 0, 10, 0),
+                                          child: Text(
+                                            '내포인트',
+                                            style: TextStyle(
+                                                fontSize:
+                                                _size.width * 0.035),
+                                          ),
+                                        ),
+                                        Text('${f.format(_myPoint)}p',
+                                            style: TextStyle(
+                                              fontSize: _size.width * 0.04,
+                                              fontWeight: FontWeight.bold,
+                                            )),
+                                      ]),
+                                    )),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: _size.height * 0.005,
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(9),
+                            child: Container(
+                              color: AppTheme.natureWhite,
+                              height: _size.height * 0.6,
+                              width: _size.width * 0.97,
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        top: _size.height * 0.005),
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topLeft: Radius.circular(19),
-                                          bottomLeft: Radius.circular(19)),
-                                      child: Card(
-                                        color: AppTheme.natureWhite,
-                                        child: InkWell(
-                                            child: Container(
-                                          height: _size.height * 0.08,
-                                          child: Row(children: <Widget>[
-                                            SizedBox(
-                                              width: _size.height * 0.02,
-                                            ),
-                                            Container(
-                                                height: _size.height * 0.03,
-                                                child: Image.asset(
-                                                    'assets/images/coin_image_asset.png')),
-                                            Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  10, 0, 10, 0),
-                                              child: Text(
-                                                '내포인트',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        _size.width * 0.035),
-                                              ),
-                                            ),
-                                            Text('${f.format(_myPoint)}p',
-                                                style: TextStyle(
-                                                  fontSize: _size.width * 0.04,
-                                                  fontWeight: FontWeight.bold,
-                                                )),
-                                          ]),
-                                        )),
+                                  Padding(
+                                      padding: EdgeInsets.fromLTRB(
+                                          _size.width * 0.04,
+                                          _size.height * 0.01,
+                                          0,
+                                          0),
+                                      child: _bigNoticeTxt(_size, '만보를 걸으면')
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            _size.width * 0.04,
+                                            0,
+                                            0,
+                                            0),
+                                        child: Text('300',
+                                            style: TextStyle(
+                                                fontSize:
+                                                _size.width * 0.06,
+                                                fontWeight:
+                                                FontWeight.bold,
+                                                color: Colors.blue)),
                                       ),
-                                    ),
+                                      _bigNoticeTxt(_size, '포인트를 받을 수 있어요')
+                                    ],
                                   ),
                                   SizedBox(
-                                    height: _size.height * 0.005,
+                                    height: _size.height * 0.1,
                                   ),
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(9),
-                                    child: Container(
-                                      color: AppTheme.natureWhite,
-                                      height: _size.height * 0.6,
-                                      width: _size.width * 0.97,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                _size.width * 0.04,
-                                                _size.height * 0.01,
-                                                0,
-                                                0),
-                                            child: _bigNoticeTxt(_size, '만보를 걸으면')
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: EdgeInsets.fromLTRB(
-                                                    _size.width * 0.04,
-                                                    0,
-                                                    0,
-                                                    0),
-                                                child: Text('300',
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            _size.width * 0.06,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.blue)),
-                                              ),
-                                              _bigNoticeTxt(_size, '포인트를 받을 수 있어요')
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: _size.height * 0.1,
-                                          ),
-                                          Center(
-                                            child: _content(),
-                                          ),
-                                          SizedBox(height: _size.height * 0.05),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              _nofSteps < 2500
-                                                  ?  _noticeTxt(_size, '제발 좀 나가서 걸어주세요')
-                                                  : 2500 <= _nofSteps && _nofSteps < 5000
-                                                      ? _noticeTxt(_size, '조금 걸으셨네요?.. 조금..')
-                                                      : 5000 <= _nofSteps && _nofSteps < 7500
-                                                          ?  _noticeTxt(_size, '걷는 김에 좀 더 걸어볼까요?')
-                                                          : 7500 <= _nofSteps && _nofSteps < 10000
-                                                              ? _noticeTxt(_size, '300포인트가 눈앞에!!')
-                                                              : 10000 <= _nofSteps
-                                                                  ? _noticeTxt(_size, '만보 달성!')
-                                                                  : _noticeTxt(_size, '걸음수 데이터를 불러오는 중이에요.')
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
+                                  Center(
+                                    child: _content(),
+                                  ),
+                                  SizedBox(height: _size.height * 0.05),
+                                  Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      _nofSteps < 2500
+                                          ?  _noticeTxt(_size, '제발 좀 나가서 걸어주세요')
+                                          : 2500 <= _nofSteps && _nofSteps < 5000
+                                          ? _noticeTxt(_size, '조금 걸으셨네요?.. 조금..')
+                                          : 5000 <= _nofSteps && _nofSteps < 7500
+                                          ?  _noticeTxt(_size, '걷는 김에 좀 더 걸어볼까요?')
+                                          : 7500 <= _nofSteps && _nofSteps < 10000
+                                          ? _noticeTxt(_size, '300포인트가 눈앞에!!')
+                                          : 10000 <= _nofSteps
+                                          ? _noticeTxt(_size, '만보 달성!')
+                                          : _noticeTxt(_size, '걸음수 데이터를 불러오는 중이에요.')
+                                    ],
                                   )
                                 ],
                               ),
                             ),
-                            CoinImageButton(
-                              steps: _nofSteps,
-                              isTaken: _isTaken!,
-                              memberId: _memberId!,
-                              loginState: _loginState,
-                            )
-                          ],
-                        );
-                      }
-                    } else {
-                      return const Text("망");
-                    }
-                  }))
-          : Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('만보기는 로그인이 필요합니다.', style: TextStyle(
-                    fontSize: _size.width * 0.06
-                  ),),
-                  SizedBox(height: _size.height * 0.03,),
-                  InkWell(
-                    onTap: (){
-                      Get.to(() => SignInScreen(fromWhere: 0, novel: null, routeIndex: 0));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(15)
-                      ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Text('로그인', style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[700]
-                            ),),
                           )
+                        ],
+                      ),
                     ),
+                    CoinImageButton(
+                      steps: _nofSteps,
+                      isTaken: _isTaken!,
+                      memberId: _memberId!,
+                      loginState: _loginState,
+                    )
+                  ],
+                );
+              }
+            } else {
+              return const Text("망");
+            }
+          }))
+          : Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('만보기는 로그인이 필요합니다.', style: TextStyle(
+                fontSize: _size.width * 0.06
+            ),),
+            SizedBox(height: _size.height * 0.03,),
+            InkWell(
+              onTap: (){
+                Get.to(() => SignInScreen(fromWhere: 0, novel: null, routeIndex: 0));
+              },
+              child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(15)
                   ),
-                ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text('로그인', style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[700]
+                    ),),
+                  )
               ),
-          ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

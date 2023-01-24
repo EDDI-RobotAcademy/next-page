@@ -115,13 +115,15 @@ class _NovelDetailScreenState extends State<NovelDetailScreen>
 
   Future _checkLikeNovel() async {
     Future.delayed(Duration(milliseconds: 700), () {
-      SpringStorageApi()
-          .checkLikeStatus(FavoriteRequest(_memberId!, widget.id))
-          .then((value) {
-        setState(() {
-          value ? _isLike = true : _isLike = false;
+      if(_loginState) {
+        SpringStorageApi()
+            .checkLikeStatus(FavoriteRequest(_memberId!, widget.id))
+            .then((value) {
+          setState(() {
+            value ? _isLike = true : _isLike = false;
+          });
         });
-      });
+      }
     });
   }
 
