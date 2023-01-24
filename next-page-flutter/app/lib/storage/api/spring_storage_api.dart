@@ -25,7 +25,7 @@ class SpringStorageApi{
   }
 
 
-  /*Future<bool> checkLikeStatus(FavoriteRequest request) async{
+  Future<bool> checkLikeStatus(FavoriteRequest request) async{
     var data = {  'memberId': request.memberId, 'novelId': request.novelId};
     var body = json.encode(data);
 
@@ -42,7 +42,7 @@ class SpringStorageApi{
     }
   }
 
-  Future<bool> pushLike(FavoriteRequest request) async{
+/*Future<bool> pushLike(FavoriteRequest request) async{
     var data = {  'memberId': request.memberId, 'novelId': request.novelId};
     var body = json.encode(data);
 
