@@ -153,11 +153,11 @@ class SignUpFormState extends State<SignUpForm> {
                               _showSignUpSuccess(context);
                             } else {
                               cupertinoResultAlert(
-                                  context, '알림', '이메일 혹은 닉네임 중복 여부를 체크해 주세요!');
+                                  context, '알림', '이메일 혹은 닉네임의\n중복 여부를 체크해 주세요!');
                             }
                           } else {
                             cupertinoResultAlert(
-                                context, '알림', '모두 유효한 값이 입력 되었는지 확인 부탁드립니다.');
+                                context, '알림', '모두 유효한 값이 입력 되었는지\n확인 부탁드립니다.');
                           }
                         },
                         child: Text("회원 가입", style: smallTextStyleWhite)),

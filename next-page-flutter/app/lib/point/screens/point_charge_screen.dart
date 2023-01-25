@@ -187,7 +187,14 @@ class _PointChargeScreenState extends State<PointChargeScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text("포인트 충전"),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.grey),
+        title: Text("포인트 충전",
+        style: TextStyle(
+            color: AppTheme.pointColor,
+            fontWeight: FontWeight.bold,
+            fontSize: MediaQuery.of(context).size.width * 0.06)),
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
