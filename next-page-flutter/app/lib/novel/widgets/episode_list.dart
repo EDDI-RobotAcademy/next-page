@@ -347,7 +347,7 @@ class _EpisodeListState extends State<EpisodeList> {
               }
             });
           },
-          child: const Text("에피소드 에피소드 삭제"),
+          child: const Text("에피소드 삭제"),
         ),
       ],
     );

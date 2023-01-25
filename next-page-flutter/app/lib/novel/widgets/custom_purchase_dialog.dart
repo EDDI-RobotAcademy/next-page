@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../app_theme.dart';
 import '../../point/screens/point_charge_screen.dart';
@@ -85,11 +86,13 @@ class CustomPurchaseDialog extends StatelessWidget {
                           ),
                         ),
                         onTap: () {
-                          (point > purchasePoint) ?
+                          (point >= purchasePoint) ?
                           SpringNovelApi().purchaseEpisode(
                               PurchaseEpisodeRequest(
                                   novelId, memberId, episode['id'])
-                          ).then((value) {
+                          ).then((value) async {
+                            var pref =await SharedPreferences.getInstance();
+                            pref.setInt('point', (point-purchasePoint));
                             print('구매성공했다며? 결과값 밑에');
                             print(value);
                             value ?
