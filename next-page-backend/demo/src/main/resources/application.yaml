@@ -7,15 +7,19 @@ spring:
     url: jdbc:mysql://next-page-db/next_page_db?allowpublickeyretrieval=true&usessl=false&serverTimezone=UTC
     username: eddi
     password: eddi@123
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     dialect: org.hibernate.dialect.MySQL8Dialect
+  data:
+    redis:
+      repositories:
+        enabled: false
 
   cache:
     type: redis
 
   redis:
     host: next-page-redis
-    port: 6380
+    port: 6379
 
   jpa:
     open-in-view: false
