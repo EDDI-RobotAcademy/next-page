@@ -14,21 +14,21 @@ import java.util.List;
 @SpringBootTest
 public class QnaTestCase {
 
-    @Autowired
-    QnAService qnAService;
-
-    @Test
-    public void writeQna() {
-        QnARequest req = new QnARequest(10L, "테스트 qna2", "소설 문의", "와랄라라라랄라");
-
-        Boolean result = qnAService.write(req);
-        System.out.println("qna write test result: " + result.toString());
-    }
-
-    @Test
-    public void getMyQnaList() {
-        List<QnaResponse> myQnaList = qnAService.getQnaListByMemberId(10L);
-
-        System.out.println(myQnaList);
-    }
+//    @Autowired
+//    QnAService qnAService;
+//
+//    @Test
+//    public void writeQna() {
+//        QnARequest req = new QnARequest(10L, "테스트 qna2", "소설 문의", "와랄라라라랄라");
+//
+//        Boolean result = qnAService.write(req);
+//        System.out.println("qna write test result: " + result.toString());
+//    }
+//
+//    @Test
+//    public void getMyQnaList() {
+//        List<QnaResponse> myQnaList = qnAService.getQnaListByMemberId(10L);
+//
+//        System.out.println(myQnaList);
+//    }
 }

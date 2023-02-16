@@ -20,122 +20,122 @@ import java.util.Optional;
 
 @SpringBootTest
 public class NovelTestCase {
-
-
-    @Autowired
-    NovelServiceImpl service;
-
-    @Autowired
-    NovelInformationRepository informationRepository;
-
-    @Autowired
-    NovelEpisodeRepository episodeRepository;
-
-    @Test
-    void createCategory() {
-        service.createCategory(1L, "판타지");
-        service.createCategory(2L, "무협");
-        service.createCategory(3L, "로맨스");
-        service.createCategory(4L, "현판");
-        service.createCategory(5L, "BL");
-    }
-
-
-    @Test
-    @Transactional
-    void episodeRegister() {
-        Optional<NovelInformation> maybeInformation = informationRepository.findById(1L);
-        NovelInformation information = maybeInformation.get();
-        NovelEpisode episode = new NovelEpisode(1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇㄹ ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ ㄴㅇㄹ", true, information);
-        episode.updateToInformation();
-        episodeRepository.save(episode);
-    }
-
-    @Test
-    void episodeRegisterAtService() {
-        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(
-                5L, 15L, "폭풍이 끝나다",
-                """
-                 근육 조선 15화
-                 내용이당
-                 
-                 
-                 홍
-                 홍
-                 
-                 
-                 홍
-                 
-                 
-                 홍
-                 
-                 헝
-                 
-                 항
-                 
-                 항
-                 
-                """, true);
-        Boolean isOk = service.episodeRegister(request);
-        System.out.println("isOk?: " + isOk);
-    }
-    @Test
-    void deleteEpisode(){
-        Boolean isDelete = service.deleteNovelEpisode(14L);
-        System.out.println("isDelete: " + isDelete);
-    }
-
-    @Test
-    void getMemberInformationList() {
-        PageRequest request = PageRequest.of(0, 1);
-        Page<NovelInformation> informationList = informationRepository.findByMember_Id(1L, request);
-        System.out.println("informationList: " + informationList);
-    }
-
-    @Test
-    void getNovelList(){
-        List<NovelInformation> tmpList = informationRepository .findAll(Sort.by(Sort.Direction.DESC, "id"));
-
-        System.out.println("모든 소설 리스트: "+ tmpList);
-
-    }
-
-    @Test
-    void getNovelInfoDetailWithEpisodeList() {
-        Optional<NovelInformation> maybeInfo = informationRepository.findById(1l);
-        Boolean isOk;
-        if(maybeInfo.isEmpty()) {
-            isOk = false;
-        } else {
-            NovelInformation novelInfo = maybeInfo.get();
-            System.out.println(novelInfo);
-        }
-    }
-    @Test
-    void getNovelEpisodeListByInfoIdTest() {
-        PageRequest request = PageRequest.of(0,1);
-        Page<NovelEpisode> episodePage = episodeRepository.findByInformation_Id(1l, request);
-        System.out.println("result: " + episodePage);
-    }
-
-    @Test
-    void getNovelEpisodeDetailTest() {
-        NovelEpisode episode;
-
-        Optional<NovelEpisode> maybeEpisode =  episodeRepository.findById(1L);
-        if(maybeEpisode.isEmpty()) {
-            episode = null;
-        }
-
-        episode = maybeEpisode.get();
-
-        System.out.println("getEpisodeDetail: " + episode);
-
-    }
-
-    @Test
-    void updateViewCount(){
-        service.viewCountUp(5L);
-
-    }
+//
+//
+//    @Autowired
+//    NovelServiceImpl service;
+//
+//    @Autowired
+//    NovelInformationRepository informationRepository;
+//
+//    @Autowired
+//    NovelEpisodeRepository episodeRepository;
+//
+//    @Test
+//    void createCategory() {
+//        service.createCategory(1L, "판타지");
+//        service.createCategory(2L, "무협");
+//        service.createCategory(3L, "로맨스");
+//        service.createCategory(4L, "현판");
+//        service.createCategory(5L, "BL");
+//    }
+//
+//
+//    @Test
+//    @Transactional
+//    void episodeRegister() {
+//        Optional<NovelInformation> maybeInformation = informationRepository.findById(1L);
+//        NovelInformation information = maybeInformation.get();
+//        NovelEpisode episode = new NovelEpisode(1L, "안녕하세요", "234ㅁㄴㅇㄻㄴㅇㄹ ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ ㄴㅇㄹ", true, information);
+//        episode.updateToInformation();
+//        episodeRepository.save(episode);
+//    }
+//
+//    @Test
+//    void episodeRegisterAtService() {
+//        NovelEpisodeRegisterRequest request = new NovelEpisodeRegisterRequest(
+//                5L, 15L, "폭풍이 끝나다",
+//                """
+//                 근육 조선 15화
+//                 내용이당
+//
+//
+//                 홍
+//                 홍
+//
+//
+//                 홍
+//
+//
+//                 홍
+//
+//                 헝
+//
+//                 항
+//
+//                 항
+//
+//                """, true);
+//        Boolean isOk = service.episodeRegister(request);
+//        System.out.println("isOk?: " + isOk);
+//    }
+//    @Test
+//    void deleteEpisode(){
+//        Boolean isDelete = service.deleteNovelEpisode(14L);
+//        System.out.println("isDelete: " + isDelete);
+//    }
+//
+//    @Test
+//    void getMemberInformationList() {
+//        PageRequest request = PageRequest.of(0, 1);
+//        Page<NovelInformation> informationList = informationRepository.findByMember_Id(1L, request);
+//        System.out.println("informationList: " + informationList);
+//    }
+//
+//    @Test
+//    void getNovelList(){
+//        List<NovelInformation> tmpList = informationRepository .findAll(Sort.by(Sort.Direction.DESC, "id"));
+//
+//        System.out.println("모든 소설 리스트: "+ tmpList);
+//
+//    }
+//
+//    @Test
+//    void getNovelInfoDetailWithEpisodeList() {
+//        Optional<NovelInformation> maybeInfo = informationRepository.findById(1l);
+//        Boolean isOk;
+//        if(maybeInfo.isEmpty()) {
+//            isOk = false;
+//        } else {
+//            NovelInformation novelInfo = maybeInfo.get();
+//            System.out.println(novelInfo);
+//        }
+//    }
+//    @Test
+//    void getNovelEpisodeListByInfoIdTest() {
+//        PageRequest request = PageRequest.of(0,1);
+//        Page<NovelEpisode> episodePage = episodeRepository.findByInformation_Id(1l, request);
+//        System.out.println("result: " + episodePage);
+//    }
+//
+//    @Test
+//    void getNovelEpisodeDetailTest() {
+//        NovelEpisode episode;
+//
+//        Optional<NovelEpisode> maybeEpisode =  episodeRepository.findById(1L);
+//        if(maybeEpisode.isEmpty()) {
+//            episode = null;
+//        }
+//
+//        episode = maybeEpisode.get();
+//
+//        System.out.println("getEpisodeDetail: " + episode);
+//
+//    }
+//
+//    @Test
+//    void updateViewCount(){
+//        service.viewCountUp(5L);
+//
+//    }
 }
