@@ -1,19 +1,33 @@
 version: "3.7"
 services:
   db:
-    image: "mariadb:10.9.5"
+    image: "mysql:8.0"
     container_name: next-page-db
     volumes:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/custom.cnf:/etc/mysql/conf.d/custom.cnf
       - ./docker/mysql/logs:/var/log/mysql
     ports:
-      - "3306:3306"
+      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
+    networks:
+      - app
+  redis:
+    image: redis:7.0.4
+    command: redis-server --port 6380
+    container_name: next-page-redis
+    hostname: redis_standalone
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    ports:
+      - "6380:6379"
+    depends_on:
+      - db
     networks:
       - app
   server:
@@ -24,14 +38,14 @@ services:
     volumes:
       - appdata:/app
     depends_on:
-      - db
+      - redis
     ports:
-      - "8080:8080"
+      - "8081:7777"
     command:
       - bash
       - -c
       - |
-        /wait-for-it.sh db:3306 -t 15
+        /wait-for-it.sh db:3308 -t 15
         java -jar /app.jar
     networks:
       - app

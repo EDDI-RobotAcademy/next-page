@@ -4,18 +4,18 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/next_page_db?allowpublickeyretrieval=true&usessl=false&serverTimezone=UTC
-    username: root
+    url: jdbc:mysql://next-page-db/next_page_db?allowpublickeyretrieval=true&usessl=false&serverTimezone=UTC
+    username: eddi
     password: eddi@123
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
     dialect: org.hibernate.dialect.MySQL8Dialect
 
   cache:
     type: redis
 
   redis:
-    host: 127.0.0.1
-    port: 6379
+    host: next-page-redis
+    port: 6380
 
   jpa:
     open-in-view: false
