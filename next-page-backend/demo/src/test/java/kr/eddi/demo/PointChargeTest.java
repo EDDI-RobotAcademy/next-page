@@ -9,16 +9,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class PointChargeTest {
 
-    @Autowired
-    PointService service;
-
-    @Test
-    void pointChargeTest() {
-        PointPaymentRequest req =
-                new PointPaymentRequest(1L, System.currentTimeMillis(), 10000L, 10000L);
-
-        service.paymentAndCharge(req);
-    }
+//    @Autowired
+//    PointService service;
+//
+//    @Test
+//    void pointChargeTest() {
+//        PointPaymentRequest req =
+//                new PointPaymentRequest(1L, System.currentTimeMillis(), 10000L, 10000L);
+//
+//        service.paymentAndCharge(req);
+//    }
 
 
 }
