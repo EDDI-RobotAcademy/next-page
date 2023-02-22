@@ -9,6 +9,7 @@ import {
 import axios from "axios";
 import states from "@/store/states";
 import store from "@/store/index";
+import {memberCheckDuplicateEmailService, memberCheckDuplicateNicknameService} from "@/api/services/userServices";
 
 
 export default {
@@ -44,7 +45,7 @@ export default {
 
         const {email} = payload;
 
-        await axios.post(`http://localhost:7777/member/check-email/${email}`)
+        await memberCheckDuplicateEmailService(email)
             .then((res) => {
                 if (res.data) {
                     alert("사용 가능한 이메일입니다.")
@@ -60,7 +61,7 @@ export default {
     async checkDuplicateNicknameToSpring({commit}, payload) { // 닉네임 중복 확인
         const {nickName} = payload;
 
-        await axios.post(`http://localhost:7777/member/check-nickname/${nickName}`)
+        await memberCheckDuplicateNicknameService(nickName)
             .then((res) => {
                 if (res.data) {
                     alert("사용 가능한 닉네임입니다.")

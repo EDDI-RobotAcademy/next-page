@@ -2,7 +2,7 @@
   <router-link :to=" { name: 'InformationDetail',
                        params: { novelInfoNo : novelInfo.id }} ">
     <v-card max-width="200px" class="pa-2">
-      <v-img height="250px" :src="require(`@/assets/coverImages/${novelInfo.coverImage.reName}`)"/>
+<!--      <v-img height="250px" :src="require(`@/assets/coverImages/${novelInfo.coverImage.reName}`)"/>-->
       <v-card-text class="justify-center">
         {{ novelInfo.title}}
       </v-card-text>

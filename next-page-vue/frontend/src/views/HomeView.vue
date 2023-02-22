@@ -30,11 +30,17 @@ import CarouselsNovel from '@/component/CarouselsNovel.vue';
 import FooterMenuForm from '@/component/footer/FooterMenuForm.vue';
 import HeadlineMenuForm from '@/component/header/HeadlineMenuForm.vue';
 import MainMenuForm from '@/component/header/MainMenuForm.vue';
+import env from "../env";
 
 
 
 export default {
   name: "HomeView",
+  computed: {
+    env() {
+      return env
+    }
+  },
 
   components: {
     HeadlineMenuForm,
